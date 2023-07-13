@@ -28,13 +28,13 @@ function Navbar() {
 
                         <li className="nav-item">
                             <NavLink to="/view_product" className="nav-link">
-                                <i className="fa fa-product-hunt"></i> Active Orders
+                                <i className="fa fa-first-order"></i> My Products
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/update_product" className="nav-link">
-                                <i className="fa fa-gear"></i> Retailer Orders
+                            <NavLink to="/view_retailer_orders" className="nav-link">
+                                <i className="fa fa-truck"></i> Retailer Orders
                             </NavLink>
                         </li>
 

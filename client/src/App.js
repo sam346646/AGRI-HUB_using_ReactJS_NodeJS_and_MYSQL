@@ -12,6 +12,7 @@ import SellProduct from "./farmer/pages/SellProduct";
 import UpdateProduct from "./farmer/pages/UpdateProduct";
 import DeleteProduct from "./farmer/pages/DeleteProduct";
 import UpdateOrder from "./farmer/pages/UpdateOrder";
+import ViewRetailerOrders from "./farmer/pages/ViewRetailerOrders";
 
 import NavbarRetailer from "./retailer/pages/Navbar" 
 import DashboardRetailer from "./retailer/pages/Dashboard" 
@@ -31,6 +32,7 @@ function App() {
           <Route path="update_product/:id" element={<UpdateProduct />} />
           <Route path="delete_product/:id" element={<DeleteProduct />} />
           <Route path="update_order/:id" element={<UpdateOrder />} />
+          <Route path="view_retailer_orders" element={<ViewRetailerOrders />} />
         </Route>
 
         {/* Retailer side */}

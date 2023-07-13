@@ -215,8 +215,38 @@ app.post("/order/insert", upload.single(), (req, res) => {
 })
 
 
+app.delete("/order/delete/:id", (req, res) => {
+    const id = req.params.id;
+    let qry = `DELETE FROM retailerorders WHERE Order_id=${id}`;
+    db.query(qry, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            res.send({ msg: "Order deleted successfully" })
+        }
+    })
+})
+
+
+app.put("/order/changestatus/:id", upload.single(), (req, res) => {
+    const id = req.params.id;
+    const status=req.body.status;
+
+    let qry = `UPDATE retailerorders SET Order_status='${status}' WHERE Order_id=${id}`;
+    db.query(qry, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            res.send({ msg: "Order updated Successfully" })
+        }
+    })
+})
+
+
 app.get("/order/getall", (req, res) => {
-    const qry = "SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id;"
+    const qry = "SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND o.Order_status <> 'Farmer cancelled the order.' ORDER BY o.Order_id DESC;"
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
