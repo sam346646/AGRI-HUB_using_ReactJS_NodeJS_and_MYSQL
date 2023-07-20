@@ -27,6 +27,12 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
+                            <NavLink to={`./view_orders`}className="nav-link">
+                                <i className="fa fa-ticket"></i> My Orders
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
                             <NavLink to="/aa" className="nav-link">
                                 <i className="fa fa-power-off"></i> Log out
                             </NavLink>

@@ -22,7 +22,11 @@ function CategoryContainer() {
                 {
                     categoryList.map((category) => {
                         return (
-                            <li class="list-group-item list-group-item-action"><NavLink className='nav-link text-success' to={`../view_category_wise_product/${category.Category_id}`}>{category.Category_name}</NavLink></li>
+                            <li class="list-group-item list-group-item-action">
+                                <NavLink className='nav-link text-success' to={`../view_category_wise_product/${category.Category_id}`}>
+                                    {category.Category_name}
+                                </NavLink>
+                            </li>
                         )
                     })
                 }

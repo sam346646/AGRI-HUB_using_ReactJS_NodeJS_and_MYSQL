@@ -1,8 +1,14 @@
-import { React } from 'react'
+import { React, useEffect, useContext } from 'react'
 import SizeContainer from './SizeContainer'
+import { AppContext } from '../AppContext';
 
 function PurchaseSize({ qty, measure, price, offer }) {
     
+    const { selectedQuantity, setSelectedQuantity } = useContext(AppContext);
+
+    useEffect(()=>{
+        (qty>50 && qty<100) ? setSelectedQuantity(qty) :setSelectedQuantity(50) 
+    },[])
 
     return (
         <div class="d-grid gap-2">
@@ -11,10 +17,7 @@ function PurchaseSize({ qty, measure, price, offer }) {
             {(qty >= 100) ? <SizeContainer qty={50} measure={measure} price={price} offer={offer} /> : null }
 
             {(qty >= 100) ?<SizeContainer qty={qty} measure={measure} price={price-0.01*price} offer={offer+1} /> : <SizeContainer qty={qty} measure={measure} price={price} offer={offer} /> }
-
-            {(qty >= 50) && (qty < 100) ? <span className='text-danger ps-2'>Only {qty}{measure} pack size availiable</span> : null }
             
-            {(qty === 100) ? <span className='text-danger ps-2'>Only {qty / 2}{measure} and {qty}{measure} pack sizes are availiable</span> : null }
         </div>
     )
 }

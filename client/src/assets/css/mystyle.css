@@ -12,7 +12,7 @@
 /* side navigation styles */
 .side_nav{
     top: 64px;
-    width:22%;
+    width:16%;
 }
 .side_nav>li>.collapse{
     list-style-type: none;
@@ -27,7 +27,7 @@
 }
 
 .content_area{
-    margin-left: 22.3%;
+    margin-left: 16.3%;
     margin-top: 64px;
     margin-right: 4px;
     padding: 20px;

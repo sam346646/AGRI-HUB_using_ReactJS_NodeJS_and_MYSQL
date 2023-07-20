@@ -17,7 +17,8 @@ function Dashboard() {
         <Panels panel_action='add_product' panel_color='danger' panel_title='Admin' panel_icon='user' />
       </div>
 
-      <ViewOrder/>
+      <Breadcrumbs breadcrumbs_title='Retailer Orders' breadcrumbs_icon='bell' />
+      <ViewOrder choice={1}/>
 
       <ViewProduct view_action="view_dashboard_product"/>
     </div>

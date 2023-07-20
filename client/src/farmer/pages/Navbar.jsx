@@ -16,37 +16,51 @@ function Navbar() {
 
                         <li className="nav-item">
                             <NavLink to="/" className="nav-link">
-                                <i className="fa fa-dashboard"></i> Dashboard
+                                <i className="fa fa-dashboard"></i> &ensp;Dashboard
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
                             <NavLink to="/sell_product" className="nav-link">
-                                <i className="fa fa-tag"></i> Sell Product
+                                <i className="fa fa-tag"></i> &ensp;Sell Product
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
                             <NavLink to="/view_product" className="nav-link">
-                                <i className="fa fa-first-order"></i> My Products
+                                <i className="fa fa-first-order"></i> &ensp;My Products
+                            </NavLink>
+                        </li>
+
+                        <span style={{fontSize:'16px'}} className='text-light text-opacity-75 mx-2 mt-3 mb-1'>Retailer</span>
+
+                        <li className="nav-item">
+                            <NavLink to="/view_retailer_orders/2" className="nav-link">
+                                <i className="fa fa-bell"></i> &ensp;Pending Orders
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/view_retailer_orders" className="nav-link">
-                                <i className="fa fa-truck"></i> Retailer Orders
+                            <NavLink to="/view_retailer_orders/3" className="nav-link">
+                                <i className="fa fa-truck"></i> &ensp;Shippable Orders
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
+                            <NavLink to="view_retailer_orders/4" className="nav-link">
+                                <i className="fa fa-close"></i> &ensp;Cancelled Orders
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
                             <NavLink to="/delete_product" className="nav-link">
-                                <i className="fa fa-book"></i> Report
+                                <i className="fa fa-book"></i> &ensp;Report
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
                             <NavLink to="/aa" className="nav-link">
-                                <i className="fa fa-power-off"></i> Log out
+                                <i className="fa fa-power-off"></i> &ensp;Log out
                             </NavLink>
                         </li>
 

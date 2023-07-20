@@ -230,10 +230,16 @@ app.delete("/order/delete/:id", (req, res) => {
 
 
 app.put("/order/changestatus/:id", upload.single(), (req, res) => {
+    let qry;
     const id = req.params.id;
-    const status=req.body.status;
-
-    let qry = `UPDATE retailerorders SET Order_status='${status}' WHERE Order_id=${id}`;
+    const status = req.body.status;
+    if (req.body.charge) {
+        const charge = req.body.charge;
+        qry = `UPDATE retailerorders SET Order_status="${status}",Extra_charge=${charge} WHERE Order_id=${id}`;
+    }
+    else {
+        qry = `UPDATE retailerorders SET Order_status="${status}" WHERE Order_id=${id}`;
+    }
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -246,7 +252,28 @@ app.put("/order/changestatus/:id", upload.single(), (req, res) => {
 
 
 app.get("/order/getall", (req, res) => {
-    const qry = "SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND o.Order_status <> 'Farmer cancelled the order.' ORDER BY o.Order_id DESC;"
+    let status;
+    const ch = req.query.choice;
+    if (ch == 1) {
+        status = `o.Order_status NOT LIKE '%Farmer cancelled the order.'`;
+    }
+    else if (ch == 2) {
+        status = `(o.Order_status LIKE "%placed order." OR o.Order_status LIKE "Waiting for retailer's confirmation.")`;
+    }
+    else if (ch == 3) {
+        status = `o.Order_status LIKE '%confirmed order.'`;
+    }
+    else if (ch == 4) {
+        status = `o.Order_status LIKE '% cancelled the order.'`;
+    }
+
+    //Retailer side orders
+
+    else if (ch == 11) {
+        status = `o.Order_status NOT LIKE '%Retailer cancelled the order.'`;
+    }
+
+    const qry = `SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND ${status} ORDER BY o.Order_id DESC;`
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)

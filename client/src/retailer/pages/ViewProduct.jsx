@@ -1,20 +1,23 @@
 import Axios from 'axios'
 import { React, useState, useEffect, useContext } from "react"
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from '../AppContext';
 
 import PurchaseSize from '../components/PurchaseSize';
 import CategoryContainer from '../components/CategoryContainer';
 
-function ViewProduct(props) {
+function ViewProduct() {
 
     const { id } = useParams();
+    const navigate = useNavigate()
+
     const { selectedQuantity, setSelectedQuantity } = useContext(AppContext);
 
     let prodType = '';
 
     const [prodList, setProdList] = useState([])
     const [firstRender, setFirstRender] = useState(true)
+    const [verifyCode, setVerifyCode] = useState('')
 
     const [updatedOffer, setUpdatedOffer] = useState()
     const [actualPrice, setActualPrice] = useState()
@@ -26,36 +29,36 @@ function ViewProduct(props) {
             setFirstRender(false);
         })
 
-        setSelectedQuantity(50)
-       
+        setSelectedQuantity(0)
+
     }, [])
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (firstRender) return;
 
         setUpdatedOffer(prodList[0].Prod_offer);
-        let temp=(selectedQuantity * prodList[0].Prod_price / ((100 - prodList[0].Prod_offer) / 100)).toFixed(2);
+        let temp = (selectedQuantity * prodList[0].Prod_price / ((100 - prodList[0].Prod_offer) / 100)).toFixed(2);
         setActualPrice(temp)
         setDiscountedPrice(Math.round(temp - temp * prodList[0].Prod_offer / 100))
-    },[prodList])
+    }, [prodList])
 
 
     useEffect(() => {
         let newOffer = 0;
         let newActualPrice = 0;
-        let price=0;
+        let price = 0;
 
         if (firstRender) return;
 
         if (selectedQuantity >= 100) {
             newOffer = prodList[0].Prod_offer + 1;
-            price=prodList[0].Prod_price-0.01*prodList[0].Prod_price;
+            price = prodList[0].Prod_price - 0.01 * prodList[0].Prod_price;
             setUpdatedOffer(newOffer);
         }
         else {
             newOffer = prodList[0].Prod_offer;
-            price=prodList[0].Prod_price;
+            price = prodList[0].Prod_price;
             setUpdatedOffer(newOffer);
         }
 
@@ -65,7 +68,13 @@ function ViewProduct(props) {
 
     }, [selectedQuantity])
 
-    const placeOrder=(e)=>{
+    const buyNowHandle = () => {
+        if (selectedQuantity === 0) {
+            console.log('sam')
+        }
+    }
+
+    const placeOrder = (e) => {
         e.preventDefault();
         const formdata = new FormData();
         formdata.append('retailer_id', 1)
@@ -73,8 +82,12 @@ function ViewProduct(props) {
         formdata.append('qty', selectedQuantity)
         formdata.append('price', discountedPrice)
         Axios.post('http://localhost:8000/order/insert', formdata);
+        navigate("../view_orders");
     }
 
+    const cancelHandle = () => {
+        setVerifyCode('')
+    }
     return (
         <div className="retailer_content_area">
             <div className="container row p-5">
@@ -120,20 +133,57 @@ function ViewProduct(props) {
                                         {prod.Prod_name}{prodType}
                                     </div>
 
-                                    <h5 className="text-dark fw-bold">Price: &#8377;{discountedPrice} <span className="fw-normal text-secondary">(&#8377;{discountedPrice/selectedQuantity} / {prod.Measure})</span></h5>
+                                    <h5 className="text-dark fw-bold">Price: &#8377;{discountedPrice} <span className="fw-normal text-secondary">(&#8377;{(discountedPrice / selectedQuantity).toFixed(2)} / {prod.Measure})</span></h5>
 
                                     <div>MRP: &#8377;<s>{actualPrice}</s> <span className="bg-success text-success bg-opacity-25 p-1">{updatedOffer}% OFF</span></div>
 
-                                    <div className='fs-6'><i className='fa fa-gift fw-bold'></i> You can save &#8377;{Math.round(actualPrice-discountedPrice)} in this order.</div>
+                                    <div className='fs-6 text-success'><i className='fa fa-gift fw-bold'></i> You can save &#8377;{Math.round(actualPrice - discountedPrice)} in this order.</div>
 
-                                    <div>(Shipping charge: &#8377;100)</div><br/>
+                                    <div>(Shipping charge: &#8377;100)</div><br />
 
                                     <div class="fw-bold text-dark">Pack size</div>
                                     <PurchaseSize qty={prod.Prod_qty} measure={prod.Measure} price={prod.Prod_price} offer={prod.Prod_offer} />
                                     {(selectedQuantity) ? <span className='text-success ps-2'>{selectedQuantity} Units is selected.</span> : null}
 
-                                    <br /><NavLink className="btn btn-success btn-lg mb-1 ms-4" to=""><i class="fa fa-shopping-basket"></i> Add to cart</NavLink>&emsp;
-                                    <button className="btn btn-secondary btn-lg" onClick={placeOrder}><i class="fa fa-tags"></i> Buy now</button>
+
+                                    <div className='mt-3'>
+                                        <NavLink className="btn btn-success btn-lg mb-1 ms-4" to=""><i class="fa fa-shopping-basket"></i> Add to cart</NavLink>&emsp;
+
+                                        <button type="button" onClick={buyNowHandle} class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#orderModal">
+                                            <i class="fa fa-tags"></i> Buy now
+                                        </button>
+                                    </div>
+
+                                    <div class="modal fade" id="orderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="staticBackdroporderModalLabelLabel">You are one step away from buying</h1>
+                                                    <button type="button" onClick={cancelHandle} class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body mx-5">
+                                                    <div className='float-end'>
+                                                        MRP: <s>Rs.{actualPrice}</s><br />
+                                                        {selectedQuantity} * {discountedPrice / selectedQuantity} -&gt; <span className='fs-4 text-success'>Rs. {discountedPrice}</span><br />
+                                                        <span className='text-success text-opacity-75'><i className='fa fa-gift'></i> saved Rs. {Math.round(actualPrice - discountedPrice)}</span>
+                                                    </div>
+                                                    <div>
+                                                        <div className='text-dark fs-4 fw-bold'>{prod.Prod_name}</div>
+                                                        Quantity: {selectedQuantity}
+                                                    </div>
+
+                                                    <div className='text-center mt-5'>
+                                                        <div>[{discountedPrice}] <br /><span className='text-danger'>Enter number shown above ....</span></div>
+                                                        <input type='number' value={verifyCode} onChange={(e) => setVerifyCode(e.target.value)} className='form-control form-control-sm w-25 mx-auto' />
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onClick={placeOrder} disabled={Number(verifyCode) !== Number(discountedPrice)}>Buy now</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <br /><br /><div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
                                 </div>

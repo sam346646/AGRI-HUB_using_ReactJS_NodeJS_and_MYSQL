@@ -18,6 +18,8 @@ import NavbarRetailer from "./retailer/pages/Navbar"
 import DashboardRetailer from "./retailer/pages/Dashboard" 
 import ViewProductRetailer from "./retailer/pages/ViewProduct" 
 import ViewCategoryWiseProductRetailer from "./retailer/pages/ViewCategoryWiseProduct" 
+import ViewOrder from './retailer/pages/ViewOrder';
+import ManageOrders from './retailer/pages/ManageOrders';
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
           <Route path="update_product/:id" element={<UpdateProduct />} />
           <Route path="delete_product/:id" element={<DeleteProduct />} />
           <Route path="update_order/:id" element={<UpdateOrder />} />
-          <Route path="view_retailer_orders" element={<ViewRetailerOrders />} />
+          <Route path="view_retailer_orders/:ch" element={<ViewRetailerOrders />} />
         </Route>
 
         {/* Retailer side */}
@@ -40,6 +42,8 @@ function App() {
           <Route index element={<DashboardRetailer />} />
           <Route path="view_product/:id" element={<ViewProductRetailer />} />
           <Route path="view_category_wise_product/:categoryId" element={<ViewCategoryWiseProductRetailer />} />
+          <Route path="view_orders" element={<ViewOrder choice={11}/>} />
+          <Route path="view_retailer_orders/:ch" element={<ManageOrders />} />
         </Route>
 
       </Routes>

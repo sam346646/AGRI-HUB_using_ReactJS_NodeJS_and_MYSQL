@@ -9,7 +9,7 @@ import FormatDate from './FormatDate';
 function ViewProduct(props) {
 
     const [prodList, setProdList] = useState([])
-    
+    const [isContentAvailiable, setIsContentAvailiable] = useState(true)
 
     useEffect(() => {
         Axios.get('http://localhost:8000/product/getall').then((response) => {
@@ -17,12 +17,17 @@ function ViewProduct(props) {
         })
     }, [])
 
+    useEffect(() => {
+        (prodList.length !== 0) ? setIsContentAvailiable(true) : setIsContentAvailiable(false);
+    }, [prodList]);
+
 
     if (props.view_action === "view_dashboard_product") {
         return (
             <>
                 <Breadcrumbs breadcrumbs_title='My Products' breadcrumbs_icon='first-order' />
-                <table className="table table-striped table-bordered table-hover mb-4">
+                <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-4'>&emsp;* No products availiable</span>
+                <table className="table table-striped table-bordered table-hover mb-4" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                     <tbody>
                         <tr>
                             <th>Name</th>
@@ -62,7 +67,8 @@ function ViewProduct(props) {
         return (
             <>
                 <Breadcrumbs breadcrumbs_title='My Products' breadcrumbs_icon='first-order' />
-                <table className="table table-striped table-bordered table-hover">
+                <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-4'>&emsp;* No products availiable</span>
+                <table className="table table-striped table-bordered table-hover"   style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                     <tbody>
                         <tr>
                             <th>Name</th>

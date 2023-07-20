@@ -2,9 +2,6 @@ import { React, useState } from 'react'
 
 function OrderStatusContainer({ status }) {
 
-    const [retailer, setRetailer] = useState('your')
-    const [farmer, setFarmer] = useState('You')
-
     const confirms = (s) => {
         return (
             <>
@@ -21,19 +18,28 @@ function OrderStatusContainer({ status }) {
         )
     }
 
+    const cancels = (s) => {
+        return (
+            <>
+                <span className='text-danger'><i className='fa fa-exclamation-triangle'></i> {s}</span> <br />
+            </>
+        )
+    }
+
     const cstatuses = [
         'Retailer placed order.',
-        'Farmer approved order.',
-        'Waiting for retailer approval.',
-        'Retailer approved order.',
+        'Farmer confirmed order.',
+        `Waiting for retailer's confirmation.`,
+        'Retailer confirmed order.',
         'Retailer cancelled the order.',
 
         `Farmer cancelled the order.`
     ]
 
     const statuses = [
-        'You approved order.',
-        'Waiting for your approval.',
+        'You confirmed order.',
+        'Waiting for your confirmation.',
+        'You cancelled order.'
     ]
 
     return (
@@ -50,7 +56,9 @@ function OrderStatusContainer({ status }) {
 
             {(status === cstatuses[3]) ? <> {confirms('You placed a request to change shipping charge')} {confirms(status)} </> : null}
 
-            {(status === cstatuses[4]) ? <> {confirms('You placed a request to change shipping charge')} {waitings(status)} </> : null}
+            {(status === cstatuses[4]) ?  cancels(status) : null}
+
+            {(status === cstatuses[5]) ? cancels(statuses[2]) : null }
         </div>
     )
 }

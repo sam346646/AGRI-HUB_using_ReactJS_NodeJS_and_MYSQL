@@ -11,6 +11,8 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
     const [updatedPrice, setUpdatedPrice] = useState(Math.round(total - total * offer / 100))
     const [updatedOffer, setUpdatedOffer] = useState(offer)
     const [errMessage, setErrMessage] = useState('')
+    const [changeClicked, setChangeClicked] = useState(false);
+
 
     const quantityHandler = (e) => {
         const newCustomQty = e.target.value;
@@ -37,7 +39,7 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
             setQtyStatus(true);
         }
         else {
-            setSelectedQuantity('');
+            setSelectedQuantity(50);
             setQtyStatus(false);
             setErrMessage(`Please select a quantity between 51${measure} to ${qty * 2 - 50}${measure}!`)
             const timeout = setTimeout(() => {
@@ -61,12 +63,23 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
         else {
             setSelectedQuantity('');
         }
+        resetOtherPack();
+        setChangeClicked(!changeClicked);
     };
+
+    const resetOtherPack = () => {
+        const otherComponents = document.querySelectorAll('.view-pack');
+        otherComponents.forEach((component) => {
+          if (component !== null && component !== undefined) {
+            component.classList.remove('border-success');
+          }
+        });
+      };
 
 
     return (
         <>
-            <button className="btn text-start border border-dark" type="button" onClick={ChangeQuantity}>
+            <button className={`view-pack btn text-start border ${(changeClicked) ? 'border-success' : ''}`} type="button" onClick={ChangeQuantity}>
                 <div className="row">
                     <div className="col-5">
                         <h6>{(custom === true) ? customQuantityElement : qty}{measure}</h6>
