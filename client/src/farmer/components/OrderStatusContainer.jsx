@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React } from 'react'
 
 function OrderStatusContainer({ status }) {
 
@@ -32,14 +32,15 @@ function OrderStatusContainer({ status }) {
         `Waiting for retailer's confirmation.`,
         'Retailer confirmed order.',
         'Retailer cancelled the order.',
-
-        `Farmer cancelled the order.`
+        `Farmer cancelled the order.`,
+        'Order delivered successfully.'
     ]
 
     const statuses = [
         'You confirmed order.',
         'Waiting for your confirmation.',
-        'You cancelled order.'
+        'You cancelled order.',
+        'Order confirmed.'
     ]
 
     return (
@@ -59,6 +60,8 @@ function OrderStatusContainer({ status }) {
             {(status === cstatuses[4]) ?  cancels(status) : null}
 
             {(status === cstatuses[5]) ? cancels(statuses[2]) : null }
+
+            {(status === cstatuses[6]) ? <> {confirms(statuses[3])} {confirms(cstatuses[6])} </> : null }
         </div>
     )
 }

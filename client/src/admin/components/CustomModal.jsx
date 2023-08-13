@@ -2,11 +2,11 @@ import React from 'react'
 
 function CustomModal({message,action,modId}) {
     return (
-        <div class="modal fade" id={(modId) ? modId : "modId"} tabindex="-1" aria-hidden="true">
+        <div class="modal fade" id={modId} tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>{message} <b>Are you sure?</b></h5>
+                    <div class="modal-header align-items-start">
+                        <h5>{message}. <b>Are you sure?</b></h5>    
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     

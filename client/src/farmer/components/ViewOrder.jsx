@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import OrderStatusContainer from './OrderStatusContainer';
 import CustomModal from './CustomModal';
+import CustomModalVerifyRetailer from './CustomModalVerifyRetailer';
 
 function ViewOrder({ choice }) {
 
@@ -13,13 +14,10 @@ function ViewOrder({ choice }) {
 
     const [charge, setCharge] = useState()
     const [actualCharge, setActualCharge] = useState()
-    const [extraCharge, setExtraCharge] = useState()
     const [isDisabled, setIsDisabled] = useState(true)
     const [isContentAvailiable, setIsContentAvailiable] = useState(true)
     const [acceptButtonContent, setAcceptButtonContent] = useState('Accept')
     const [cancelButtonContent, setCancelButtonContent] = useState('Cancel')
-    const [acceptButtonMessage, setAcceptButtonMessage] = useState('confirming and accepting the order')
-    const [cancelButtonMessage, setCancelButtonMessage] = useState('rejecting the order')
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
@@ -38,24 +36,15 @@ function ViewOrder({ choice }) {
         setIsDisabled(true);
         setAcceptButtonContent('Accept')
         setCancelButtonContent('Cancel')
-        setAcceptButtonMessage('confirming the order')
-        setCancelButtonMessage('cancelling the order')
-
-        const elements = document.querySelectorAll('td.collapse');
-        elements.forEach(element => {
-            element.classList.remove('show');
-        });
     }
 
     const changeHandle = () => {
         setIsDisabled(false)
         setAcceptButtonContent('Update Shipping Charge')
         setCancelButtonContent('Reset')
-        setAcceptButtonMessage("Updating shipping charge. If retailer rejects, Order will be cancelled")
-        setCancelButtonMessage("resetting shipping charge to default")
     }
 
-    const acceptHandle = (id, ch) => {
+    const acceptHandle = (id) => {
         let status;
         if (errCharge === '') {
             if (acceptButtonContent === 'Update Shipping Charge' && charge !== actualCharge) {
@@ -68,43 +57,30 @@ function ViewOrder({ choice }) {
             formdata.append('status', status)
             formdata.append('charge', charge)
             Axios.put(`http://localhost:8000/order/changestatus/${id}`, formdata).then(() => {
-                navigate("/");
-                setReload(true);
-            })
-            closeHandle(ch)
-        }
-    }
-
-
-    const cancelHandle = (id) => {
-        if (cancelButtonContent === 'Reset') {
-            setIsDisabled(true);
-            setCharge(actualCharge);
-            setAcceptButtonContent('Accept')
-            setCancelButtonContent('Cancel')
-            setAcceptButtonMessage('confirming the order')
-            setCancelButtonMessage('cancelling the order')
-        }
-        else {
-            let status = 'Farmer cancelled the order.'
-            const formdata = new FormData();
-            formdata.append('status', status)
-            Axios.put(`http://localhost:8000/order/changestatus/${id}`, formdata).then(() => {
-                navigate("/");
-                mainAcceptHandle()
+                navigate("/farmer");
                 setReload(true);
             })
         }
     }
 
 
-    const closeHandle = (ch) => {
-        const element = document.getElementById(ch);
-        if (element) {
-            element.classList.remove('show');
-        }
-    };
+    const cancelHandle = () => {
+        setIsDisabled(true);
+        setCharge(actualCharge);
+        setAcceptButtonContent('Accept')
+        setCancelButtonContent('Cancel')
+    }
 
+    const cancelOrder = (id) => {
+        let status = 'Farmer cancelled the order.'
+        const formdata = new FormData();
+        formdata.append('status', status)
+        Axios.put(`http://localhost:8000/order/changestatus/${id}`, formdata).then(() => {
+            navigate("/farmer");
+            mainAcceptHandle()
+            setReload(true);
+        })
+    }
 
     //Validation
     const [errCharge, setErrCharge] = useState()
@@ -114,92 +90,125 @@ function ViewOrder({ choice }) {
 
     return (
         <>
-            <div style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5 mb-4'>&emsp;*Sorry, No orders availiable.</div>
-            <div className='mb-4' style={(isContentAvailiable === true) ? null : { display: 'none' }}>
-                <table className="table table-striped table-bordered table-hover">
-                    <tbody>
-                        <tr>
-                            <th>Retailer</th>
-                            <th>Product</th>
-                            <th>Distance</th>
-                            <th>Total</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                            <th>Manage</th>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        {
-                            orderList.map((order, i) => {
-                                return (
-                                    <React.Fragment key={i}>
-                                        <tr>
-                                            <td>{order.Retailer_name},<br />{order.Location}, {order.City}<br />{order.State} </td>
-                                            <td className='text-center'>
-                                                <span className='fw-bold text-secondary'>{order.Prod_name}</span><br />
-                                                <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='80' height='80' className='mx-auto' /><br />
+            <div style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>
+                *Sorry, No orders availiable.<br /><br />
+            </div>
+            <div style={(isContentAvailiable === true) ? null : { display: 'none' }}>
+                {
+                    orderList.map((order, i) => {
+                        return (
+                            <div className="row">
+                                <div className="col-8 mb-5">
+                                    <div className="card shadow-sm">
+                                        <div className='card-header text-secondary bg-white'>
+                                            <div className='row px-2'>
+                                                <div className="col-8">
+                                                    <div className='fs-3 fw-bold fst-italic text-success mb-3'>{order.Prod_name}</div>
 
-                                            </td>
-                                            <td>17 k.m.</td>
-                                            <td>
-                                                Rs.{order.Price} + {(order.Order_status==='Retailer confirmed order.') ? order.Extra_charge : order.Shipping_charge} (shipping)
-                                            </td>
-                                            <td>
-                                                Availiable: &nbsp;{order.Prod_qty}<br />
-                                                Ordered: &ensp;&nbsp;{order.Quantity}<br />
-                                                <div className='fw-bold mt-1'>Remains:&ensp;{order.Prod_qty - order.Quantity}</div>
-                                            </td>
-                                            <td>
-                                                <OrderStatusContainer status={order.Order_status} />
-                                            </td>
+                                                    Price: <b className='fs-5'>Rs.{order.Price}</b> + {(order.Order_status === 'Retailer confirmed order.') ? order.Extra_charge : order.Shipping_charge} (Shipping Charge)
 
-                                            <td>
-                                                <span className='text-danger fw-bold' style={(order.Order_status === 'Retailer cancelled the order.' || order.Order_status === 'Farmer cancelled the order.') ? null : { display: 'none' }}>Cancelled</span>
+                                                    <div className='mb-3'>
+                                                        <div>Quantity: {order.Quantity}</div>
+                                                        <div className='text-success'><i className='fa fa-cube'></i> Quantity availiable: {order.Prod_qty}</div>
+                                                    </div>
 
-                                                <button className='btn btn-success btn-sm mb-2' onClick={() => { setCharge(order.Shipping_charge); setActualCharge(order.Shipping_charge); mainAcceptHandle() }} hidden={(order.Order_status === 'Retailer placed order.') ? false : true} data-bs-toggle="collapse" href={`#acceptCollapse${i}`} role="button" aria-expanded="false" aria-controls="acceptCollapse">
-                                                    <i className='fa fa-check'></i> Accept
-                                                </button><br />
-
-                                                <button className='btn btn-danger btn-sm mb-2' data-bs-toggle="modal" data-bs-target={`#${order.Order_id}a`} hidden={(order.Order_status === 'Retailer cancelled the order.' || order.Order_status === 'Farmer cancelled the order.') ? true : false}>
-                                                    <i className='fa fa-close'></i> Cancel
-                                                </button><br />
-                                                <CustomModal message={`You are cancelling the order`} action={() => cancelHandle(order.Order_id)} modId={`${order.Order_id}a`} />
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td colSpan='8' class="collapse py-4 text-center" id={`acceptCollapse${i}`}>
-
-                                                <button className='btn btn-light float-end' onClick={() => closeHandle(`acceptCollapse${i}`)}>
-                                                    <i className='fa fa-close'></i>
-                                                </button>
-
-                                                <div class="input-group mx-auto w-50">
-                                                    <span class="input-group-text">Shipping Charge</span>
-                                                    <input type="text" name="charge" value={charge} onChange={(e) => (/^[0-9]*$/.test(e.target.value)) ? setCharge(e.target.value) : null} className="form-control" required disabled={isDisabled} />
-                                                    <button className='btn btn-secondary' onClick={changeHandle}><i className='fa fa-pencil'></i> Change</button>
+                                                    <div className='mt-3'>Retailer: Sam, Konaje, Mangalore, Karnataka.</div>
                                                 </div>
-                                                <div class="text-danger" aria-live="polite" id="errorContainer">{errCharge}</div>
+                                                <div className="col-4">
+                                                    <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='190' height='190' className='rounded' />
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                        <div className='card-footer'>
+                                            <span className="float-end">
+                                                {
+                                                    (/^(Retailer|Farmer) cancelled the order\.$/.test(order.Order_status)) ?
+                                                        <span className='text-danger fw-bold me-2'><i className='fa fa-bomb'></i> Order cancelled</span>
+                                                        : null
+                                                }
 
-                                                <button className='btn btn-success me-1 mt-3' data-bs-toggle="modal" data-bs-target={`#${order.Order_id}b`}>
-                                                    {acceptButtonContent}
-                                                </button>
-                                                <CustomModal message={`You are ${acceptButtonMessage}`} action={() => acceptHandle(order.Order_id, `acceptCollapse${i}`)} modId={`${order.Order_id}b`} />
+                                                {
+                                                    (/^(Retailer|Farmer) confirmed order\.$/.test(order.Order_status)) ?
+                                                        <>
+                                                            <button className='btn btn-success btn-sm me-2' data-bs-toggle="modal" data-bs-target={`#${order.Order_id}d`}>
+                                                                Verify Retailer
+                                                            </button>
+                                                            <CustomModalVerifyRetailer modId={`${order.Order_id}d`} orderId={`${order.Order_id}`} />
+                                                        </>
+                                                        : null
+                                                }
 
-                                                <button className='btn btn-danger mt-3' data-bs-toggle="modal" data-bs-target={`#${order.Order_id}c`}>
-                                                    {cancelButtonContent}
-                                                </button>
-                                                <CustomModal message={`You are ${cancelButtonMessage}`} action={() => cancelHandle(order.Order_id)} modId={`${order.Order_id}c`} />
+                                                {
+                                                    (order.Order_status === 'Retailer placed order.') ?
+                                                        <>
+                                                            <button className='btn btn-success btn-sm me-2' onClick={() => { setCharge(order.Shipping_charge); setActualCharge(order.Shipping_charge); mainAcceptHandle() }} data-bs-toggle="modal" data-bs-target={`#acceptModal${i}`}>
+                                                                Accept
+                                                            </button>
+                                                        </>
+                                                        : null
+                                                }
+                                                <div class="modal fade" id={`acceptModal${i}`} tabindex="-1" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header align-items-start">
+                                                                <h5> <b>Are you sure?</b></h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
 
-                                            </td>
-                                        </tr>
-                                    </React.Fragment>
-                                )
-                            })
-                        }
-                    </tbody>
-                </table>
+                                                            <div class="modal-body mx-5">
+                                                                <label class="form-label">Shipping Charge</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" name="charge" value={charge} onChange={(e) => (/^[0-9]*$/.test(e.target.value)) ? setCharge(e.target.value) : null} className="form-control" required disabled={isDisabled} />
+                                                                    <button className='btn btn-secondary' onClick={changeHandle}><i className='fa fa-pencil'></i> Change</button>
+                                                                </div>
+                                                                <div class="text-danger" aria-live="polite" id="errorContainer">{errCharge}</div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button className='btn btn-success btn-sm me-1' data-bs-dismiss="modal" onClick={() => acceptHandle(order.Order_id)}>
+                                                                    {acceptButtonContent}
+                                                                </button>
+
+                                                                <button className='btn btn-danger btn-sm' data-bs-dismiss={(cancelButtonContent === 'Reset') ? null : 'modal'} onClick={(cancelButtonContent === 'Reset') ? cancelHandle : null}>
+                                                                    {cancelButtonContent}
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {
+                                                    (/^(Retailer|Farmer) cancelled the order\.$/.test(order.Order_status) || order.Order_status === 'Order delivered successfully.') ?
+                                                        null
+                                                        :
+                                                        <>
+                                                            <button className='btn btn-danger btn-sm me-2' data-bs-toggle="modal" data-bs-target={`#${order.Order_id}a`}>
+                                                                Cancel
+                                                            </button>
+                                                        </>
+                                                }
+                                                <CustomModal message={`You are cancelling the order`} action={() => cancelOrder(order.Order_id)} modId={`${order.Order_id}a`} />
+
+                                                {
+                                                    (order.Order_status === 'Order delivered successfully.') ?
+                                                        <span className='text-success'><i className='fa fa-magic'></i> Congratulations! Your order has been successfully completed!</span>
+                                                        :
+                                                        null
+                                                }
+
+                                            </span>
+                                            <div className="clearfix"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-4 mt-4">
+                                    <OrderStatusContainer status={order.Order_status} />
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         </>
     )

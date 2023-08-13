@@ -57,7 +57,7 @@ function ViewOrder({ choice }) {
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-action">
                                     <NavLink className='nav-link text-success' to="../view_retailer_orders/11">
-                                        <i className='fa fa-bookmark'></i> &nbsp;All Orders
+                                        <i className='fa fa-cubes'></i> &nbsp;All Orders
                                     </NavLink>
                                 </li>
                                 <li class="list-group-item list-group-item-action">
@@ -68,6 +68,11 @@ function ViewOrder({ choice }) {
                                 <li class="list-group-item list-group-item-action">
                                     <NavLink className='nav-link text-success' to="../view_retailer_orders/3">
                                         <i className='fa fa-truck'></i> Shipped Orders
+                                    </NavLink>
+                                </li>
+                                <li class="list-group-item list-group-item-action">
+                                    <NavLink className='nav-link text-success' to="../view_retailer_orders/5">
+                                        <i className='fa fa-magic'></i> Completed Orders
                                     </NavLink>
                                 </li>
                                 <li class="list-group-item list-group-item-action">
@@ -101,7 +106,7 @@ function ViewOrder({ choice }) {
                                                             <div className='mb-2'>MRP: <s>Rs.{Math.round((100 * order.Price) / (100 - ((order.Quantity >= 100) ? order.Prod_offer + 1 : order.Prod_offer)))}</s></div>
 
                                                             <div className='mb-3'>Price: <b className='fs-5'>
-                                                                Rs.{(order.Price).toLocaleString()}</b> + {(order.Order_status==='Retailer confirmed order.') ? order.Extra_charge : order.Shipping_charge}(Shipping Charge)
+                                                                Rs.{(order.Price).toLocaleString()}</b> + {(order.Order_status === 'Retailer confirmed order.') ? order.Extra_charge : order.Shipping_charge}(Shipping Charge)
                                                                 <div className='text-success'><i className='fa fa-gift'></i> Saved Rs.{Math.round((100 * order.Price) / (100 - ((order.Quantity >= 100) ? order.Prod_offer + 1 : order.Prod_offer)) - order.Price)} in this order.</div>
                                                             </div>
 
@@ -111,6 +116,12 @@ function ViewOrder({ choice }) {
                                                             <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='200' height='200' className='rounded' />
                                                         </div>
                                                     </div>
+                                                    {
+                                                        (/^(Retailer|Farmer) confirmed order\.$/.test(order.Order_status)) ?
+                                                            <div className='text-dark mt-3'><i className='fa fa-exclamation-triangle'></i> Please share this code with the farmer only after it has been delivered <b className='fs-5'>{(order.Order_id).toString().padEnd(4, '0')}</b></div>
+                                                            : null
+                                                    }
+
                                                 </div>
                                                 <div className="nav-link">
                                                     <div className={`card-footer`}>
@@ -127,10 +138,10 @@ function ViewOrder({ choice }) {
                                                                 </button>
                                                             </span>
 
-                                                            <button className='btn btn-danger btn-sm ms-2' data-bs-toggle="modal" data-bs-target="#modId" hidden={(order.Order_status === 'Retailer cancelled the order.' || order.Order_status === 'Farmer cancelled the order.') ? true : false}>
+                                                            <button className='btn btn-danger btn-sm ms-2' data-bs-toggle="modal" data-bs-target="#modId" hidden={(/^(Retailer|Farmer) cancelled the order\.$/.test(order.Order_status) || order.Order_status === 'Order delivered successfully.')  ? true : false}>
                                                                 <i className='fa fa-close'></i> Cancel
                                                             </button>
-                                                            <CustomModal message={`You are cancelling the order.`}action={() => cancelHandle(order.Order_id)} />
+                                                            <CustomModal message={`You are cancelling the order.`} action={() => cancelHandle(order.Order_id)} />
                                                         </span>
                                                         <div className="clearfix"></div>
                                                     </div>

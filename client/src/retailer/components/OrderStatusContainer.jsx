@@ -32,7 +32,8 @@ function OrderStatusContainer({ status }) {
         `Waiting for retailer's confirmation.`,
         'Retailer confirmed order.',
         'Farmer cancelled the order.',
-        'Retailer cancelled the order.'
+        'Retailer cancelled the order.',
+        'Order delivered successfully.'
     ]
 
     const statuses = [
@@ -54,6 +55,8 @@ function OrderStatusContainer({ status }) {
             {(status === cstatuses[4]) ? cancels(status) : null}
 
             {(status === cstatuses[5]) ? cancels(statuses[3]) : null}
+
+            {(status === cstatuses[6]) ? <span className='text-success'><i className='fa fa-magic'></i> Congratulations! Your order has been successfully completed!</span> : null}
         </>
     )
 }

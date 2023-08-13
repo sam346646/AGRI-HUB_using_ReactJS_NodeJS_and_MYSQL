@@ -1,26 +1,26 @@
 import { React } from "react"
 
-import Panels from '../components/Panels';
 import Breadcrumbs from '../components/Breadcrumbs';
-import ViewProduct from '../components/ViewProduct';
+import ViewProducts from './ViewProducts';
 import ViewOrder from "../components/ViewOrder";
 
 function Dashboard() {
   return (
-    <div className='content_area'>
-      <Breadcrumbs breadcrumbs_title='Dashboard' breadcrumbs_icon='dashboard' />
 
-      <div className="row mb-4">
-        <Panels panel_action='add_product' panel_color='info' panel_title='Products' panel_icon='tag' />
-        <Panels panel_action='add_product' panel_color='success' panel_title='Categories' panel_icon='gear' />
-        <Panels panel_action='add_product' panel_color='warning' panel_title='Customer' panel_icon='users' />
-        <Panels panel_action='add_product' panel_color='danger' panel_title='Admin' panel_icon='user' />
+    <div className='farmer_content_area container-fluid px-5 py-4'>
+      <div className="row">
+        <div className="col-9">
+
+          <Breadcrumbs breadcrumbs_title='Retailer Orders' breadcrumbs_icon='cubes' />
+          <ViewOrder choice={1} />
+
+          <ViewProducts ch={'dashboard'} />
+        </div>
+
+        <div className="col-3">
+          videos
+        </div>
       </div>
-
-      <Breadcrumbs breadcrumbs_title='Retailer Orders' breadcrumbs_icon='bell' />
-      <ViewOrder choice={1}/>
-
-      <ViewProduct view_action="view_dashboard_product"/>
     </div>
   )
 }

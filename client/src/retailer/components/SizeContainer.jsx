@@ -24,7 +24,7 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
             setUpdatedOffer(prevNewOffer => newOffer);
         }
         else {
-            price=price+0.01*price;
+            price = price + 0.01 * price;
             newOffer = offer - 1;
             setUpdatedOffer(prevNewOffer => newOffer);
         }
@@ -45,7 +45,6 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
             const timeout = setTimeout(() => {
                 setErrMessage(``)
             }, 7000);
-            
         }
     };
 
@@ -57,7 +56,7 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
     ]
 
     const ChangeQuantity = () => {
-        if ((customQty >= 50 && customQty <= qty * 2 - 50) || customQty == (qty * 2)) {
+        if ((customQty >= 50 && customQty <= qty * 2 - 50) || customQty === (qty * 2)) {
             setSelectedQuantity(customQty);
         }
         else {
@@ -70,15 +69,16 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
     const resetOtherPack = () => {
         const otherComponents = document.querySelectorAll('.view-pack');
         otherComponents.forEach((component) => {
-          if (component !== null && component !== undefined) {
-            component.classList.remove('border-success');
-          }
+            if (component !== null && component !== undefined) {
+                component.classList.remove('border-success');
+            }
         });
-      };
+    };
 
 
     return (
         <>
+
             <button className={`view-pack btn text-start border ${(changeClicked) ? 'border-success' : ''}`} type="button" onClick={ChangeQuantity}>
                 <div className="row">
                     <div className="col-5">
@@ -89,14 +89,14 @@ function SizeContainer({ qty, measure, price, offer, custom }) {
                             <div className="col-7">
                                 <h6>
                                     &#8377;<span>{updatedPrice}</span>
-                                    <span className="text-secondary">(&#8377;{(updatedPrice/customQty).toFixed(1)} / {measure})</span>
+                                    <span className="text-secondary">(&#8377;{(updatedPrice / customQty).toFixed(1)} / {measure})</span>
                                 </h6>
                                 <s className="text-secondary">&#8377; {total}</s>
                                 &emsp;<span className="bg-success text-success bg-opacity-25 px-2">{updatedOffer}% OFF</span>
                             </div>
                             :
                             null
-                    }
+                            }
                 </div>
             </button>
             <span className="text-danger ps-2">{errMessage}</span>

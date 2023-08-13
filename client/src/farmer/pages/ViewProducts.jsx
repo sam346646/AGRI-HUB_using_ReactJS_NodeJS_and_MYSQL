@@ -1,12 +1,40 @@
-import React from "react"
-import ViewProduct from '../components/ViewProduct'
+import React from 'react'
+import ViewProductContainer from '../components/ViewProductContainer'
+import OptionMenuContainer from '../components/OptionMenuContainer';
 
-function ViewOrder() {
+let options = [
+  { title: 'Add Product', ch: '/farmer/sell_product', icon: 'tag' },
+  { title: 'View Products', ch: '/farmer/view_product', icon: 'tasks' }
+]
+
+function ViewProducts({ ch }) {
   return (
-    <div className='content_area'>
-      <ViewProduct view_action="view_full_product"/>
-    </div>
+    <>
+      {
+        (ch === 'dashboard') ?
+          (
+            <>
+              <ViewProductContainer />
+            </>
+          ) :
+          (
+            <>
+              <div className='farmer_content_area container-fluid px-4 py-4'>
+                <div className="row">
+                  <div className="col-3">
+                    <OptionMenuContainer title='Products' options={options} />
+                  </div>
+
+                  <div className="col-9 ps-3">
+                    <ViewProductContainer />
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+      }
+    </>
   )
 }
 
-export default ViewOrder
+export default ViewProducts

@@ -8,7 +8,7 @@ function UpdateOrder() {
 
     const deleteProduct=async ()=>{
         const res=await Axios.delete(`http://localhost:8000/product/delete/${id}`);
-        navigate("/");
+        navigate("/farmer");
      }
      deleteProduct()
 }

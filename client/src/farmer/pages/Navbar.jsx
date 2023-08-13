@@ -1,67 +1,56 @@
 import React from 'react'
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 function Navbar() {
+
+    const navigate=useNavigate()
+
+    const logoutHandle=()=>{
+        localStorage.removeItem('userType')
+        navigate('/')
+        window.location.reload();
+    }
+
     return (
         <>
-            <nav className="navbar navbar-expand-md navbar-dark bg-dark px-4 fixed-top">
+            <nav className="navbar navbar-expand-md navbar-dark bg-dark px-3 fixed-top">
                 <button className="navbar-toggler " data-bs-toggle="collapse" data-bs-target="#navToggle">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <NavLink to="/" className="navbar-brand fs-4 fw-bold text-success">
+                <NavLink to="./" className="navbar-brand fs-4 fw-bold text-success">
                     <i className="fa fa-eercast"></i> AGRI-HUB
                 </NavLink>
-                <div className="collapse navbar-collapse" id="navToggle">
-                    <ul className="navbar-nav ps-2 pt-3 flex-column bg-dark position-fixed start-0 bottom-0 side_nav">
+                <div className="collapse navbar-collapse flex-row-reverse" id="navToggle">
+                    <ul className="navbar-nav">
 
                         <li className="nav-item">
-                            <NavLink to="/" className="nav-link">
-                                <i className="fa fa-dashboard"></i> &ensp;Dashboard
+                            <NavLink to="/farmer/" className="nav-link">
+                                <i className="fa fa-home"></i> Home
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/sell_product" className="nav-link">
-                                <i className="fa fa-tag"></i> &ensp;Sell Product
+                            <NavLink to="/farmer/view_product" className="nav-link">
+                                <i className="fa fa-tasks"></i> Products
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/view_product" className="nav-link">
-                                <i className="fa fa-first-order"></i> &ensp;My Products
-                            </NavLink>
-                        </li>
-
-                        <span style={{fontSize:'16px'}} className='text-light text-opacity-75 mx-2 mt-3 mb-1'>Retailer</span>
-
-                        <li className="nav-item">
-                            <NavLink to="/view_retailer_orders/2" className="nav-link">
-                                <i className="fa fa-bell"></i> &ensp;Pending Orders
+                            <NavLink to='/farmer/view_retailer_orders/1' className="nav-link">
+                                <i className="fa fa-cubes"></i> Orders
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/view_retailer_orders/3" className="nav-link">
-                                <i className="fa fa-truck"></i> &ensp;Shippable Orders
+                            <NavLink to='/farmer/report_issue/1' className="nav-link">
+                                <i className="fa fa-book"></i> Report issue
                             </NavLink>
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="view_retailer_orders/4" className="nav-link">
-                                <i className="fa fa-close"></i> &ensp;Cancelled Orders
-                            </NavLink>
-                        </li>
-
-                        <li className="nav-item">
-                            <NavLink to="/delete_product" className="nav-link">
-                                <i className="fa fa-book"></i> &ensp;Report
-                            </NavLink>
-                        </li>
-
-                        <li className="nav-item">
-                            <NavLink to="/aa" className="nav-link">
-                                <i className="fa fa-power-off"></i> &ensp;Log out
-                            </NavLink>
+                            <button onClick={()=>logoutHandle()} className="nav-link">
+                                <i className="fa fa-power-off"></i> Log out
+                            </button>
                         </li>
 
                     </ul>

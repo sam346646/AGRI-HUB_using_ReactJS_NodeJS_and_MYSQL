@@ -2,10 +2,11 @@ import Axios from "axios";
 import { React, useState, useEffect } from "react"
 import { NavLink } from "react-router-dom";
 
-
 function Dashboard() {
 
   const [prodList, setProdList] = useState([])
+  const [message, setMessage] = useState()
+
   let actualPrice = 0;
   let savePrice = 0;
   let updatedSavePrice = 0;
@@ -17,9 +18,29 @@ function Dashboard() {
     })
   }, [])
 
+  //Cart
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setMessage(''); // Reset the message after 5 seconds
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [message])
+
+  const updateCart = (prodId,name,prodPrice) => {
+    const formdata = new FormData();
+        formdata.append('prodId', prodId)
+        formdata.append('cartQty', 50)
+        formdata.append('cartPrice', prodPrice*50)
+        Axios.post('http://localhost:8000/retailer/insertCart', formdata).then((response) => {
+        });
+    setMessage(`You've successfully added ${name} to your cart!`)
+  }
+
 
   return (
     <div className="retailer_content_area px-5 pt-5">
+      {message && <div className="position-fixed start-50 translate-middle-x text-success text-opacity-75 mb-3 fw-bold fs-4" style={{zIndex:"1000",top:'10%'}}><span className="bg-success bg-opacity-25 p-2 rounded">{message}</span></div>}
       <div className="row">
         {
           prodList.map((prod) => {
@@ -28,6 +49,7 @@ function Dashboard() {
             updatedSavePrice = savePrice % 1 === 0 ? savePrice : savePrice.toFixed(2);
 
             prodType = prod.Prod_type.length === 0 ? '' : ` - ${prod.Prod_type}`;
+
 
             return (
               <div className="col-lg-3 col-md-6 mb-5">
@@ -46,7 +68,7 @@ function Dashboard() {
                     <div>(Shipping charge: &#8377;100)</div><br />
 
                     <NavLink to={`./view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
-                    <NavLink to="" className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</NavLink><br /><br />
+                    <button className="btn btn-success" onClick={() => updateCart(prod.Prod_id,prod.Prod_name,prod.Prod_price)}><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 
                     <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
 
