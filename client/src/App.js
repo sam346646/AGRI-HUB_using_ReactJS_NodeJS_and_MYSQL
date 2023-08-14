@@ -22,13 +22,17 @@ import ViewProductRetailer from "./retailer/pages/ViewProduct"
 import ViewCategoryWiseProductRetailer from "./retailer/pages/ViewCategoryWiseProduct"
 import ViewOrder from './retailer/pages/ViewOrder';
 import ManageOrders from './retailer/pages/ManageOrders';
-import ViewCart from './retailer/components/ViewCart';
+import ViewCart from './retailer/pages/ViewCart';
 
 import NavbarAdmin from "./admin/pages/Navbar"
 import DashboardAdmin from "./admin/pages/Dashboard"
 import SolveQuery from './admin/pages/SolveQuery';
+import ViewQueries from './admin/pages/ViewQueries';
+import ViewRetailers from './admin/pages/ViewRetailers';
+import ViewFarmers from './admin/pages/ViewFarmers';
 
-import Footer from './Footer';
+
+import Footer from './retailer/pages/Footer';
 import Login from './Login';
 
 function App() {
@@ -39,8 +43,8 @@ function App() {
     setUserType(localStorage.getItem('userType'));
   }, []);
 
-  //localStorage.setItem('userType','')
-  //localStorage.removeItem('userType')
+  // localStorage.setItem('userType','')
+  // localStorage.removeItem('userType')
 
   return (
     <BrowserRouter>
@@ -64,6 +68,10 @@ function App() {
           <Route path="/admin" element={<NavbarAdmin />}>
             <Route index element={<DashboardAdmin />} />
             <Route path="solve_query/:id" element={<SolveQuery />} />
+            <Route path="add_category" element={<SolveQuery withoutIssue={true} />} />
+            <Route path="view_queries" element={<ViewQueries fromNavbar={true} />} />
+            <Route path="view_retailers" element={<ViewRetailers />} />
+            <Route path="view_farmers" element={<ViewFarmers />} />
           </Route>
         )}
 
@@ -72,9 +80,9 @@ function App() {
           <Route path="/retailer" element={<NavbarRetailer />}>
             <Route index element={<DashboardRetailer />} />
             <Route path="view_product/:id" element={<ViewProductRetailer />} />
-            <Route path="view_category_wise_product/:categoryId" element={<ViewCategoryWiseProductRetailer />} />
+            <Route path="view_category_wise_product" element={<ViewCategoryWiseProductRetailer />} />
             <Route path="view_cart" element={<ViewCart />} />
-            <Route path="view_orders" element={<ViewOrder choice={11} />} />
+            <Route path="view_orders" element={<ViewOrder choice={1} />} />
             <Route path="view_retailer_orders/:ch" element={<ManageOrders />} />
           </Route>
         )}

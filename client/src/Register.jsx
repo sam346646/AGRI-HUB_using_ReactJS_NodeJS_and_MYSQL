@@ -1,8 +1,7 @@
-import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function Register() {
+function Register({setIsLogin}) {
 
     const navigate = useNavigate()
 
@@ -20,6 +19,7 @@ function Register() {
     const [errPass, setErrPass] = useState()
     const [errCpass, setErrCpass] = useState()
     const [isInvalid, setIsInvalid] = useState()
+    const [errRegister, setErrRegister] = useState()
 
     //Validation
     useEffect(() => {
@@ -33,25 +33,31 @@ function Register() {
 
     const districtList = ['Chamarajanagara', 'Chikkamagaluru', 'Dakshina Kannada', 'Hassan', 'Kodagu', 'Mandya', 'Mysuru', 'Udupi', 'Bengaluru Rural', 'Bengaluru Urban', 'Chikkaballapura', 'Chitradurga', 'Davanagere', 'Kolar', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Bagalkote', 'Belagavi', 'Dharwada', 'Gadaga', 'Haveri', 'Uttara Kannada', 'Vijayapura', 'Ballari', 'Bidar', 'Kalaburagi', 'Koppala', 'Raichuru', 'Vijayanagara', 'Yadagiri']
 
-    const register = () => {
-        const formdata = new FormData();
-        formdata.append('name', name)
-        formdata.append('district', district)
-        formdata.append('contact', contact)
-        formdata.append('email', email)
-        formdata.append('pass', pass)
-        if (user === 'Retailer') {
-            Axios.post('http://localhost:8000/retailer/insert', formdata).then((response) => {
-            });
-            localStorage.setItem('userType', 'retailer');
-            navigate('/retailer')
-        }
-        else {
-            Axios.post('http://localhost:8000/farmer/insert', formdata).then((response) => {
-            })
-            localStorage.setItem('userType', 'farmer');
-            navigate('/farmer')
-            window.location.reload()
+    useEffect(() => {
+        setTimeout(() => {
+            setErrRegister('');
+        }, 5000);
+    }, [errRegister])
+
+    const register = async() => {
+
+        //Admin, Farmer, Retailer Regiser and Validation
+        const response = await fetch('http://localhost:8000/user/insert', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify({ name, district, contact, email, pass, user }),
+        });
+        const data = await response.json();
+        if (data.success) {
+            const tempUser = user.toLowerCase();
+            localStorage.setItem('userType', tempUser);
+            localStorage.setItem('usrId', data.usrId);
+            navigate(`/${tempUser}`)
+            window.location.reload();
+        } 
+        else if(data.userExists){
+            setErrRegister("You've already registered with this email! Please Login using this email...")
+            setIsInvalid(true)
         }
     }
 
@@ -59,7 +65,7 @@ function Register() {
     return (
         <div className='container-fluid bg-light'>
             <div className="py-5 w-25 mx-auto">
-                <div className='text-center'>
+                <div className='text-center mb-4'>
                     <h1>Create new account</h1>
                 </div>
 
@@ -147,7 +153,13 @@ function Register() {
                 </div>
 
                 <div className="text-center mb-2">
-                    <button onClick={() => register()} className="btn btn-secondary" disabled={isInvalid}> <i className="fa fa-user"></i>&nbsp;{user} Register </button>
+                    <button onClick={() => register()} className="btn btn-secondary" disabled={isInvalid}> <i className="fa fa-user"></i>&nbsp;{user} Register </button><br/>
+                    <span className='text-danger'>{errRegister}</span>
+                </div>
+
+                <div className='text-center mt-2'>
+                    <span className="lead">Already have account..?</span>
+                    <button className="nav-link text-secondary mx-auto" onClick={() => setIsLogin(true)}><h4>Login here</h4></button>
                 </div>
             </div>
         </div>

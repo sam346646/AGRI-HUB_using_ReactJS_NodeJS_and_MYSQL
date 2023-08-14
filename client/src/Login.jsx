@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import Register from './Register'
@@ -15,32 +15,45 @@ function Login() {
     const [errPass, setErrPass] = useState()
     const [isLogin, setIsLogin] = useState(true)
     const [errLogin, setErrLogin] = useState('')
+    const [isInvalid, setIsInvalid] = useState(true)
 
     const logInHandle = async () => {
-        if (user === 'Retailer') {
-            localStorage.setItem('userType', 'farmer');
-            navigate('/farmer')
+
+        //Admin, Farmer, Retailer Login Validation
+        const response = await fetch('http://localhost:8000/user/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', },
+            body: JSON.stringify({ email, pass, user }),
+        });
+        const data = await response.json();
+        if (data.success) {
+            const tempUser = user.toLowerCase();
+            localStorage.setItem('userType', tempUser);
+            localStorage.setItem('usrId', data.usrId);
+            navigate(`/${tempUser}`)
             window.location.reload();
-        }
-        else if (user === 'Farmer') {
-            localStorage.setItem('userType', 'farmer');
-            navigate('/farmer')
-            window.location.reload();
-        }
-        else {
-            const response = await fetch('/admin/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', },
-                body: JSON.stringify({ email, pass }),
-            });
-            const data = await response.json();
-            if (data.success) {
-                console.log('Login successful');
-            } else {
-                setErrLogin('Email or Password is not correct!')
-            }
+        } else {
+            setErrLogin('Email or Password is not correct!')
         }
     }
+
+    //Form validation
+    useEffect(() => {
+        if (errEmail || errPass || !email || !pass) {
+            setIsInvalid(true)
+        }
+        else {
+            setIsInvalid(false)
+        }
+    }, [errEmail, errPass, email, pass])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setErrLogin('');
+        }, 5000);
+    }, [errLogin])
+
+
 
     return (
         // Login
@@ -72,7 +85,7 @@ function Login() {
                         <span class="text-danger" aria-live="polite">{errEmail}</span>
                     </div>
 
-                    <div className="form-group mb-3">
+                    <div className="form-group mb-2">
                         <label className="form-label">Password</label>
                         <input type="password" value={pass}
                             onChange={(e) => setPass(e.target.value)}
@@ -82,8 +95,8 @@ function Login() {
                     </div>
 
                     <div className="text-center">
-                        <button className="btn btn-secondary" onClick={() => logInHandle()}> <i className="fa fa-sign-in"></i>&nbsp;{user} Login </button>
-                        <span className='text-danger'>{errLogin}</span>
+                        <span className='text-danger'>{errLogin}</span><br/>
+                        <button className="btn btn-secondary" onClick={() => logInHandle()} disabled={isInvalid}> <i className="fa fa-sign-in"></i>&nbsp;{user} Login </button>
                     </div>
                     <div className='text-center mt-2'>
                         <span className="lead">Don't have account..?</span>
@@ -93,7 +106,7 @@ function Login() {
             </div>
             :
             // Register
-            <Register />
+            <Register setIsLogin={setIsLogin}/>
     )
 }
 

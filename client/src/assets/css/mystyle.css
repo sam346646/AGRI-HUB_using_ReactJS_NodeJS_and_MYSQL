@@ -10,6 +10,9 @@
 }
 
 /* side navigation styles */
+.nav-bg{
+    background-color:#6c757d40;
+}
 .side_nav{
     top: 64px;
     width:16%;
@@ -17,14 +20,7 @@
 .side_nav>li>.collapse{
     list-style-type: none;
 }
-.side_nav>li>.collapse>li{
-    color:#999999;
-    cursor: pointer;
-    text-decoration: none;
-}
-.side_nav>li>.collapse>li:hover{
-    color:#c4c0c0;
-}
+
 
 .content_area{
     margin-left: 16.3%;

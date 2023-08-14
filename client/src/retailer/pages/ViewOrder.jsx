@@ -4,6 +4,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 
 import OrderStatusContainer from '../components/OrderStatusContainer';
 import CustomModal from '../components/CustomModal';
+import Footer from './Footer';
 
 function ViewOrder({ choice }) {
 
@@ -14,7 +15,8 @@ function ViewOrder({ choice }) {
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
-        Axios.get('http://localhost:8000/order/getall', { params: { choice: choice } }).then((response) => {
+
+        Axios.get('http://localhost:8000/order/getallretailer', { params: { choice: choice, temp: localStorage.getItem('usrId')}}).then((response) => {
             setOrderList(response.data)
             setReload(false)
         })
@@ -56,7 +58,7 @@ function ViewOrder({ choice }) {
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-action">
-                                    <NavLink className='nav-link text-success' to="../view_retailer_orders/11">
+                                    <NavLink className='nav-link text-success' to="../view_retailer_orders/1">
                                         <i className='fa fa-cubes'></i> &nbsp;All Orders
                                     </NavLink>
                                 </li>
@@ -110,7 +112,7 @@ function ViewOrder({ choice }) {
                                                                 <div className='text-success'><i className='fa fa-gift'></i> Saved Rs.{Math.round((100 * order.Price) / (100 - ((order.Quantity >= 100) ? order.Prod_offer + 1 : order.Prod_offer)) - order.Price)} in this order.</div>
                                                             </div>
 
-                                                            <div className='mt-3'>Farmer: Sam, Konaje, Mangalore, Karnataka.</div>
+                                                            <div className='mt-3'>Farmer: Sam, Dakshina Kannada.</div>
                                                         </div>
                                                         <div className="col-4">
                                                             <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='200' height='200' className='rounded' />
@@ -155,6 +157,7 @@ function ViewOrder({ choice }) {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
     )
 }

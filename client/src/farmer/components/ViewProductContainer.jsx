@@ -13,7 +13,7 @@ function ViewProducts() {
     const [isContentAvailiable, setIsContentAvailiable] = useState(true)
 
     useEffect(() => {
-        Axios.get('http://localhost:8000/product/getall').then((response) => {
+        Axios.post('http://localhost:8000/product/getallfarmer',{id:localStorage.getItem('usrId')}).then((response) => {
             setProdList(response.data)
         })
     }, [])

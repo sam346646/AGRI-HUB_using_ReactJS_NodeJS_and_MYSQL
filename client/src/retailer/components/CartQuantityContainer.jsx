@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Axios from "axios"
 import { useNavigate } from 'react-router-dom'
 import CustomModal from './CustomModal'
+import CustomModalBuyNow from './CustomModalBuyNow'
 
-function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, cartQty, cartId, reloadCartData }) {
+function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, cartQty, cartId, reloadCartData, prodId, prodName }) {
 
     const navigate = useNavigate()
 
@@ -15,7 +16,7 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
     const [offer, setOffer] = useState(tempOffer)
     const [price, setPrice] = useState(tempPrice)
     const [finalPrice, setFinalPrice] = useState(tempFinalPrice)
-    const [errMessage, setErrMessage] = useState()
+    const [errMessage, setErrMessage] = useState('')
     const [changeStatus, setChangeStauts] = useState(false)
 
     const handleQty = (tempQty) => {
@@ -38,7 +39,7 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
         setOffer(tempOffer)
     }, [qty])
 
-    const updateCart=()=>{
+    const updateCart = () => {
         const formdata = new FormData();
         formdata.append('cartId', cartId)
         formdata.append('cartQty', qty)
@@ -49,10 +50,10 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
         reloadCartData()
     }
 
-    const removeCartItem=(cartid)=>{
-        Axios.delete(`http://localhost:8000/retailer/deletecartitem/${cartid}`).then((res,err)=>{
+    const removeCartItem = (cartid) => {
+        Axios.delete(`http://localhost:8000/retailer/deletecartitem/${cartid}`).then((res, err) => {
             console.log(cartid)
-            if(err){console.log(err)}
+            if (err) { console.log(err) }
         })
         navigate("../view_cart");
         reloadCartData()
@@ -76,7 +77,7 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
                 </div>
                 <div className='text-danger text-center'>{errMessage}</div>
                 <div className='text-center mt-2'>
-                    {changeStatus && <button className='btn btn-success btn-sm' onClick={updateCart}disabled={errMessage}>Save Changes</button>}
+                    {changeStatus && <button className='btn btn-success btn-sm' onClick={updateCart} disabled={errMessage}>Save Changes</button>}
                 </div>
             </div>
             <div className="col-3 my-auto">
@@ -84,10 +85,12 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
                     Rs.{(finalPrice)}</b> + {shippingCharge}(Shipping)
                     <div className='text-success'><i className='fa fa-gift'></i> You can Save Rs.{Math.round(price - finalPrice)}.</div>
                     <div className='mt-3'>
-                        <button className='btn btn-outline-secondary btn-sm me-3'>Buy now</button>
-
-                        <button className='btn btn-outline-danger btn-sm' data-bs-toggle="modal" data-bs-target={`#${cartId}`}>Remove</button>
-                        <CustomModal message={`You are removing this item from cart.`} action={() => removeCartItem(cartId)} modId={`${cartId}`} />
+                        
+                                <button className='btn btn-outline-secondary btn-sm me-3' data-bs-toggle="modal" data-bs-target={`#${cartId}`} disabled={errMessage}>Buy now</button>
+                                <CustomModalBuyNow qty={qty} price={finalPrice} prodId={prodId} prodName={prodName} modId={cartId} />
+                            
+                        <button className='btn btn-outline-danger btn-sm' data-bs-toggle="modal" data-bs-target={`#${cartId}a`}>Remove</button>
+                        <CustomModal message={`You are removing this item from cart.`} action={() => removeCartItem(cartId)} modId={`${cartId}a`} />
                     </div>
                 </div>
             </div>

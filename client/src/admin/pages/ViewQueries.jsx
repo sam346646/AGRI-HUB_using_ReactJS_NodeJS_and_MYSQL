@@ -2,9 +2,11 @@ import Axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, NavLink } from 'react-router-dom'
 
+import Breadcrumbs from '../components/Breadcrumbs';
 import CustomModalRejectQuery from '../components/CustomModalRejectQuery'
 
-function ViewQueries() {
+
+function ViewQueries({fromNavbar}) {
 
     const navigate = useNavigate()
 
@@ -31,8 +33,9 @@ function ViewQueries() {
     }
 
     return (
-        <>
-            <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>&emsp;*Queries not availiable.</span>
+        <div className={(fromNavbar) ? 'content_area' : null}>
+            <Breadcrumbs breadcrumbs_title='Report Issued' breadcrumbs_icon='bell' />
+            <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>&emsp;*No Queries availiable.</span>
             <table className="table table-striped table-bordered table-hover" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                 <tbody>
                     <tr>
@@ -65,7 +68,7 @@ function ViewQueries() {
                     }
                 </tbody>
             </table>
-        </>
+        </div>
     )
 }
 

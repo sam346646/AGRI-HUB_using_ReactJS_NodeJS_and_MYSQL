@@ -43,7 +43,7 @@ function Navbar() {
 
                         <li className="nav-item">
                             <NavLink to='/farmer/report_issue/1' className="nav-link">
-                                <i className="fa fa-book"></i> Report issue
+                                <i className="fa fa-book"></i> Issues
                             </NavLink>
                         </li>
 

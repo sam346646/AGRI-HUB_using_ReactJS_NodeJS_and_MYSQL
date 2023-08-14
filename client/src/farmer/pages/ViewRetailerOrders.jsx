@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ViewOrder from '../components/ViewOrder'
 import Breadcrumbs from '../components/Breadcrumbs'
 import OptionMenuContainer from '../components/OptionMenuContainer'
+import Footer from './Footer';
 
 function ViewRetailerOrders() {
   const { ch } = useParams();
@@ -44,6 +45,7 @@ function ViewRetailerOrders() {
 
 
   return (
+    <>
     <div className='farmer_content_area container-fluid p-4'>
       <div className="row">
         <div className="col-3">
@@ -56,6 +58,9 @@ function ViewRetailerOrders() {
         </div>
       </div>
     </div>
+
+    <Footer />
+    </>
   )
 }
 

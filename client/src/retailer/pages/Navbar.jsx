@@ -3,9 +3,9 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 function Navbar() {
 
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
-    const logoutHandle=()=>{
+    const logoutHandle = () => {
         localStorage.removeItem('userType')
         navigate('/')
         window.location.reload();
@@ -30,7 +30,7 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="./view_category_wise_product/*" className="nav-link">
+                            <NavLink to="./view_category_wise_product" className="nav-link">
                                 <i className="fa fa-shopping-bag"></i> Shop
                             </NavLink>
                         </li>
@@ -48,11 +48,10 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                        <button onClick={()=>logoutHandle()} className="nav-link">
+                            <button onClick={() => logoutHandle()} className="nav-link">
                                 <i className="fa fa-power-off"></i> Log out
                             </button>
                         </li>
-
                     </ul>
                 </div>
             </nav>

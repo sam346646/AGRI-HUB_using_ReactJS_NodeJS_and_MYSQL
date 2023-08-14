@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import CustomModal from '../components/CustomModal'
 import { useNavigate } from 'react-router-dom'
 import Axios from 'axios'
+import Footer from './Footer'
 
 function AddCategory({queryId}) {
 
@@ -96,6 +97,8 @@ function AddCategory({queryId}) {
                 <CustomModal message={`You are going to add ${name} category`} action={insertCategory} modId='insertBtn' />
                 {(isInvalid) ? <span class="text-danger" aria-live="polite">*Please fill mandatory fields to continue.</span> : null}
             </div>
+
+            <Footer />
         </>
     )
 }

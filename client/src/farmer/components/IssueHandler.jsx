@@ -9,7 +9,6 @@ function IssueHandler({ choice }) {
     const navigate = useNavigate()
 
     const [issue, setIssue] = useState('Add Category')
-    const [farmerId, setFarmerId] = useState(1)
     const [productId, setProductId] = useState(0)
     const [orderId, setOrderId] = useState(0)
     const [description, setDescription] = useState()
@@ -19,7 +18,7 @@ function IssueHandler({ choice }) {
     const category = ['Add Category', 'Issue on Order', 'Issue on Product', 'Issue on Profile', 'Other']
 
     useEffect(() => {
-        Axios.get('http://localhost:8000/query/getall').then((response) => {
+        Axios.post('http://localhost:8000/query/getallfarmer', { id: localStorage.getItem('usrId') }).then((response) => {
             setQueryList(response.data)
         })
     }, [])
@@ -31,7 +30,7 @@ function IssueHandler({ choice }) {
     const insertIssue = () => {
         console.log(issue)
         const formdata = new FormData();
-        formdata.append('farmerId', farmerId)
+        formdata.append('farmerId', localStorage.getItem('usrId'))
         formdata.append('retailerId', 0)
         formdata.append('productId', productId)
         formdata.append('orderId', orderId)
@@ -81,13 +80,13 @@ function IssueHandler({ choice }) {
                             queryList.map((query) => {
                                 return (
                                     <tr>
-                                        <td>{(query.Product_id == 0) ? 'Add Category': <>{query.Product_id}</> }</td>
+                                        <td>{(query.Product_id == 0) ? 'Add Category' : <>{query.Product_id}</>}</td>
                                         <td>{query.Query_name}</td>
                                         <td>{query.Query_description}</td>
                                         <td className='text-danger'>
-                                            { (query.Query_status==='In process') ? <><i className='fa fa-spinner'></i> {query.Query_status}</> : null }
-                                            { (query.Query_status==='Rejected') ? <><i className='fa fa-remove'></i> {query.Query_status}</> : null }
-                                            { (query.Query_status==='Solved') ? <span className='text-success'><i className='fa fa-check'></i> {query.Query_status}</span> : null }     
+                                            {(query.Query_status === 'In process') ? <><i className='fa fa-spinner'></i> {query.Query_status}</> : null}
+                                            {(query.Query_status === 'Rejected') ? <><i className='fa fa-remove'></i> {query.Query_status}</> : null}
+                                            {(query.Query_status === 'Solved') ? <span className='text-success'><i className='fa fa-check'></i> {query.Query_status}</span> : null}
                                         </td>
                                     </tr>
                                 )

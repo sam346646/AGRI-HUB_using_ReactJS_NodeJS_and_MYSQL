@@ -1,6 +1,7 @@
 import React from 'react'
 import ViewProductContainer from '../components/ViewProductContainer'
 import OptionMenuContainer from '../components/OptionMenuContainer';
+import Footer from './Footer';
 
 let options = [
   { title: 'Add Product', ch: '/farmer/sell_product', icon: 'tag' },
@@ -30,6 +31,8 @@ function ViewProducts({ ch }) {
                   </div>
                 </div>
               </div>
+
+              <Footer />
             </>
           )
       }

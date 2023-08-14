@@ -21,7 +21,7 @@ function ViewOrder({ choice }) {
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
-        Axios.get('http://localhost:8000/order/getall', { params: { choice: choice } }).then((response) => {
+        Axios.get('http://localhost:8000/order/getall', { params: { choice: choice, temp: localStorage.getItem('usrId') } }).then((response) => {
             setOrderList(response.data)
             setReload(false)
         })

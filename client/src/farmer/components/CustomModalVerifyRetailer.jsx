@@ -1,5 +1,5 @@
 import  Axios  from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 function CustomModalVerifyRetailer({ modId, orderId }) {
@@ -12,12 +12,21 @@ function CustomModalVerifyRetailer({ modId, orderId }) {
     const [earn, setEarn] = useState()
     const [errOtp, setErrOtp] = useState()
     const [isvalid, setIsvalid] = useState(false)
+    const [isDeliver, setIsDeliver] = useState(false)
+
+    useEffect(()=>{
+        if(errOtp || !earn || !otp){
+            setIsDeliver(false)
+        }
+        else{
+            setIsDeliver(true)
+        }
+    },[errOtp, earn, otp])
 
     const handleDelivery=()=>{
         const formdata = new FormData();
         formdata.append('orderId', orderId)
         formdata.append('earn', earn)
-        console.log(orderId,earn)
         Axios.put('http://localhost:8000/order/successUpdate', formdata).then((response) => {
         });
         navigate("/farmer");
@@ -28,12 +37,12 @@ function CustomModalVerifyRetailer({ modId, orderId }) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdroporderModalLabelLabel">You are one step away from delivering.</h1>
+                        <h1 class="modal-title fs-5">You are one step away from delivering.</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body text-center">
                         <div className="form-group mb-3">
-                            <label className="form-label">Enter delivery code received by retailer.</label>
+                            <label className="form-label">Enter delivery code received by retailer after delivery.</label>
                             <div class="input-group input-group-sm mb-3 mx-auto w-50">
                                 <input type="text" class="form-control"
                                     value={otp}
@@ -71,7 +80,7 @@ function CustomModalVerifyRetailer({ modId, orderId }) {
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal" onClick={handleDelivery}>Deliver the product</button>
+                        <button type="button" class="btn btn-success btn-sm" data-bs-dismiss="modal" onClick={handleDelivery} disabled={!isDeliver}>Deliver the product</button>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>

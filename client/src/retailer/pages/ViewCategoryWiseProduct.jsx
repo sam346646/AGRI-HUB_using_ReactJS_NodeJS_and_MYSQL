@@ -1,82 +1,150 @@
 import Axios from 'axios'
 import { React, useState, useEffect } from "react"
-import { NavLink, useParams } from "react-router-dom";
-import CategoryContainer from '../components/CategoryContainer';
+import { NavLink, useNavigate } from "react-router-dom";
+import Footer from './Footer';
 
 function ViewCategoryWiseProduct() {
 
-    const { categoryId } = useParams();
+    const navigate = useNavigate()
 
     let actualPrice = 0;
     let savePrice = 0;
     let updatedSavePrice = 0;
     let prodType = '';
 
+    const [name, setName] = useState();
     const [prodList, setProdList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
+    const [mainProdList, setMainProdList] = useState([]);
+    const [searchProdList, setSearchProdList] = useState([]);
+    const [categoryId, setCategoryId] = useState([]);
+
+    const [showDropdown, setShowDropdown] = useState(false);
 
     useEffect(() => {
-        Axios.get(`http://localhost:8000/product/getCategoryWiseProduct/${categoryId}`).then((response) => {
-            setProdList(response.data);
+        Axios.get(`http://localhost:8000/product/getCategoryWiseProduct/*`).then((response) => {
+            setMainProdList(response.data);
+            setProdList(response.data)
         });
 
         Axios.get('http://localhost:8000/product/getallcategory').then((response) => {
             setCategoryList(response.data)
         });
+    }, [])
 
-    }, [categoryId])
+    useEffect(() => {
+        setProdList(mainProdList.filter(product => product.Prod_cat_id === categoryId));
+    }, [categoryId]);
+
+    const searchName = (e) => {
+        let temp = e.target.value;
+        if (/^[A-Za-z ]*$/.test(temp)) {
+            setName(temp)
+        }
+        setSearchProdList(mainProdList.filter(prod => prod.Prod_name.toLowerCase().includes(temp.toLowerCase())));
+        setShowDropdown(true);
+        if (e.target.value === '') {
+            setSearchProdList([])
+        }
+    }
+
+    const navigateProduct = (id) => {
+        console.log(id)
+        navigate(`../view_product/${id}`)
+    }
 
     return (
-        <div className="retailer_content_area px-5 pt-5">
-            <div className='row'>
+        <>
+            <div className="retailer_content_area px-5 pt-5">
+                <div className='row'>
+                    <div className="col-3">
+                        <div className="input-group">
+                            <input type="text" value={name} onChange={searchName} onBlur={() => setSearchProdList([])} className="form-control" placeholder="Search by Product name, Eg.Apple, Grapes" />
+                            <button className="btn btn-outline-secondary"><i className='fa fa-search'></i></button>
+                        </div>
 
-                <div className="col-3">
-                    <CategoryContainer />
-                </div>
+                        <ul className="list-group list-group-flush">
+                            {
+                                searchProdList.map((prod) => {
+                                    return (
+                                        <li className="list-group-item list-group-item-action">
+                                            {console.log(prod)}
+                                            <button className='nav-link text-success' onClick={() => navigateProduct(prod.Prod_id)}>
+                                                {prod.Prod_name}
+                                            </button>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ul>
 
-                <div className="col-9">
-                    <div className="row">
-                        {
-                            prodList.map((prod) => {
-                                actualPrice = prod.Prod_price + prod.Prod_price * (prod.Prod_offer / 100);
-                                savePrice = actualPrice - prod.Prod_price;
-                                updatedSavePrice = savePrice % 1 === 0 ? savePrice : savePrice.toFixed(2);
+                        <div className="card mt-4">
+                            <div className="card-header fw-bold fs-5">
+                                Categories
+                            </div>
+                            <ul className="list-group list-group-flush">
+                                {
+                                    categoryList.map((category) => {
+                                        return (
+                                            <li className="list-group-item list-group-item-action">
+                                                <button className='nav-link text-success' onClick={() => setCategoryId(category.Category_id)}>
+                                                    {category.Category_name}
+                                                </button>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
 
-                                prodType = prod.Prod_type.length === 0 ? '' : ` - ${prod.Prod_type}`;
+                    </div>
 
-                                return (
-                                    <div className="col-lg-4 col-md-6 mb-5">
-                                        <div className="card mx-2 pt-3">
-                                            <img className="mx-auto rounded" src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} width="190" height="190" alt="not found" />
-                                            <div className="card-body text-secondary">
-                                                <div className="py-2 fs-4 fw-bold text-center text-success">
-                                                    {prod.Prod_name}{prodType}
+                    <div className="col-9">
+                        <div className="row">
+                            {
+                                prodList.map((prod) => {
+                                    actualPrice = prod.Prod_price + prod.Prod_price * (prod.Prod_offer / 100);
+                                    savePrice = actualPrice - prod.Prod_price;
+                                    updatedSavePrice = savePrice % 1 === 0 ? savePrice : savePrice.toFixed(2);
+
+                                    prodType = prod.Prod_type.length === 0 ? '' : ` - ${prod.Prod_type}`;
+
+                                    return (
+                                        <div className="col-lg-4 col-md-6 mb-5">
+                                            <div className="card mx-2 pt-3">
+                                                <img className="mx-auto rounded" src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} width="190" height="190" alt="not found" />
+                                                <div className="card-body text-secondary">
+                                                    <div className="py-2 fs-4 fw-bold text-center text-success">
+                                                        {prod.Prod_name}{prodType}
+                                                    </div>
+                                                    <div>MRP: &#8377;<s>{actualPrice}</s></div>
+
+                                                    <h6 className="text-dark">Price: &#8377;{prod.Prod_price} <span className="text-secondary">(You Save: &#8377;{updatedSavePrice} / {prod.Measure})</span></h6>
+
+                                                    <div className="text-success">Offer: <span className="bg-success text-success bg-opacity-25 p-1">{prod.Prod_offer}% OFF</span></div>
+
+                                                    <div>(Shipping charge: &#8377;100)</div><br />
+
+                                                    <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
+                                                    <NavLink to="" className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</NavLink><br /><br />
+
+                                                    <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
+
+                                                    <div className="text-danger">*{prod.Prod_qty}{prod.Measure} in stock</div>
+
                                                 </div>
-                                                <div>MRP: &#8377;<s>{actualPrice}</s></div>
-
-                                                <h6 className="text-dark">Price: &#8377;{prod.Prod_price} <span className="text-secondary">(You Save: &#8377;{updatedSavePrice} / {prod.Measure})</span></h6>
-
-                                                <div className="text-success">Offer: <span className="bg-success text-success bg-opacity-25 p-1">{prod.Prod_offer}% OFF</span></div>
-
-                                                <div>(Shipping charge: &#8377;100)</div><br />
-
-                                                <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
-                                                <NavLink to="" className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</NavLink><br /><br />
-
-                                                <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
-
-                                                <div className="text-danger">*{prod.Prod_qty}{prod.Measure} in stock</div>
-
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <Footer />
+        </>
     )
 }
 
