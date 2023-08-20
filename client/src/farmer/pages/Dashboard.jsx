@@ -18,9 +18,9 @@ function Dashboard() {
             <ViewProducts ch={'dashboard'} />
           </div>
 
-          <div className="col-3">
+          {/* <div className="col-3">
             videos
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

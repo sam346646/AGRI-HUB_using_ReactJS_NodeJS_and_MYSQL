@@ -24,8 +24,14 @@ function Navbar() {
                     <ul className="navbar-nav ps-2 pt-3 flex-column bg-dark position-fixed start-0 bottom-0 side_nav">
 
                         <li className="nav-item">
-                            <NavLink to="/admin" className="nav-link">
+                            <NavLink to="/admin/" className="nav-link">
                                 <i className="fa fa-dashboard"></i> &ensp;Dashboard
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
+                            <NavLink to="/admin/add_categor " className="nav-link">
+                                <i className="fa fa-check"></i> &ensp;Approve Product
                             </NavLink>
                         </li>
 

@@ -1,54 +1,54 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 function Footer() {
+
+    const navigate = useNavigate()
+
+    const logoutHandle = () => {
+        localStorage.removeItem('userType')
+        navigate('/')
+        window.location.reload();
+    }
+
     return (
         <>
             <div className='container-fluid px-5 pt-4 pb-2 bg-secondary bg-opacity-25'>
                 <div className='row'>
-                    <div className='col-sm-6 col-md-3'>
+                    <div className='col-3'>
                         <h4>Pages</h4>
                         <ul className='list-unstyled'>
-                            <li><NavLink to={`/retailer/my_profile`} className='nav-link'>My profile</NavLink></li>
+                            <li><NavLink to={`/retailer/manage_profile/1`} className='nav-link'>My profile</NavLink></li>
                             <li><NavLink to={`/retailer/view_category_wise_product`} className='nav-link'>Shop</NavLink></li>
                             <li><NavLink to={`/retailer/view_cart`} className='nav-link'>Shopping Cart</NavLink></li>
                             <li><NavLink to={`/retailer/view_orders`} className='nav-link'>Orders</NavLink></li>
                         </ul>
                     </div>
 
-                    <div className="col-sm-6 col-md-3">
+                    <div className="col-3">
                         <h4>User Section</h4>
                         <ul className='list-unstyled'>
-                            <li><NavLink to={`/retailer/view_category_wise_product/*`} className='nav-link'>Login</NavLink></li>
-                            <li><NavLink to={`/retailer/view_category_wise_product/*`} className='nav-link'>Register</NavLink></li>
+                            <li><button onClick={() => logoutHandle()} className='nav-link'>Login</button></li>
+                            <li><button onClick={() => logoutHandle()} className='nav-link'>Register</button></li>
                         </ul>
                     </div>
 
-                    <div className='col-sm-6 col-md-3'>
-                        <h4>Top Products Categories</h4>
-                        <ul className='list-unstyled'>
-                            <li><NavLink to={`/retailer/view_category_wise_product/1`} className='nav-link'>Fruit</NavLink></li>
-                            <li><NavLink to={`/retailer/view_category_wise_product/2`} className='nav-link'>Vegetable</NavLink></li>
-                            <li><NavLink to={`/retailer/view_category_wise_product/3`} className='nav-link'>Oil</NavLink></li>
-                            <li><NavLink to={`/retailer/view_category_wise_product/4`} className='nav-link'>Egg</NavLink></li>
-                            <li><NavLink to={`/retailer/view_category_wise_product/5`} className='nav-link'>Rice</NavLink></li>
-                        </ul>
+                    <div className='col-3'>
+                        <h4>Keep In Touch</h4>
+                        <p>
+                            <NavLink to="https://www.facebook.com/" target="_blank" className="fa fa-facebook nav-link me-2"></NavLink>
+                            <NavLink to="https://twitter.com/?lang=en-in" target="_blank" className="fa fa-twitter nav-link me-2"></NavLink>
+                            <NavLink to="https://www.instagram.com/?hl=en" target="_blank" className="fa fa-instagram nav-link me-2"></NavLink>
+                            <NavLink to="mailto:sammanasseh310@gmail.com?subject=Regarding Query&body=Please write to us" target="_blank" className="fa fa-envelope nav-link me-2"></NavLink>
+                        </p>
                     </div>
 
-                    <div className='col-sm-6 col-md-3'>
+                    <div className='col-3'>
                         <h4>Find Us</h4>
                         <p>
                             <strong>Agri-hub</strong>
                             <br />+91 7760506993
                             <br />sammanasseh310@gmail.com
-                        </p>
-
-                        <h4 className='mt-4'>Keep In Touch</h4>
-                        <p>
-                            <a href="#" class="fa fa-facebook nav-link me-2"></a>
-                            <a href="#" class="fa fa-twitter nav-link me-2"></a>
-                            <a href="#" class="fa fa-instagram nav-link me-2"></a>
-                            <a href="#" class="fa fa-envelope nav-link"></a>
                         </p>
                     </div>
                 </div>

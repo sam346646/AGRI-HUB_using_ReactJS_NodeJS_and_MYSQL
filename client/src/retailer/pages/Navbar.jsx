@@ -48,6 +48,12 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
+                            <NavLink to="./manage_profile/1" className="nav-link">
+                                <i className="fa fa-user"></i> Profile
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
                             <button onClick={() => logoutHandle()} className="nav-link">
                                 <i className="fa fa-power-off"></i> Log out
                             </button>

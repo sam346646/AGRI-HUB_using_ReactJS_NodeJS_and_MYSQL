@@ -87,12 +87,17 @@ function ViewProduct() {
         formdata.append('cartQty', selectedQuantity)
         formdata.append('cartPrice', discountedPrice)
         Axios.post('http://localhost:8000/retailer/insertCart', formdata).then((response) => {
+            if (response.data.cartStatus == '') {
+                setMessage(`You've successfully added product to your cart!`)
+            }
+            else {
+                setMessage(response.data.cartStatus + '!')
+            }
+            const timeoutId = setTimeout(() => {
+                navigate("/retailer");
+                setMessage('');
+            }, 5000);
         });
-        setMessage(`You've successfully added item to your cart!`)
-        const timeoutId = setTimeout(() => {
-            navigate("/retailer");
-            setMessage('');
-        }, 5000);
     }
 
     const cancelHandle = () => {

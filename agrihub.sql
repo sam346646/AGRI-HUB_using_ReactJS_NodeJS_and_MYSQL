@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2023 at 09:08 AM
+-- Generation Time: Aug 20, 2023 at 08:05 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -59,15 +59,11 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`Cart_id`, `Cart_retailer_id`, `Prod_id`, `Cart_quantity`, `Cart_price`) VALUES
-(1, 2, 30, 50, 3500),
-(2, 2, 29, 50, 1500),
-(3, 2, 28, 50, 2000),
-(4, 2, 27, 50, 3000),
-(9, 2, 26, 50, 300),
-(10, 2, 25, 50, 2500),
-(12, 2, 27, 70, 4200),
-(21, 1, 23, 50, 5000),
-(22, 1, 30, 200, 13860);
+(23, 1, 38, 50, 1500),
+(24, 1, 23, 50, 5000),
+(25, 1, 24, 200, 35640),
+(26, 1, 27, 70, 4200),
+(27, 1, 30, 50, 5000);
 
 -- --------------------------------------------------------
 
@@ -90,7 +86,11 @@ INSERT INTO `categories` (`Category_id`, `Category_name`, `Measure`, `Expiry`) V
 (1, 'Fruit', 'Kg', 20),
 (2, 'Vegetable', 'Kg', 20),
 (3, 'Oil', 'Ltr', 100),
-(4, 'Egg items', 'Qty', 10);
+(4, 'Egg item', 'Qty', 10),
+(5, 'Rice item', 'Kg', 365),
+(6, 'Wheat item', 'Kg', 30),
+(7, 'Flour', 'Kg', 40),
+(8, 'Other', 'Qty', 30);
 
 -- --------------------------------------------------------
 
@@ -101,6 +101,8 @@ INSERT INTO `categories` (`Category_id`, `Category_name`, `Measure`, `Expiry`) V
 CREATE TABLE `farmers` (
   `Farmer_id` int(11) NOT NULL,
   `Farmer_name` varchar(30) NOT NULL,
+  `Farmer_area` varchar(40) NOT NULL,
+  `Farmer_village` varchar(30) NOT NULL,
   `Farmer_district` varchar(30) NOT NULL,
   `Farmer_contact` bigint(20) NOT NULL,
   `Farmer_email` varchar(30) NOT NULL,
@@ -111,9 +113,9 @@ CREATE TABLE `farmers` (
 -- Dumping data for table `farmers`
 --
 
-INSERT INTO `farmers` (`Farmer_id`, `Farmer_name`, `Farmer_district`, `Farmer_contact`, `Farmer_email`, `Farmer_pass`) VALUES
-(1, 'Rakesh', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
-(2, 'Joyal', 'Dakshina Kannada', 9896587756, 'joyal@gmail.com', 'temp1234*');
+INSERT INTO `farmers` (`Farmer_id`, `Farmer_name`, `Farmer_area`, `Farmer_village`, `Farmer_district`, `Farmer_contact`, `Farmer_email`, `Farmer_pass`) VALUES
+(1, 'Rakesh', '', '', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
+(2, 'Joyal', '', '', 'Dakshina Kannada', 9896587756, 'joyal@gmail.com', 'temp1234*');
 
 -- --------------------------------------------------------
 
@@ -142,18 +144,27 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Prod_id`, `Prod_name`, `Prod_type`, `Prod_qty`, `Prod_price`, `Prod_image1`, `Prod_offer`, `Prod_cat_id`, `Prod_status`, `Prod_order_date`, `Prod_expiry`, `Shipping_charge`, `Farmer_id`) VALUES
-(19, 'Apple', 'Kashmir', 200, 100, 'image_1688061998667.jpg', 13, 1, 0, '2023-06-29', '2023-06-29', 100, 1),
-(21, 'Apple', 'Bengal', 390, 250, 'image_1688062382208.jpg', 22, 1, 0, '2023-06-29', '2023-06-30', 200, 1),
-(22, 'Banana', 'Cavandies', 200, 35, 'image_1689059120191.webp', 19, 1, 1, '2023-07-11', '2023-07-31', 190, 1),
-(23, 'Apple', 'Kashmiri', 200, 100, 'image_1689062532264.jpg', 21, 1, 1, '2023-07-11', '2023-07-31', 130, 1),
-(24, 'Guava', '', 200, 180, 'image_1689068400694.jpg', 24, 1, 1, '2023-07-11', '2023-07-31', 200, 1),
+(19, 'Apple', 'Ambri', 200, 100, 'image_1688061998667.jpg', 13, 1, 0, '2023-06-29', '2023-06-29', 100, 1),
+(21, 'Apple', 'Golden Delisious', 390, 250, 'image_1688062382208.jpg', 22, 1, 0, '2023-06-29', '2023-06-30', 200, 1),
+(22, 'Banana', 'Cavendish', 0, 35, 'image_1689059120191.webp', 19, 1, 0, '2023-07-11', '2023-07-31', 190, 1),
+(23, 'Apple', 'Ambri', 200, 100, 'image_1689062532264.jpg', 21, 1, 1, '2023-07-11', '2023-07-31', 130, 1),
+(24, 'Butter Fruit', '', 200, 180, 'image_1689068400694.jpg', 24, 1, 1, '2023-07-11', '2023-07-31', 200, 1),
 (25, 'Pineapple', '', 300, 50, 'image_1689068435352.jpg', 23, 1, 1, '2023-07-11', '2023-07-31', 170, 1),
 (26, 'Egg', '', 80, 6, 'image_1689076648518.jpg', 22, 4, 1, '2023-07-11', '2023-07-21', 180, 1),
-(27, 'Carrot', 'Gujarati', 70, 60, 'image_1689076783047.jpg', 13, 2, 1, '2023-07-11', '2023-07-31', 150, 2),
-(28, 'Onion', '', 270, 40, 'image_1689076878914.jpg', 18, 2, 1, '2023-07-11', '2023-07-31', 120, 2),
+(27, 'Carrot', '', 70, 60, 'image_1689076783047.jpg', 13, 2, 1, '2023-07-11', '2023-07-31', 150, 2),
+(28, 'Onion', '', 270, 60, 'image_1689076878914.jpg', 18, 2, 1, '2023-07-11', '2023-07-31', 120, 2),
 (29, 'Cauliflower', '', 0, 30, 'image_1689076909876.png', 18, 2, 0, '2023-07-11', '2023-08-10', 190, 2),
-(30, 'Coconut oil', 'Natural', 200, 70, 'image_1689076980582.jpg', 12, 3, 1, '2023-07-11', '2023-10-19', 100, 2),
-(31, 'Banana', 'Kodagu', 0, 40, 'image_1691936110472.webp', 14, 1, 0, '2023-08-13', '2023-09-02', 200, 2);
+(30, 'Coconut oil', 'Natural', 200, 100, 'image_1689076980582.jpg', 12, 3, 1, '2023-07-11', '2023-10-19', 100, 2),
+(31, 'Banana', 'Cavendish', 0, 40, 'image_1691936110472.webp', 14, 1, 0, '2023-08-13', '2023-09-02', 200, 2),
+(32, 'Wheat Flour', '', 200, 40, 'image_1692377227915.jpg', 18, 7, 1, '2023-08-18', '2023-09-27', 100, 1),
+(33, 'Wheat', '', 300, 30, 'image_1692377292063.jpg', 16, 6, 1, '2023-08-18', '2023-09-17', 100, 1),
+(34, 'Brown rice', '', 450, 50, 'image_1692377357296.jpg', 22, 5, 1, '2023-08-18', '2024-08-17', 200, 1),
+(35, 'White rice', '', 350, 40, 'image_1692377395481.jpg', 24, 5, 1, '2023-08-18', '2024-08-17', 190, 1),
+(36, 'Bitter gourd', '', 100, 40, 'image_1692377450550.jpg', 20, 2, 1, '2023-08-18', '2023-09-07', 180, 1),
+(37, 'Lady finger', '', 200, 30, 'image_1692377488667.jpg', 23, 2, 1, '2023-08-18', '2023-09-07', 100, 1),
+(38, 'Banana', 'Cavendish', 100, 30, 'image_1692377542131.webp', 21, 1, 1, '2023-08-18', '2023-09-07', 100, 1),
+(39, 'Grapes', '', 300, 70, 'image_1692377581212.jpg', 14, 1, 1, '2023-08-18', '2023-09-07', 300, 1),
+(40, 'Tomato', '', 200, 150, 'image_1692377617695.jpg', 18, 2, 1, '2023-08-18', '2023-09-07', 250, 1);
 
 -- --------------------------------------------------------
 
@@ -163,24 +174,14 @@ INSERT INTO `products` (`Prod_id`, `Prod_name`, `Prod_type`, `Prod_qty`, `Prod_p
 
 CREATE TABLE `queries` (
   `Query_id` int(11) NOT NULL,
-  `Farmer_id` int(11) NOT NULL,
-  `Retailer_id` int(11) NOT NULL,
-  `Product_id` int(11) NOT NULL,
-  `Order_id` int(11) NOT NULL,
+  `Query_user` varchar(20) NOT NULL,
+  `Query_user_id` int(11) NOT NULL,
+  `Issue_on` varchar(30) NOT NULL,
+  `Issue_id` int(11) NOT NULL,
   `Query_name` varchar(30) NOT NULL,
   `Query_description` varchar(30) NOT NULL,
   `Query_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `queries`
---
-
-INSERT INTO `queries` (`Query_id`, `Farmer_id`, `Retailer_id`, `Product_id`, `Order_id`, `Query_name`, `Query_description`, `Query_status`) VALUES
-(1, 1, 0, 0, 0, 'Add Category', 'Add rice items', 'In process'),
-(2, 1, 0, 0, 0, 'Add Category', 'Add oil items', 'In process'),
-(3, 1, 0, 0, 0, 'Add Category', 'Add packets items', 'In process'),
-(4, 2, 0, 0, 0, 'Issue on Profile', 'Forgot password', 'In process');
 
 -- --------------------------------------------------------
 
@@ -205,14 +206,13 @@ CREATE TABLE `retailerorders` (
 --
 
 INSERT INTO `retailerorders` (`Order_id`, `Retailer_id`, `Prod_id`, `Order_date`, `Quantity`, `Price`, `Order_status`, `Profit`, `Extra_charge`) VALUES
-(101, 1, 31, '2023-08-13', 200, 7920, 'Order delivered successfully.', 10000, 200),
-(102, 1, 26, '2023-08-13', 80, 480, 'Retailer cancelled the order.', 0, 400),
-(103, 0, 29, '2023-08-13', 100, 10000, 'Farmer cancelled the order.', 2000, 0),
-(104, 1, 28, '2023-08-13', 50, 2000, 'Order delivered successfully.', 2411, 120),
-(105, 1, 24, '2023-08-13', 100, 17820, 'Retailer placed order.', 0, 0),
-(106, 1, 25, '2023-08-13', 50, 2500, 'Retailer placed order.', 0, 0),
-(107, 1, 30, '2023-08-13', 200, 13860, 'Retailer placed order.', 0, 0),
-(108, 1, 28, '2023-08-13', 50, 2000, 'Farmer confirmed order.', 0, 120);
+(113, 1, 39, '2023-08-18', 50, 3500, 'Farmer cancelled the order.', 0, 0),
+(114, 1, 40, '2023-08-18', 50, 7500, 'Farmer confirmed order.', 0, 250),
+(115, 1, 38, '2023-08-18', 50, 1500, 'Retailer placed order.', 0, 0),
+(116, 1, 33, '2023-08-18', 50, 1500, 'Waiting for retailer\'s confirmation.', 0, 200),
+(117, 1, 34, '2023-08-18', 50, 2500, 'Order delivered successfully.', 1000, 200),
+(118, 1, 37, '2023-08-18', 50, 1500, 'Retailer confirmed order.', 0, 300),
+(119, 1, 35, '2023-08-18', 50, 2000, 'Retailer cancelled the order.', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -223,6 +223,8 @@ INSERT INTO `retailerorders` (`Order_id`, `Retailer_id`, `Prod_id`, `Order_date`
 CREATE TABLE `retailers` (
   `Retailer_id` int(11) NOT NULL,
   `Retailer_name` varchar(30) NOT NULL,
+  `Retailer_area` varchar(40) NOT NULL,
+  `Retailer_village` varchar(30) NOT NULL,
   `Retailer_district` varchar(30) NOT NULL,
   `Retailer_contact` bigint(20) NOT NULL,
   `Retailer_email` varchar(30) NOT NULL,
@@ -233,12 +235,12 @@ CREATE TABLE `retailers` (
 -- Dumping data for table `retailers`
 --
 
-INSERT INTO `retailers` (`Retailer_id`, `Retailer_name`, `Retailer_district`, `Retailer_contact`, `Retailer_email`, `Retailer_pass`) VALUES
-(1, 'Kiran', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
-(2, 'Glen', 'Dakshina Kannada', 8987767676, 'glen@gmail.com', 'Glen@1234'),
-(3, 'John', 'Dakshina Kannada', 9847374763, 'john@gmail.com', 'temp1234*'),
-(4, 'Lavan', 'Dakshina Kannada', 9837626323, 'lavan@gmail.com', 'Lavan@1234'),
-(5, 'Shilton', 'Dakshina Kannada', 8781676767, 'shilton@gmail.com', 'Shilton@1234');
+INSERT INTO `retailers` (`Retailer_id`, `Retailer_name`, `Retailer_area`, `Retailer_village`, `Retailer_district`, `Retailer_contact`, `Retailer_email`, `Retailer_pass`) VALUES
+(1, 'Kiran', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
+(2, 'Glen', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 8987767676, 'glen@gmail.com', 'Glen@1234'),
+(3, 'John', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 9847374763, 'john@gmail.com', 'temp1234*'),
+(4, 'Lavan', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 9837626323, 'lavan@gmail.com', 'Lavan@1234'),
+(5, 'Shilton', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 8781676767, 'shilton@gmail.com', 'Shilton@1234');
 
 --
 -- Indexes for dumped tables
@@ -307,13 +309,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `Cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `Cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `Category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `farmers`
@@ -325,19 +327,19 @@ ALTER TABLE `farmers`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `Prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `queries`
 --
 ALTER TABLE `queries`
-  MODIFY `Query_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Query_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `retailerorders`
 --
 ALTER TABLE `retailerorders`
-  MODIFY `Order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
+  MODIFY `Order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT for table `retailers`

@@ -1,11 +1,9 @@
 import Axios from 'axios'
 import { React, useState, useEffect } from "react"
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Footer from './Footer';
 
 function ViewCategoryWiseProduct() {
-
-    const navigate = useNavigate()
 
     let actualPrice = 0;
     let savePrice = 0;
@@ -16,10 +14,8 @@ function ViewCategoryWiseProduct() {
     const [prodList, setProdList] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
     const [mainProdList, setMainProdList] = useState([]);
-    const [searchProdList, setSearchProdList] = useState([]);
     const [categoryId, setCategoryId] = useState([]);
-
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [message, setMessage] = useState();
 
     useEffect(() => {
         Axios.get(`http://localhost:8000/product/getCategoryWiseProduct/*`).then((response) => {
@@ -41,42 +37,35 @@ function ViewCategoryWiseProduct() {
         if (/^[A-Za-z ]*$/.test(temp)) {
             setName(temp)
         }
-        setSearchProdList(mainProdList.filter(prod => prod.Prod_name.toLowerCase().includes(temp.toLowerCase())));
-        setShowDropdown(true);
-        if (e.target.value === '') {
-            setSearchProdList([])
-        }
+        setProdList(mainProdList.filter(prod => prod.Prod_name.toLowerCase().includes(temp.toLowerCase())));
     }
 
-    const navigateProduct = (id) => {
-        console.log(id)
-        navigate(`../view_product/${id}`)
-    }
+    const updateCart = (prodId, prodPrice) => {
+        const formdata = new FormData();
+        formdata.append('usrId', localStorage.getItem('usrId'))
+        formdata.append('prodId', prodId)
+        formdata.append('cartQty', 50)
+        formdata.append('cartPrice', prodPrice * 50)
+        Axios.post('http://localhost:8000/retailer/insertCart', formdata).then((response) => {
+            if(response.data.cartStatus==''){
+                setMessage(`You've successfully added product to your cart!`)
+            }
+            else{
+                setMessage(response.data.cartStatus+'!')
+            }
+        });
+      }
 
     return (
         <>
             <div className="retailer_content_area px-5 pt-5">
+            {message && <div className="position-fixed start-50 translate-middle-x text-success mb-3 fw-bold fs-4" style={{ zIndex: "1000", top: '10%' }}><span className="bg-success bg-opacity-25 p-2 rounded">{message}</span></div>}
                 <div className='row'>
                     <div className="col-3">
                         <div className="input-group">
-                            <input type="text" value={name} onChange={searchName} onBlur={() => setSearchProdList([])} className="form-control" placeholder="Search by Product name, Eg.Apple, Grapes" />
+                            <input type="text" value={name} onChange={searchName} className="form-control" placeholder="Search by Product name, Eg.Apple, Grapes" />
                             <button className="btn btn-outline-secondary"><i className='fa fa-search'></i></button>
                         </div>
-
-                        <ul className="list-group list-group-flush">
-                            {
-                                searchProdList.map((prod) => {
-                                    return (
-                                        <li className="list-group-item list-group-item-action">
-                                            {console.log(prod)}
-                                            <button className='nav-link text-success' onClick={() => navigateProduct(prod.Prod_id)}>
-                                                {prod.Prod_name}
-                                            </button>
-                                        </li>
-                                    )
-                                })
-                            }
-                        </ul>
 
                         <div className="card mt-4">
                             <div className="card-header fw-bold fs-5">
@@ -126,7 +115,7 @@ function ViewCategoryWiseProduct() {
                                                     <div>(Shipping charge: &#8377;100)</div><br />
 
                                                     <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
-                                                    <NavLink to="" className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</NavLink><br /><br />
+                                                    <button onClick={() => updateCart(prod.Prod_id, prod.Prod_price)} className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 
                                                     <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
 

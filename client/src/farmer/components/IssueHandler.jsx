@@ -8,17 +8,17 @@ function IssueHandler({ choice }) {
 
     const navigate = useNavigate()
 
-    const [issue, setIssue] = useState('Add Category')
-    const [productId, setProductId] = useState(0)
-    const [orderId, setOrderId] = useState(0)
+    const [issueOn, setIssueOn] = useState()
+    const [issueId, setIssueId] = useState()
+    const [issue, setIssue] = useState()
     const [description, setDescription] = useState()
     const [isContentAvailiable, setIsContentAvailiable] = useState(true)
     const [queryList, setQueryList] = useState([])
 
-    const category = ['Add Category', 'Issue on Order', 'Issue on Product', 'Issue on Profile', 'Other']
+    const category = ['Issue on Profile','Issue on Order', 'Issue on Product','Add Category', 'Other']
 
     useEffect(() => {
-        Axios.post('http://localhost:8000/query/getallfarmer', { id: localStorage.getItem('usrId') }).then((response) => {
+        Axios.post('http://localhost:8000/query/getall', { id: localStorage.getItem('usrId'), usr: localStorage.getItem('userType') }).then((response) => {
             setQueryList(response.data)
         })
     }, [])
@@ -30,10 +30,10 @@ function IssueHandler({ choice }) {
     const insertIssue = () => {
         console.log(issue)
         const formdata = new FormData();
-        formdata.append('farmerId', localStorage.getItem('usrId'))
-        formdata.append('retailerId', 0)
-        formdata.append('productId', productId)
-        formdata.append('orderId', orderId)
+        formdata.append('user', localStorage.getItem('userType'))
+        formdata.append('id', localStorage.getItem('usrId'))
+        formdata.append('issueOn', issueOn)
+        formdata.append('issueId', issueId)
         formdata.append('issue', issue)
         formdata.append('description', description)
         Axios.post('http://localhost:8000/query/insert', formdata).then((response) => {
@@ -69,7 +69,8 @@ function IssueHandler({ choice }) {
                 <table className="table table-striped table-bordered table-hover" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                     <tbody>
                         <tr>
-                            <th>Product/Order</th>
+                            <th>Issue on</th>
+                            <th>Issue id</th>
                             <th>Issue</th>
                             <th>Description</th>
                             <th>Status</th>
@@ -80,7 +81,8 @@ function IssueHandler({ choice }) {
                             queryList.map((query) => {
                                 return (
                                     <tr>
-                                        <td>{(query.Product_id == 0) ? 'Add Category' : <>{query.Product_id}</>}</td>
+                                        <td>{query.Issue_on}</td>
+                                        <td>{query.Issue_id}</td>
                                         <td>{query.Query_name}</td>
                                         <td>{query.Query_description}</td>
                                         <td className='text-danger'>

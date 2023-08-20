@@ -21,8 +21,6 @@ function Dashboard() {
 
         <ViewQueries />
       </div>
-
-      <Footer />
     </>
   )
 }

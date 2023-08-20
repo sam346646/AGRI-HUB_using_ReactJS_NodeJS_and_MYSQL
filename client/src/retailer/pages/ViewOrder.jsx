@@ -59,7 +59,7 @@ function ViewOrder({ choice }) {
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-action">
                                     <NavLink className='nav-link text-success' to="../view_retailer_orders/1">
-                                        <i className='fa fa-cubes'></i> &nbsp;All Orders
+                                        <i className='fa fa-cubes'></i> All Orders
                                     </NavLink>
                                 </li>
                                 <li class="list-group-item list-group-item-action">

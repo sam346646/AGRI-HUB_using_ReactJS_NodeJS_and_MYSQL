@@ -42,7 +42,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'agrihub'
+    database: 'agrihubtemp'
 })
 
 
@@ -404,16 +404,34 @@ app.post("/retailer/insertCart", upload.single(), (req, res) => {
     const prodId = req.body.prodId;
     const cartQty = req.body.cartQty;
     const cartPrice = req.body.cartPrice;
+    const qry = `SELECT c.Cart_id,c.Cart_quantity,p.Prod_qty from carts AS c,products AS p WHERE c.Cart_retailer_id=? AND c.Prod_id=? AND c.Prod_id=p.Prod_id`
 
-    const qry = "INSERT INTO carts (Cart_retailer_id,Prod_id,Cart_quantity,Cart_price) VALUES(?,?,?,?);"
-    db.query(qry, [usrId, prodId, cartQty, cartPrice], (err, result) => {
-        if (err) {
-            console.log(err)
+    db.query(qry, [usrId, prodId], (err, result) => {
+        if (result.length === 1) {
+            if (result[0].Cart_quantity + parseInt(cartQty) <= result[0].Prod_qty - 50 || result[0].Cart_quantity + parseInt(cartQty) == result[0].Prod_qty) {
+                const qry1 = "UPDATE carts SET Cart_quantity=Cart_quantity+?,Cart_price=Cart_price+? WHERE Cart_id=?;"
+                db.query(qry1, [cartQty, cartPrice, result[0].Cart_id], (err, result1) => {
+                    if (result1) {
+                        res.json({ cartStatus: '' })
+                    }
+                })
+            }
+            else {
+                res.json({ cartStatus: 'Enough quantity not availiable to add this product to cart' })
+            }
         }
         else {
-            res.status({ msg: "Added to cart Successfully" })
+            const qry1 = "INSERT INTO carts (Cart_retailer_id,Prod_id,Cart_quantity,Cart_price) VALUES(?,?,?,?);"
+            db.query(qry1, [usrId, prodId, cartQty, cartPrice], (err, result1) => {
+                if (result) {
+                    res.json({ cartStatus: '' })
+                }
+            })
         }
     })
+
+
+
 })
 
 app.delete("/retailer/deletecartitem/:cartid", (req, res) => {
@@ -473,112 +491,16 @@ app.post("/query/insert", upload.single(), (req, res) => {
     })
 })
 
-app.post("/query/getallfarmer", (req, res) => {
-    const id=req.body.id
-    const qry = `SELECT * FROM queries WHERE Farmer_id=${id};`
-    db.query(qry, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
-        }
-
-    })
-})
-
-app.get("/query/getall", (req, res) => {
-    const qry = "SELECT * FROM queries;"
-    db.query(qry, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
-        }
-
-    })
-})
-
-
-app.get("/query/getpending", (req, res) => {
-    const qry = "SELECT * FROM queries WHERE Query_status='In process';"
-    db.query(qry, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
-        }
-
-    })
-})
-
-app.get("/query/get/:id", (req, res) => {
-
-    const id = req.params.id;
-    let qry1;
-
-    const qry = `SELECT * FROM queries WHERE Query_id=${id};`
-    db.query(qry, (err, result) => {
+app.post("/query/getall", (req, res) => {
+    const { id, usr } = req.body
+    let qry=`SELECT * FROM queries WHERE Query_user='${usr}' AND Query_user_id=${id}`;
+    db.query(qry, [usr, id], (err, result) => {
         if (result) {
-            if (result[0].Query_name === 'Add Category') {
-                qry1 = `SELECT f.Farmer_email,q.* FROM farmers AS f,queries as q WHERE q.Query_id=${id} AND q.Farmer_id=f.Farmer_id`
-                db.query(qry1, (err, result1) => {
-                    if (result1) {
-                        res.send(result1);
-                    }
-                })
-            }
-
+            res.send(result)
         }
     })
 })
 
-app.put("/query/changestatus/:id", upload.single(), (req, res) => {
-    const id = req.params.id;
-    const reason = req.body.reason;
-
-    let qry = `UPDATE queries SET Query_status='Rejected', Query_description='${reason}' WHERE Query_id=${id}`;
-    db.query(qry, (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send({ msg: "Order deleted successfully" })
-        }
-    })
-})
-
-
-app.post("/admin/insertCategory", upload.single(), (req, res) => {
-    const name = req.body.name;
-    const measure = req.body.measure;
-    const expiry = req.body.expiry;
-
-    const qry = "INSERT INTO categories (Category_name,Measure,Expiry) VALUES(?,?,?);"
-    db.query(qry, [name, measure, expiry], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.status({ msg: "Category added Successfully" })
-        }
-    })
-
-    if (req.body.queryId) {
-        const id = req.body.queryId;
-        const qry1 = `UPDATE queries SET Query_status='Solved' WHERE Query_id=${id}`
-        db.query(qry1, (err, result) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                res.status({ msg: "Status updated Successfully" })
-            }
-        })
-    }
-})
 
 //Farmer
 app.post("/farmer/insert", upload.single(), (req, res) => {
@@ -630,18 +552,18 @@ app.post('/user/login', (req, res) => {
 
 //Register validation - Farmer, Retailer
 app.post('/user/insert', (req, res) => {
-    const { name, district, contact, email, pass, user } = req.body;
+    const { name, area, village, district, contact, email, pass, user } = req.body;
     let qry;
     let qry1;
     const new_name = capitalizeFirstWord(name);
 
     if (user === 'Retailer') {
         qry = `SELECT Retailer_email as e FROM retailers WHERE Retailer_email = ?`;
-        qry1 = `INSERT INTO retailers (Retailer_name,Retailer_district,Retailer_contact,Retailer_email,Retailer_pass) VALUES(?,?,?,?,?);`;
+        qry1 = `INSERT INTO retailers (Retailer_name,Retailer_area,Retailer_village,Retailer_district,Retailer_contact,Retailer_email,Retailer_pass) VALUES(?,?,?,?,?,?,?);`;
     }
     else if (user === 'Farmer') {
         qry = `SELECT Farmer_email as e FROM farmers WHERE Farmer_email = ?`;
-        qry1 = `INSERT INTO farmers (Farmer_name,Farmer_district,Farmer_contact,Farmer_email,Farmer_pass) VALUES(?,?,?,?,?);`
+        qry1 = `INSERT INTO farmers (Farmer_name,Farmer_area,Farmer_village,Farmer_district,Farmer_contact,Farmer_email,Farmer_pass) VALUES(?,?,?,?,?,?,?);`
     }
 
     db.query(qry, [email], (err, result) => {
@@ -649,7 +571,7 @@ app.post('/user/insert', (req, res) => {
             res.json({ userExists: true });
         }
         else {
-            db.query(qry1, [new_name, district, contact, email, pass], (err, result1) => {
+            db.query(qry1, [new_name, area, village, district, contact, email, pass], (err, result1) => {
                 if (result1) {
                     res.json({ success: true, usrId: result1.insertId });
                 }
@@ -664,7 +586,7 @@ app.post('/user/insert', (req, res) => {
 
 //Retailer
 app.get("/user/getretailers", (req, res) => {
-    const qry = "SELECT Retailer_id AS id,Retailer_name AS name,Retailer_district AS district,Retailer_contact AS contact,Retailer_email AS email FROM retailers"
+    const qry = "SELECT Retailer_id AS id,Retailer_name AS name,Retailer_area AS area,Retailer_village AS village,Retailer_district AS district,Retailer_contact AS contact,Retailer_email AS email FROM retailers"
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -676,10 +598,10 @@ app.get("/user/getretailers", (req, res) => {
 })
 
 app.put("/user/updateRetailer", (req, res) => {
-    const { rname, district, contact, email, rid } = req.body;
-    const qry = `UPDATE retailers SET Retailer_name=?, Retailer_district=?, Retailer_contact=?, Retailer_email=? WHERE Retailer_id=?`
+    const { rname, area, village, district, contact, rid } = req.body;
+    const qry = `UPDATE retailers SET Retailer_name=?, Retailer_area=?,Retailer_village=?,Retailer_district=?, Retailer_contact=? WHERE Retailer_id=?`
 
-    db.query(qry, [rname, district, contact, email, rid], (err, result) => {
+    db.query(qry, [rname, area, village, district, contact, rid], (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -743,6 +665,132 @@ app.put("/user/terminateFarmer", (req, res) => {
         }
     })
 })
+
+app.post("/user/get", (req, res) => {
+    const { id, choice } = req.body;
+    let qry;
+
+    if (choice == 'retailer') {
+        qry = `SELECT Retailer_name AS name,Retailer_area AS area,Retailer_village AS village,Retailer_district AS district,Retailer_contact AS contact,Retailer_email AS email FROM retailers WHERE Retailer_id=${id}`
+    }
+    else if (choice == 'farmer') {
+        qry = `SELECT Farmer_name AS name,Farmer_area AS area,Farmer_village AS village,Farmer_district AS district,Farmer_contact AS contact,Farmer_email AS email FROM farmers WHERE Farmer_id=${id}`
+    }
+
+    db.query(qry, (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+        else {
+            res.send(result);
+        }
+    })
+})
+
+app.put('/user/update', (req, res) => {
+    const { name, area, village, district, contact, choice, id } = req.body;
+    let qry;
+    const new_name = capitalizeFirstWord(name);
+
+    if (choice === 'retailer') {
+        qry = `UPDATE retailers SET Retailer_name=?,Retailer_area=?,Retailer_village=?,Retailer_district=?,Retailer_contact=? WHERE Retailer_id=?;`;
+    }
+    else if (choice === 'farmer') {
+        qry = `UPDATE farmers SET Farmer_name=?,Farmer_area=?,Farmer_village=?,Farmer_district=?,Farmer_contact=? WHERE Farmer_id=?;`
+    }
+
+    db.query(qry, [new_name, area, village, district, contact, id], (err, result) => {
+        if (result) {
+            res.json({ success: true })
+        }
+        else {
+            res.json({ success: false });
+        }
+    })
+})
+
+app.put('/user/changepass', (req, res) => {
+    const { pass, choice, id } = req.body;
+    let qry;
+    let qry1;
+
+    if (choice === 'retailer') {
+        qry = `SELECT Retailer_pass as p FROM retailers WHERE Retailer_id = ?`;
+        qry1 = `UPDATE retailers SET Retailer_pass=? WHERE Retailer_id=?;`;
+    }
+    else if (choice === 'farmer') {
+        qry = `SELECT Farmer_pass as p FROM farmers WHERE Farmer_id = ?`;
+        qry1 = `UPDATE farmers SET Farmer_pass=? WHERE Farmer_id=?;`;
+    }
+
+    db.query(qry, [id], (err, result) => {
+        if (result[0].p === pass) {
+            res.json({ samepass: true });
+        }
+        else {
+            db.query(qry1, [pass, id], (err, result1) => {
+                if (result1) {
+                    res.json({ success: true });
+                }
+                else {
+                    res.json({ success: false });
+                }
+            })
+        }
+    });
+});
+
+app.put('/user/changeemail', (req, res) => {
+    const { email, choice, id } = req.body;
+    let qry;
+    let qry1;
+
+    if (choice === 'retailer') {
+        qry = `SELECT Retailer_email as e FROM retailers WHERE Retailer_email = ?`;
+        qry1 = `UPDATE retailers SET Retailer_email=? WHERE Retailer_id=?;`;
+    }
+    else if (choice === 'farmer') {
+        qry = `SELECT Farmer_email as e FROM farmers WHERE Farmer_email = ?`;
+        qry1 = `UPDATE farmers SET Farmer_email=? WHERE Farmer_id=?;`;
+    }
+
+    db.query(qry, [email], (err, result) => {
+        if (result.length === 1) {
+            res.json({ emailExists: true });
+        }
+        else {
+            db.query(qry1, [email, id], (err, result1) => {
+                if (result1) {
+                    res.json({ success: true });
+                }
+                else {
+                    res.json({ success: false });
+                }
+            })
+        }
+    });
+})
+
+
+
+//ADMIN
+app.post('/admin/getorder', (req, res) => {
+    const { user, email, name } = req.body;
+    console.log(user, email, name)
+    let qry;
+
+    if (user == 'farmer') {
+        qry = `SELECT o.*,p.* FROM retailerorders AS o,farmers AS f,products AS p WHERE o.Prod_id=p.Prod_id AND p.Prod_name= ? AND p.Farmer_id=f.Farmer_id AND f.Farmer_email=?`
+    }
+
+    db.query(qry, [name, email], (err, result) => {
+        if (result) {
+            res.send(result);
+        }
+    });
+})
+
+
 
 
 app.listen(8000, () => {

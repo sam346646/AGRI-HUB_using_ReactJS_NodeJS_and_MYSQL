@@ -42,8 +42,20 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
+                            <NavLink to='/farmer/reports' className="nav-link">
+                                <i className="fa fa-flask"></i> Reports
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
                             <NavLink to='/farmer/report_issue/1' className="nav-link">
                                 <i className="fa fa-book"></i> Issues
+                            </NavLink>
+                        </li>
+
+                        <li className="nav-item">
+                            <NavLink to='/farmer/manage_profile/1' className="nav-link">
+                                <i className="fa fa-user"></i> Profile
                             </NavLink>
                         </li>
 

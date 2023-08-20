@@ -7,6 +7,8 @@ function Register({setIsLogin}) {
 
     const [user, setUser] = useState('Retailer')
     const [name, setName] = useState()
+    const [area, setArea] = useState()
+    const [village, setVillage] = useState()
     const [district, setDistrict] = useState('Dakshina Kannada')
     const [contact, setContact] = useState()
     const [email, setEmail] = useState()
@@ -14,6 +16,8 @@ function Register({setIsLogin}) {
     const [cpass, setCpass] = useState()
 
     const [errName, setErrName] = useState()
+    const [errArea, setErrArea] = useState()
+    const [errVillage, setErrVillage] = useState()
     const [errContact, setErrContact] = useState()
     const [errEmail, setErrEmail] = useState()
     const [errPass, setErrPass] = useState()
@@ -23,13 +27,13 @@ function Register({setIsLogin}) {
 
     //Validation
     useEffect(() => {
-        if (errName || errContact || errEmail || errPass || errCpass || !name || !contact || !email || !pass || !cpass) {
+        if (errName || errArea || errVillage || errContact || errEmail || errPass || errCpass || !name || !area || !village || !contact || !email || !pass || !cpass) {
             setIsInvalid(true)
         }
         else {
             setIsInvalid(false)
         }
-    }, [errName, errContact, errEmail, errPass, errCpass, name, contact, email, pass, cpass])
+    }, [errName, errArea, errVillage, errContact, errEmail, errPass, errCpass, name, area, village, contact, email, pass, cpass])
 
     const districtList = ['Chamarajanagara', 'Chikkamagaluru', 'Dakshina Kannada', 'Hassan', 'Kodagu', 'Mandya', 'Mysuru', 'Udupi', 'Bengaluru Rural', 'Bengaluru Urban', 'Chikkaballapura', 'Chitradurga', 'Davanagere', 'Kolar', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Bagalkote', 'Belagavi', 'Dharwada', 'Gadaga', 'Haveri', 'Uttara Kannada', 'Vijayapura', 'Ballari', 'Bidar', 'Kalaburagi', 'Koppala', 'Raichuru', 'Vijayanagara', 'Yadagiri']
 
@@ -39,13 +43,13 @@ function Register({setIsLogin}) {
         }, 5000);
     }, [errRegister])
 
-    const register = async() => {
+    const registerHandle = async() => {
 
         //Admin, Farmer, Retailer Regiser and Validation
         const response = await fetch('http://localhost:8000/user/insert', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify({ name, district, contact, email, pass, user }),
+            body: JSON.stringify({ name, area, village, district, contact, email, pass, user }),
         });
         const data = await response.json();
         if (data.success) {
@@ -91,9 +95,45 @@ function Register({setIsLogin}) {
                             }
                         }
                         }
-                        onBlur={() => (name === '') ? setErrName(`Please provide valid ${user} name.`) : setErrName('')}
+                        onBlur={() => (name === '') ? setErrName(`Please provide ${user} name.`) : setErrName('')}
                         className="form-control" maxLength='30' autoComplete="off" placeholder='Sam' required />
                     <span class="text-danger" aria-live="polite">{errName}</span>
+                </div>
+
+                <div className="form-group mb-2">
+                    <label className="form-label">{user} Area</label>
+                    <input type="text" value={area}
+                        onChange={(e) => {
+                            if (/^[A-Za-z0-9 ,.]*$/.test(e.target.value)) {
+                                setArea(e.target.value)
+                                setErrArea('')
+                            }
+                            else {
+                                setErrArea(`Please provide valid ${user} area.`)
+                            }
+                        }
+                        }
+                        onBlur={() => (area === '') ? setErrArea(`Please provide ${user} area.`) : setErrArea('')}
+                        className="form-control" maxLength='30' autoComplete="off" placeholder='Near City Center, Hampankatta' required />
+                    <span class="text-danger" aria-live="polite">{errArea}</span>
+                </div>
+
+                <div className="form-group mb-2">
+                    <label className="form-label">{user} Village/City</label>
+                    <input type="text" value={village}
+                        onChange={(e) => {
+                            if (/^[A-Za-z ]*$/.test(e.target.value)) {
+                                setVillage(e.target.value)
+                                setErrVillage('')
+                            }
+                            else {
+                                setErrVillage(`Please provide valid ${user} village/city.`)
+                            }
+                        }
+                        }
+                        onBlur={() => (village === '') ? setErrVillage(`Please provide ${user} village/city.`) : setErrVillage('')}
+                        className="form-control" maxLength='30' autoComplete="off" placeholder='Mangalore' required />
+                    <span class="text-danger" aria-live="polite">{errVillage}</span>
                 </div>
 
                 <div className="form-group mb-3">
@@ -118,7 +158,7 @@ function Register({setIsLogin}) {
                             }
                         }
                         }
-                        onBlur={() => (contact === '') ? setErrContact(`Please provide valid ${user} contact no.`) : setErrContact('')}
+                        onBlur={() => (contact === '' || contact.length!==10) ? setErrContact(`Please provide 10 digits ${user} contact no.`) : setErrContact('')}
                         className="form-control" maxLength='10' autoComplete="off" placeholder='7760506932' required />
                     <span class="text-danger" aria-live="polite">{errContact}</span>
                 </div>
@@ -153,7 +193,7 @@ function Register({setIsLogin}) {
                 </div>
 
                 <div className="text-center mb-2">
-                    <button onClick={() => register()} className="btn btn-secondary" disabled={isInvalid}> <i className="fa fa-user"></i>&nbsp;{user} Register </button><br/>
+                    <button onClick={()=>registerHandle()} className="btn btn-secondary" disabled={isInvalid}> <i className="fa fa-user"></i>&nbsp;{user} Register </button><br/>
                     <span className='text-danger'>{errRegister}</span>
                 </div>
 

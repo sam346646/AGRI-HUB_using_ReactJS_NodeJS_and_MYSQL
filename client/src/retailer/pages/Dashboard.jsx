@@ -33,8 +33,13 @@ function Dashboard() {
     formdata.append('cartQty', 50)
     formdata.append('cartPrice', prodPrice * 50)
     Axios.post('http://localhost:8000/retailer/insertCart', formdata).then((response) => {
+      if (response.data.cartStatus == '') {
+        setMessage(`You've successfully added product to your cart!`)
+      }
+      else {
+        setMessage(response.data.cartStatus + '!')
+      }
     });
-    setMessage(`You've successfully added ${name} to your cart!`)
   }
 
 

@@ -18,13 +18,15 @@ function ViewRetailers() {
 
     const [rid, setRid] = useState()
     const [rname, setRname] = useState()
+    const [area, setArea] = useState()
+    const [village, setVillage] = useState()
     const [district, setDistrict] = useState()
     const [contact, setContact] = useState()
-    const [email, setEmail] = useState()
 
     const [errName, setErrName] = useState()
+    const [errArea, setErrArea] = useState()
+    const [errVillage, setErrVillage] = useState()
     const [errContact, setErrContact] = useState()
-    const [errEmail, setErrEmail] = useState()
     const [isInvalid, setIsInvalid] = useState(false)
 
     const districtList = ['Chamarajanagara', 'Chikkamagaluru', 'Dakshina Kannada', 'Hassan', 'Kodagu', 'Mandya', 'Mysuru', 'Udupi', 'Bengaluru Rural', 'Bengaluru Urban', 'Chikkaballapura', 'Chitradurga', 'Davanagere', 'Kolar', 'Ramanagara', 'Shivamogga', 'Tumakuru', 'Bagalkote', 'Belagavi', 'Dharwada', 'Gadaga', 'Haveri', 'Uttara Kannada', 'Vijayapura', 'Ballari', 'Bidar', 'Kalaburagi', 'Koppala', 'Raichuru', 'Vijayanagara', 'Yadagiri']
@@ -43,55 +45,52 @@ function ViewRetailers() {
 
     const searchName = (e) => {
         let temp = e.target.value;
-        if (/^[A-Za-z ]*$/.test(temp)) {
+        if (/^[A-Za-z @.]*$/.test(temp)) {
             setName(temp)
         }
         setIsEditEnable(false)
-        setUpdatedRetailerList(retailerList.filter(retailer => retailer.name.toLowerCase().includes(temp.toLowerCase())));
+        setUpdatedRetailerList(retailerList.filter(retailer => retailer.email.toLowerCase().includes(temp.toLowerCase())));
     }
 
     const editHandle = (r) => {
         setIsEditEnable(true)
         setRid(r.id)
         setRname(r.name)
+        setArea(r.area)
+        setVillage(r.village)
         setDistrict(r.district)
         setContact(r.contact)
-        setEmail(r.email)
     }
 
     //Validation
     useEffect(() => {
-        if (errName || errContact || errEmail || !rname || !contact || !email) {
+        if (errName || errArea || errVillage || errContact || !rname || !area || !village || !contact) {
             setIsInvalid(true)
         }
         else {
             setIsInvalid(false)
         }
-    }, [errName, errContact, errEmail, rname, contact, email])
+    }, [errName, errArea, errVillage, errContact, rname, area, village, contact])
 
-    const updateRetailer = async() => {
-        const response = await fetch('http://localhost:8000/user/updateRetailer', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify({ rname, district, contact, email, rid }),
-        });
-        navigate('/admin')
+    const updateRetailer = () => {
+        Axios.put('http://localhost:8000/user/updateRetailer', { rname, area, village, district, contact, rid }).then((response) => {
+            if (response) {
+                navigate('/admin')
+            }
+        })
     }
 
-    const terminateRetailer= async(id)=> {
-        const response = await fetch('http://localhost:8000/user/terminateRetailer', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json', },
-            body: JSON.stringify({ id }),
-        });
-        navigate('/admin')
+    const terminateRetailer = (id) => {
+        Axios.put('http://localhost:8000/user/terminateRetailer', { id }).then((response) => {
+            navigate('/admin')
+        })
     }
 
     return (
         <div className='content_area'>
             <Breadcrumbs breadcrumbs_title='Retailers' breadcrumbs_icon='users' />
             <div class="input-group my-3 ms-auto w-25">
-                <input type="text" class="form-control" placeholder="Search by Retailer name" value={name} onChange={searchName} />
+                <input type="text" class="form-control" placeholder="Search by Retailer email" value={name} onChange={searchName} />
                 <button class="btn btn-outline-secondary"><i className='fa fa-search'></i></button>
             </div>
 
@@ -101,7 +100,7 @@ function ViewRetailers() {
                     <tbody>
                         <tr>
                             <th>Name</th>
-                            <th>District</th>
+                            <th>Address</th>
                             <th>Contact</th>
                             <th>Email</th>
                             <th>Edit</th>
@@ -114,7 +113,7 @@ function ViewRetailers() {
                                 return (
                                     <tr>
                                         <td>{retailer.name}</td>
-                                        <td>{retailer.district}</td>
+                                        <td>{retailer.area}, {retailer.village}, {retailer.district}</td>
                                         <td>{retailer.contact}</td>
                                         <td>{retailer.email}</td>
                                         <td>
@@ -152,6 +151,42 @@ function ViewRetailers() {
                         <span class="text-danger" aria-live="polite">{errName}</span>
                     </div>
 
+                    <div className="form-group mb-2">
+                        <label className="form-label">Area</label>
+                        <input type="text" value={area}
+                            onChange={(e) => {
+                                if (/^[A-Za-z0-9 ,.]*$/.test(e.target.value)) {
+                                    setArea(e.target.value)
+                                    setErrArea('')
+                                }
+                                else {
+                                    setErrArea(`Please provide valid area.`)
+                                }
+                            }
+                            }
+                            onBlur={() => (area === '') ? setErrArea(`Please provide area.`) : setErrArea('')}
+                            className="form-control" maxLength='30' autoComplete="off" placeholder='Near City Center, Hampankatta' required />
+                        <span class="text-danger" aria-live="polite">{errArea}</span>
+                    </div>
+
+                    <div className="form-group mb-2">
+                        <label className="form-label">Village/City</label>
+                        <input type="text" value={village}
+                            onChange={(e) => {
+                                if (/^[A-Za-z ]*$/.test(e.target.value)) {
+                                    setVillage(e.target.value)
+                                    setErrVillage('')
+                                }
+                                else {
+                                    setErrVillage(`Please provide valid village/city.`)
+                                }
+                            }
+                            }
+                            onBlur={() => (village === '') ? setErrVillage(`Please provide village/city.`) : setErrVillage('')}
+                            className="form-control" maxLength='30' autoComplete="off" placeholder='Mangalore' required />
+                        <span class="text-danger" aria-live="polite">{errVillage}</span>
+                    </div>
+
                     <div className="form-group mb-3">
                         <label className="form-label">District</label>
                         <select value={district} onChange={(e) => setDistrict(e.target.value)} className="form-select" required>
@@ -179,20 +214,10 @@ function ViewRetailers() {
                         <span class="text-danger" aria-live="polite">{errContact}</span>
                     </div>
 
-                    <div className="form-group mb-2">
-                        <label className="form-label">Email</label>
-                        <input type="text" value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            onBlur={() =>
-                                /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$/.test(email) ? setErrEmail('') : setErrEmail(`Please provide a valid email.`)
-                            }
-                            className="form-control" maxLength='20' autoComplete="off" placeholder='example@gmail.com' required />
-                        <span class="text-danger" aria-live="polite">{errEmail}</span>
-                    </div>
-
                     <div className="text-center mb-2">
-                        <button onClick={() => updateRetailer()} className="btn btn-secondary mt-3" disabled={isInvalid}> <i className="fa fa-users"></i>&nbsp;Update </button><br />
+                        <button  data-bs-toggle="modal" data-bs-target={`#editBtn`} className="btn btn-secondary mt-3" disabled={isInvalid}> <i className="fa fa-users"></i>&nbsp;Update </button><br />
                     </div>
+                    <CustomModal message={`You are updating retailer details.`} action={() => updateRetailer()} modId={`editBtn`} />
                 </div>
             }
         </div>

@@ -15,6 +15,8 @@ import DeleteProduct from "./farmer/pages/DeleteProduct";
 import UpdateOrder from "./farmer/pages/UpdateOrder";
 import ViewRetailerOrders from "./farmer/pages/ViewRetailerOrders";
 import ReportIssue from './farmer/pages/ReportIssue';
+import ManageProfileFarmer from './farmer/pages/ManageProfile';
+import ViewReports from './farmer/pages/ViewReports';
 
 import NavbarRetailer from "./retailer/pages/Navbar"
 import DashboardRetailer from "./retailer/pages/Dashboard"
@@ -23,6 +25,7 @@ import ViewCategoryWiseProductRetailer from "./retailer/pages/ViewCategoryWisePr
 import ViewOrder from './retailer/pages/ViewOrder';
 import ManageOrders from './retailer/pages/ManageOrders';
 import ViewCart from './retailer/pages/ViewCart';
+import ManageProfile from './retailer/pages/ManageProfile';
 
 import NavbarAdmin from "./admin/pages/Navbar"
 import DashboardAdmin from "./admin/pages/Dashboard"
@@ -30,9 +33,8 @@ import SolveQuery from './admin/pages/SolveQuery';
 import ViewQueries from './admin/pages/ViewQueries';
 import ViewRetailers from './admin/pages/ViewRetailers';
 import ViewFarmers from './admin/pages/ViewFarmers';
+import ViewAdminOrders from './admin/pages/ViewAdminOrders';
 
-
-import Footer from './retailer/pages/Footer';
 import Login from './Login';
 
 function App() {
@@ -60,6 +62,8 @@ function App() {
             <Route path="update_order/:id" element={<UpdateOrder />} />
             <Route path="view_retailer_orders/:ch" element={<ViewRetailerOrders />} />
             <Route path="report_issue/:ch" element={<ReportIssue />} />
+            <Route path="manage_profile/:manageProfileCh" element={<ManageProfileFarmer />} />
+            <Route path="reports" element={<ViewReports />} />
           </Route>
         )}
 
@@ -72,6 +76,7 @@ function App() {
             <Route path="view_queries" element={<ViewQueries fromNavbar={true} />} />
             <Route path="view_retailers" element={<ViewRetailers />} />
             <Route path="view_farmers" element={<ViewFarmers />} />
+            <Route path="view_orders" element={<ViewAdminOrders />} />
           </Route>
         )}
 
@@ -84,6 +89,7 @@ function App() {
             <Route path="view_cart" element={<ViewCart />} />
             <Route path="view_orders" element={<ViewOrder choice={1} />} />
             <Route path="view_retailer_orders/:ch" element={<ManageOrders />} />
+            <Route path="manage_profile/:manageProfileCh" element={<ManageProfile />} />
           </Route>
         )}
 
