@@ -26,6 +26,7 @@ import ViewOrder from './retailer/pages/ViewOrder';
 import ManageOrders from './retailer/pages/ManageOrders';
 import ViewCart from './retailer/pages/ViewCart';
 import ManageProfile from './retailer/pages/ManageProfile';
+import ReportIssueRetailer from './farmer/pages/ReportIssue';
 
 import NavbarAdmin from "./admin/pages/Navbar"
 import DashboardAdmin from "./admin/pages/Dashboard"
@@ -63,7 +64,7 @@ function App() {
             <Route path="view_retailer_orders/:ch" element={<ViewRetailerOrders />} />
             <Route path="report_issue/:ch" element={<ReportIssue />} />
             <Route path="manage_profile/:manageProfileCh" element={<ManageProfileFarmer />} />
-            <Route path="reports" element={<ViewReports />} />
+            <Route path="reports/:menuCh" element={<ViewReports />} />
           </Route>
         )}
 
@@ -89,6 +90,7 @@ function App() {
             <Route path="view_cart" element={<ViewCart />} />
             <Route path="view_orders" element={<ViewOrder choice={1} />} />
             <Route path="view_retailer_orders/:ch" element={<ManageOrders />} />
+            <Route path="report_issue/:ch" element={<ReportIssueRetailer />} />
             <Route path="manage_profile/:manageProfileCh" element={<ManageProfile />} />
           </Route>
         )}

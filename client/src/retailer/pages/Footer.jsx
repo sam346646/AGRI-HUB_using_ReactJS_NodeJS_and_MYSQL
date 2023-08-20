@@ -41,6 +41,7 @@ function Footer() {
                             <NavLink to="https://www.instagram.com/?hl=en" target="_blank" className="fa fa-instagram nav-link me-2"></NavLink>
                             <NavLink to="mailto:sammanasseh310@gmail.com?subject=Regarding Query&body=Please write to us" target="_blank" className="fa fa-envelope nav-link me-2"></NavLink>
                         </p>
+                        <NavLink to={`/retailer/report_issue/1`} className='nav-link text-danger'>Report Issue</NavLink>
                     </div>
 
                     <div className='col-3'>

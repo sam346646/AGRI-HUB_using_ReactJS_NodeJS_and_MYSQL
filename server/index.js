@@ -42,7 +42,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'agrihubtemp'
+    database: 'agrigraph'
 })
 
 
@@ -472,16 +472,16 @@ app.post("/retailer/getcartitems", (req, res) => {
 
 //Queries
 app.post("/query/insert", upload.single(), (req, res) => {
-    const farmerId = req.body.farmerId;
-    const retailerId = req.body.retailerId;
-    const productId = req.body.productId;
-    const orderId = req.body.orderId;
+    const user = req.body.user;
+    const id = req.body.id;
+    const issueOn = req.body.issueOn;
+    const issueId = req.body.issueId;
     const issue = req.body.issue;
     const description = req.body.description;
     const status = 'In process';
 
-    const qry = "INSERT INTO queries (Farmer_id,Retailer_id,Product_id,Order_id,Query_name,Query_description,Query_status) VALUES(?,?,?,?,?,?,?);"
-    db.query(qry, [farmerId, retailerId, productId, orderId, issue, description, status], (err, result) => {
+    const qry = "INSERT INTO queries (Query_user,Query_user_id,Issue_on,Issue_id,Query_name,Query_description,Query_status) VALUES(?,?,?,?,?,?,?);"
+    db.query(qry, [user, id, issueOn, issueId, issue, description, status], (err, result) => {
         if (err) {
             console.log(err)
         }
@@ -493,8 +493,28 @@ app.post("/query/insert", upload.single(), (req, res) => {
 
 app.post("/query/getall", (req, res) => {
     const { id, usr } = req.body
-    let qry=`SELECT * FROM queries WHERE Query_user='${usr}' AND Query_user_id=${id}`;
+    let qry = `SELECT * FROM queries WHERE Query_user='${usr}' AND Query_user_id=${id}`;
     db.query(qry, [usr, id], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+    })
+})
+
+app.post("/query/getfarmerorder", (req, res) => {
+    const { usrId } = req.body
+    let qry = `SELECT o.Order_id,r.Retailer_name,p.Prod_name,o.Order_date,o.Quantity FROM retailers AS r,retailerorders AS o,products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND p.Farmer_id=?`;
+    db.query(qry, [usrId], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+    })
+})
+
+app.post("/query/getfarmerproduct", (req, res) => {
+    const { usrId } = req.body
+    let qry = `SELECT Prod_id,Prod_name,Prod_order_date,Prod_price FROM products WHERE Farmer_id=?`;
+    db.query(qry, [usrId], (err, result) => {
         if (result) {
             res.send(result)
         }
@@ -791,6 +811,64 @@ app.post('/admin/getorder', (req, res) => {
 })
 
 
+
+
+//Report
+app.post('/report/getsales/:ch', (req, res) => {
+
+    const ch = req.params.ch;
+    const { from, to } = req.body;
+    let qry,temp;
+
+    if(ch==3){
+        temp=''
+    }
+    else{
+        temp=` AND o.Order_date BETWEEN '${from}' AND '${to}' `
+    }
+
+    qry = `SELECT p.Prod_name, SUM(o.Quantity) AS Quantity FROM retailerorders AS o, products AS p WHERE o.Prod_id=p.Prod_id AND o.Order_status LIKE 'Order delivered successfully.' ${temp}GROUP BY p.Prod_name;`
+    db.query(qry, (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+        else{
+            console.log(err)
+        }
+    });
+})
+
+app.post('/report/getProfit/:prodId', (req, res) => {
+
+    const prodId = req.params.prodId;
+    let qry;
+
+    qry = `SELECT r.Retailer_name,o.Price, o.Profit FROM retailerorders AS o,Retailers AS r WHERE o.Prod_id=? AND o.Order_status LIKE 'Order delivered successfully.' AND o.Retailer_id=r.Retailer_id`
+    db.query(qry, [prodId], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+        else{
+            console.log(err)
+        }
+    });
+})
+
+app.post('/report/getProducts', (req, res) => {
+
+    const {usrId} = req.body;
+    let qry;
+
+    qry = `SELECT Prod_id AS id,Prod_name AS name,Prod_order_date AS date FROM products WHERE Farmer_id=?`
+    db.query(qry, [usrId], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+        else{
+            console.log(err)
+        }
+    });
+})
 
 
 app.listen(8000, () => {

@@ -15,13 +15,11 @@ function IssueHandler({ choice }) {
     const [isContentAvailiable, setIsContentAvailiable] = useState(true)
     const [queryList, setQueryList] = useState([])
     const [orderList, setOrderList] = useState([])
-    const [prodList, setProdList] = useState([])
 
     const [errDescription, setErrDescription] = useState()
     const [isOrder, setIsOrder] = useState(false)
-    const [isProduct, setIsProduct] = useState(false)
 
-    const category = ['Issue on Profile', 'Issue on Order', 'Issue on Product', 'Add Category', 'Issue on Approve Product', 'Other']
+    const category = ['Issue on Profile', 'Issue on Order', 'Other']
 
     useEffect(() => {
         Axios.post('http://localhost:8000/query/getall', { id: localStorage.getItem('usrId'), usr: localStorage.getItem('userType') }).then((response) => {
@@ -44,29 +42,9 @@ function IssueHandler({ choice }) {
             setIssueOn('order')
             setIsProduct(false)
             setIsOrder(true)
-            Axios.post('http://localhost:8000/query/getfarmerorder', { usrId: localStorage.getItem('usrId') }).then((response) => {
+            Axios.post('http://localhost:8000/query/getretailerorder', { usrId: localStorage.getItem('usrId') }).then((response) => {
                 setOrderList(response.data)
             });
-        }
-        else if (issue == category[2]) {
-            setIssueOn('product')
-            setIsOrder(false)
-            setIsProduct(true)
-            Axios.post('http://localhost:8000/query/getfarmerproduct', { usrId: localStorage.getItem('usrId') }).then((response) => {
-                setProdList(response.data)
-            });
-        }
-        else if (issue == category[3]) {
-            setIssueOn('category')
-            setIssueId(0)
-            setIsOrder(false)
-            setIsProduct(false)
-        }
-        else if (issue == category[4]) {
-            setIssueOn('approve product')
-            setIssueId(0)
-            setIsOrder(false)
-            setIsProduct(false)
         }
         else {
             setIssueOn('other')
@@ -112,18 +90,6 @@ function IssueHandler({ choice }) {
                         </select>
                     </div>
                 }
-
-                {(isProduct) &&
-                    <div className="form-group mb-3">
-                        <label className="form-label">Select order</label>
-                        <select name="issue" value={issueId} onChange={(e) => setIssueId(e.target.value)} className="form-select" required>
-                            {prodList.map((prod, index) => (
-                                <option key={index} value={prod.Prod_id}>{prod.Prod_name}-&gt; {new Date(prod.Prod_order_date).toISOString().split('T')[0]}-&gt; Price:{prod.Prod_price}</option>
-                            ))}
-                        </select>
-                    </div>
-                }
-
 
                 <div className="mb-3">
                     <label className="form-label">Description</label>
