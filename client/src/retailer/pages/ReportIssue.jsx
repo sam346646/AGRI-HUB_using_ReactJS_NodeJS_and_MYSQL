@@ -24,8 +24,8 @@ function ReportIssue() {
   }, [ch])
 
   let options = [
-    { title: 'Report Issue', ch: '/farmer/report_issue/1', icon: 'exclamation-triangle' },
-    { title: 'Issue Status', ch: '/farmer/report_issue/2', icon: 'bell' },
+    { title: 'Report Issue', ch: '/retailer/report_issue/1', icon: 'exclamation-triangle' },
+    { title: 'Issue Status', ch: '/retailer/report_issue/2', icon: 'bell' },
   ]
 
 

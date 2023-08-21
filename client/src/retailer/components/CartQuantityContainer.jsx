@@ -52,11 +52,10 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
 
     const removeCartItem = (cartid) => {
         Axios.delete(`http://localhost:8000/retailer/deletecartitem/${cartid}`).then((res, err) => {
-            console.log(cartid)
             if (err) { console.log(err) }
         })
         navigate("../view_cart");
-        reloadCartData()
+        window.location.reload();
     }
 
 

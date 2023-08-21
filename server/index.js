@@ -103,7 +103,7 @@ app.put("/product/update", upload.single(), (req, res) => {
 
 app.delete("/product/delete/:id", (req, res) => {
     const id = req.params.id;
-    let qry = `DELETE FROM products WHERE Prod_id=${id}`;
+    let qry = `UPDATE products SET Prod_status=0 WHERE Prod_id=${id}`;
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -128,7 +128,7 @@ app.post("/product/getallfarmer", (req, res) => {
 })
 
 app.get("/product/getall", (req, res) => {
-    const qry = "SELECT p.*,c.Measure FROM products AS p, categories as c WHERE p.Prod_status=1 AND p.Prod_cat_id=c.Category_id ORDER BY Prod_id DESC;"
+    const qry = "SELECT p.*,c.Measure,f.Farmer_name,f.Farmer_area,f.Farmer_village,f.Farmer_district FROM products AS p, categories as c, farmers AS f WHERE p.Prod_status=1 AND p.Prod_cat_id=c.Category_id AND p.Farmer_id=f.Farmer_id ORDER BY Prod_id DESC;"
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -141,7 +141,7 @@ app.get("/product/getall", (req, res) => {
 
 app.get("/product/get/:id", (req, res) => {
     const id = req.params.id;
-    let qry = `SELECT p.*,c.Measure FROM products AS p,categories AS c WHERE p.Prod_id=${id} AND p.Prod_cat_id=c.Category_id;`;
+    let qry = `SELECT p.*,c.Measure,f.Farmer_name,f.Farmer_area,f.Farmer_village,f.Farmer_district FROM products AS p,categories AS c,farmers AS f WHERE p.Prod_id=${id} AND p.Prod_cat_id=c.Category_id AND p.Farmer_id=f.Farmer_id;`;
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -156,10 +156,10 @@ app.get("/product/getCategoryWiseProduct/:categoryId", (req, res) => {
     const id = req.params.categoryId;
     let qry;
     if (id == '*') {
-        qry = "SELECT p.*,c.Measure FROM products AS p,categories AS c WHERE Prod_status=1 AND p.Prod_cat_id=c.Category_id ORDER BY Prod_id DESC;";
+        qry = "SELECT p.*,c.Measure,f.Farmer_name,f.Farmer_area,f.Farmer_village,f.Farmer_district FROM products AS p,categories AS c,farmers AS f WHERE Prod_status=1 AND p.Prod_cat_id=c.Category_id AND p.Farmer_id=f.Farmer_id ORDER BY Prod_id DESC;";
     }
     else {
-        qry = `SELECT p.*,c.Measure FROM products AS p,categories AS c WHERE Prod_cat_id=${id} AND Prod_status=1 AND p.Prod_cat_id=c.Category_id ORDER BY Prod_id DESC;`;
+        qry = `SELECT p.*,c.Measure,f.Farmer_name,f.Farmer_area,f.Farmer_village,f.Farmer_district FROM products AS p,categories AS c,farmers AS f WHERE Prod_cat_id=${id} AND Prod_status=1 AND p.Prod_cat_id=c.Category_id AND p.Farmer_id=f.Farmer_id ORDER BY Prod_id DESC;`;
     }
     db.query(qry, (err, result) => {
         if (err) {
@@ -254,8 +254,12 @@ app.post("/order/customInsert", upload.single(), (req, res) => {
         }
     })
 
-    const qry = "INSERT INTO retailerorders (Prod_id,Quantity,Price,Profit,Order_status) VALUES(?,?,?,?,?);"
-    db.query(qry, [id, qty, price, profit, status], (err, result) => { })
+    const qry = "INSERT INTO retailerorders (Retailer_id,Prod_id,Quantity,Price,Profit,Order_status) VALUES(?,?,?,?,?,?);"
+    db.query(qry, [2147483646, id, qty, price, profit, status], (err, result) => {
+        if (err) {
+            console.log(err)
+        }
+    })
 })
 
 
@@ -352,7 +356,7 @@ app.get("/order/getallretailer", (req, res) => {
         status = `o.Order_status LIKE 'Order delivered successfully.'`;
     }
 
-    const qry = `SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND ${status} AND o.Retailer_id=${id} ORDER BY o.Order_id DESC;`
+    const qry = `SELECT o.*,p.*,f.Farmer_name,f.Farmer_area,f.Farmer_village,f.Farmer_district FROM retailerorders AS o, retailers AS r, products AS p,farmers AS f WHERE o.Retailer_id=${id} AND o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND ${status} AND p.Farmer_id=f.Farmer_id ORDER BY o.Order_id DESC;`
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -365,7 +369,7 @@ app.get("/order/getallretailer", (req, res) => {
 
 
 
-app.get("/order/getall", (req, res) => {
+app.get("/order/getallfarmer", (req, res) => {
     let status;
     const ch = req.query.choice;
     const id = req.query.temp;
@@ -386,7 +390,7 @@ app.get("/order/getall", (req, res) => {
         status = `o.Order_status LIKE 'Order delivered successfully.'`;
     }
 
-    const qry = `SELECT r.*,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND ${status} AND p.Farmer_id=${id} ORDER BY o.Order_id DESC;`
+    const qry = `SELECT r.Retailer_name,r.Retailer_area,r.Retailer_village,r.Retailer_district,o.*,p.* FROM retailerorders AS o, retailers AS r, products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND ${status} AND p.Farmer_id=${id} ORDER BY o.Order_id DESC;`
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -458,7 +462,7 @@ app.put("/retailer/updatecart", upload.single(), (req, res) => {
 
 app.post("/retailer/getcartitems", (req, res) => {
     const id = req.body.id;
-    const qry = `SELECT * FROM carts AS c, products AS p WHERE c.Prod_id=p.Prod_id AND c.Cart_retailer_id=${id};`
+    const qry = `SELECT * FROM carts AS c, products AS p WHERE c.Prod_id=p.Prod_id AND c.Cart_retailer_id=${id} ORDER BY Cart_id DESC;`
     db.query(qry, (err, result) => {
         if (err) {
             console.log(err)
@@ -501,6 +505,30 @@ app.post("/query/getall", (req, res) => {
     })
 })
 
+app.get("/query/getpending", (req, res) => {
+    const { id, usr } = req.body
+    let qry = `SELECT * FROM queries WHERE Query_status='In process'`;
+    db.query(qry, [usr, id], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+    })
+})
+
+app.put("/query/changestatus/:id", (req, res) => {
+    const { id } = req.params
+    const { reason } = req.body
+    let qry = `UPDATE queries SET Query_reply=?, Query_status='Solved' WHERE Query_id=?`;
+    db.query(qry, [reason,id], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+        else{
+            console.log(err)
+        }
+    })
+})
+
 app.post("/query/getfarmerorder", (req, res) => {
     const { usrId } = req.body
     let qry = `SELECT o.Order_id,r.Retailer_name,p.Prod_name,o.Order_date,o.Quantity FROM retailers AS r,retailerorders AS o,products AS p WHERE o.Retailer_id=r.Retailer_id AND o.Prod_id=p.Prod_id AND p.Farmer_id=?`;
@@ -514,6 +542,16 @@ app.post("/query/getfarmerorder", (req, res) => {
 app.post("/query/getfarmerproduct", (req, res) => {
     const { usrId } = req.body
     let qry = `SELECT Prod_id,Prod_name,Prod_order_date,Prod_price FROM products WHERE Farmer_id=?`;
+    db.query(qry, [usrId], (err, result) => {
+        if (result) {
+            res.send(result)
+        }
+    })
+})
+
+app.post("/query/getretailerorder", (req, res) => {
+    const { usrId } = req.body
+    let qry = `SELECT o.Order_id,f.Farmer_name,p.Prod_name,o.Order_date,o.Quantity FROM farmers AS f,retailerorders AS o,products AS p WHERE o.Retailer_id=? AND o.Prod_id=p.Prod_id AND p.Farmer_id=f.Farmer_id`;
     db.query(qry, [usrId], (err, result) => {
         if (result) {
             res.send(result)
@@ -818,21 +856,29 @@ app.post('/report/getsales/:ch', (req, res) => {
 
     const ch = req.params.ch;
     const { from, to } = req.body;
-    let qry,temp;
+    let qry, temp;
 
-    if(ch==3){
-        temp=''
+    if (ch == 3) {
+        temp = ''
     }
-    else{
-        temp=` AND o.Order_date BETWEEN '${from}' AND '${to}' `
+    else {
+        temp = ` AND o.Order_date BETWEEN '${from}' AND '${to}' `
     }
 
-    qry = `SELECT p.Prod_name, SUM(o.Quantity) AS Quantity FROM retailerorders AS o, products AS p WHERE o.Prod_id=p.Prod_id AND o.Order_status LIKE 'Order delivered successfully.' ${temp}GROUP BY p.Prod_name;`
+    qry = `SELECT p.Prod_name, SUM(o.Quantity) AS Quantity FROM retailerorders AS o, products AS p WHERE o.Prod_id=p.Prod_id AND 
+     (
+        (o.Order_status LIKE 'Order delivered successfully.')
+        OR
+        (o.Order_status LIKE 'Sold to your customer.')
+        OR
+        (o.Order_status LIKE 'Farmer cancelled the order.' AND o.Retailer_id= 2147483646)
+    ) 
+    ${temp}GROUP BY p.Prod_name;`
     db.query(qry, (err, result) => {
         if (result) {
             res.send(result)
         }
-        else{
+        else {
             console.log(err)
         }
     });
@@ -843,12 +889,23 @@ app.post('/report/getProfit/:prodId', (req, res) => {
     const prodId = req.params.prodId;
     let qry;
 
-    qry = `SELECT r.Retailer_name,o.Price, o.Profit FROM retailerorders AS o,Retailers AS r WHERE o.Prod_id=? AND o.Order_status LIKE 'Order delivered successfully.' AND o.Retailer_id=r.Retailer_id`
+    qry = `SELECT r.Retailer_name, o.Price, o.Profit
+    FROM retailerorders AS o
+    INNER JOIN Retailers AS r ON o.Retailer_id = r.Retailer_id
+    WHERE o.Prod_id = ? 
+    AND (
+        (o.Order_status LIKE 'Order delivered successfully.' AND o.Retailer_id = r.Retailer_id)
+        OR
+        (o.Order_status LIKE 'Sold to your customer.' AND o.Retailer_id = r.Retailer_id )
+        OR
+        (o.Order_status LIKE 'Farmer cancelled the order.' AND o.Retailer_id= 2147483646 AND o.Retailer_id = r.Retailer_id )
+    )`
+
     db.query(qry, [prodId], (err, result) => {
         if (result) {
             res.send(result)
         }
-        else{
+        else {
             console.log(err)
         }
     });
@@ -856,7 +913,7 @@ app.post('/report/getProfit/:prodId', (req, res) => {
 
 app.post('/report/getProducts', (req, res) => {
 
-    const {usrId} = req.body;
+    const { usrId } = req.body;
     let qry;
 
     qry = `SELECT Prod_id AS id,Prod_name AS name,Prod_order_date AS date FROM products WHERE Farmer_id=?`
@@ -864,7 +921,7 @@ app.post('/report/getProducts', (req, res) => {
         if (result) {
             res.send(result)
         }
-        else{
+        else {
             console.log(err)
         }
     });

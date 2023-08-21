@@ -77,7 +77,7 @@ function Dashboard() {
 
                       <button className="btn btn-success" onClick={() => updateCart(prod.Prod_id, prod.Prod_name, prod.Prod_price)}><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 
-                      <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
+                      <div className="text-secondary"><i className="fa fa-user"></i> {prod.Farmer_name}, {prod.Farmer_village}, {prod.Farmer_district}</div>                   
 
                       <div className="text-danger">*{prod.Prod_qty}{prod.Measure} in stock</div>
 

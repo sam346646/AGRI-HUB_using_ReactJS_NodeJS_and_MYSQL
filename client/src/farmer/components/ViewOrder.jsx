@@ -21,7 +21,7 @@ function ViewOrder({ choice }) {
     const [reload, setReload] = useState(false)
 
     useEffect(() => {
-        Axios.get('http://localhost:8000/order/getall', { params: { choice: choice, temp: localStorage.getItem('usrId') } }).then((response) => {
+        Axios.get('http://localhost:8000/order/getallfarmer', { params: { choice: choice, temp: localStorage.getItem('usrId') } }).then((response) => {
             setOrderList(response.data)
             setReload(false)
         })
@@ -112,7 +112,7 @@ function ViewOrder({ choice }) {
                                                         <div className='text-success'><i className='fa fa-cube'></i> Quantity availiable: {order.Prod_qty}</div>
                                                     </div>
 
-                                                    <div className='mt-3'>Retailer: Sam, Konaje, Mangalore, Karnataka.</div>
+                                                    <div className='mt-3'>Retailer: {order.Retailer_name}, {order.Retailer_area}, {order.Retailer_village}, {order.Retailer_district}.</div>
                                                 </div>
                                                 <div className="col-4">
                                                     <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='190' height='190' className='rounded' />

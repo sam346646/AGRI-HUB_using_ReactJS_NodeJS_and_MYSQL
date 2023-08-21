@@ -112,7 +112,7 @@ function ViewOrder({ choice }) {
                                                                 <div className='text-success'><i className='fa fa-gift'></i> Saved Rs.{Math.round((100 * order.Price) / (100 - ((order.Quantity >= 100) ? order.Prod_offer + 1 : order.Prod_offer)) - order.Price)} in this order.</div>
                                                             </div>
 
-                                                            <div className='mt-3'>Farmer: Sam, Dakshina Kannada.</div>
+                                                            <div className='mt-3'>Farmer: {order.Farmer_name}, {order.Farmer_area}, {order.Farmer_village}, {order.Farmer_district}.</div>
                                                         </div>
                                                         <div className="col-4">
                                                             <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='200' height='200' className='rounded' />

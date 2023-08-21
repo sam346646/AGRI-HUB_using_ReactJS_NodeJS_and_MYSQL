@@ -67,7 +67,7 @@ function ViewCategoryWiseProduct() {
                             <button className="btn btn-outline-secondary"><i className='fa fa-search'></i></button>
                         </div>
 
-                        <div className="card mt-4">
+                        <div className="card my-4">
                             <div className="card-header fw-bold fs-5">
                                 Categories
                             </div>
@@ -112,12 +112,14 @@ function ViewCategoryWiseProduct() {
 
                                                     <div className="text-success">Offer: <span className="bg-success text-success bg-opacity-25 p-1">{prod.Prod_offer}% OFF</span></div>
 
-                                                    <div>(Shipping charge: &#8377;100)</div><br />
+                                                    <div>(Shipping charge: &#8377;100)</div><br/>
 
                                                     <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
                                                     <button onClick={() => updateCart(prod.Prod_id, prod.Prod_price)} className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 
-                                                    <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
+                                                    
+
+                                                    <div className="text-secondary"><i className="fa fa-user"></i> {prod.Farmer_name}, {prod.Farmer_village}, {prod.Farmer_district}</div>
 
                                                     <div className="text-danger">*{prod.Prod_qty}{prod.Measure} in stock</div>
 

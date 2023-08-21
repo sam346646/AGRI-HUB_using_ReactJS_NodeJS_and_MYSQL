@@ -26,7 +26,7 @@ import ViewOrder from './retailer/pages/ViewOrder';
 import ManageOrders from './retailer/pages/ManageOrders';
 import ViewCart from './retailer/pages/ViewCart';
 import ManageProfile from './retailer/pages/ManageProfile';
-import ReportIssueRetailer from './farmer/pages/ReportIssue';
+import ReportIssueRetailer from './retailer/pages/ReportIssue';
 
 import NavbarAdmin from "./admin/pages/Navbar"
 import DashboardAdmin from "./admin/pages/Dashboard"

@@ -19,7 +19,6 @@ function ViewAdminOrders() {
     Axios.post('http://localhost:8000/admin/getorder', { user, email, name }).then((response) => {
       setOrder(response.data)
     })
-    console.log(order)
   }
 
 

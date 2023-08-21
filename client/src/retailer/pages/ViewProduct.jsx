@@ -152,7 +152,9 @@ function ViewProduct() {
 
                                         <div className='fs-6 text-success'><i className='fa fa-gift fw-bold'></i> You can save &#8377;{Math.round(actualPrice - discountedPrice)} in this order.</div>
 
-                                        <div>(Shipping charge: &#8377;100)</div><br />
+                                        <div>(Shipping charge: &#8377;100)</div>
+                                        
+                                        <div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div><br />
 
                                         <div class="fw-bold text-dark">Pack size</div>
                                         <PurchaseSize qty={prod.Prod_qty} measure={prod.Measure} price={prod.Prod_price} offer={prod.Prod_offer} />
@@ -198,7 +200,8 @@ function ViewProduct() {
                                             </div>
                                         </div>
 
-                                        <br /><br /><div className="text-secondary"><i className='fa fa-truck'></i> Order now, Get it delivered Tomorrow</div>
+                                        <br /><br />
+                                        <div className="text-secondary"><i className="fa fa-user"></i> <b>Farmer:</b> {prod.Farmer_name}, {prod.Farmer_area}, {prod.Farmer_village}, {prod.Farmer_district}</div> 
                                     </div>
                                 </>
                             )

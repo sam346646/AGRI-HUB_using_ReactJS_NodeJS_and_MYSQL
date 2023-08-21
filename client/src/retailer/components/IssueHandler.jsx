@@ -34,13 +34,11 @@ function IssueHandler({ choice }) {
     useEffect(() => {
         if (issue == category[0]) {
             setIsOrder(false)
-            setIsProduct(false)
             setIssueOn(localStorage.getItem('userType'))
             setIssueId(localStorage.getItem('usrId'))
         }
         else if (issue == category[1]) {
             setIssueOn('order')
-            setIsProduct(false)
             setIsOrder(true)
             Axios.post('http://localhost:8000/query/getretailerorder', { usrId: localStorage.getItem('usrId') }).then((response) => {
                 setOrderList(response.data)
@@ -50,7 +48,6 @@ function IssueHandler({ choice }) {
             setIssueOn('other')
             setIssueId(0)
             setIsOrder(false)
-            setIsProduct(false)
         }
     }, [issue])
 
@@ -64,7 +61,7 @@ function IssueHandler({ choice }) {
         formdata.append('description', description)
         Axios.post('http://localhost:8000/query/insert', formdata).then((response) => {
         });
-        navigate("/farmer");
+        navigate("/retailer");
     }
 
     return (
@@ -129,7 +126,6 @@ function IssueHandler({ choice }) {
                                         <td>{query.Query_reply}</td>
                                         <td className='text-danger'>
                                             {(query.Query_status === 'In process') ? <><i className='fa fa-spinner'></i> {query.Query_status}</> : null}
-                                            {(query.Query_status === 'Rejected') ? <><i className='fa fa-remove'></i> {query.Query_status}</> : null}
                                             {(query.Query_status === 'Solved') ? <span className='text-success'><i className='fa fa-check'></i> {query.Query_status}</span> : null}
                                         </td>
                                     </tr>
