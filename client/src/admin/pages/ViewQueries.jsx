@@ -4,7 +4,6 @@ import { useNavigate, NavLink } from 'react-router-dom'
 
 import Breadcrumbs from '../components/Breadcrumbs';
 import CustomModalRejectQuery from '../components/CustomModalRejectQuery'
-import Footer from './Footer';
 
 
 function ViewQueries({fromNavbar}) {

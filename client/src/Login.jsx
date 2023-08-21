@@ -58,8 +58,8 @@ function Login() {
     return (
         // Login
         (isLogin) ?
-            <div className='container-fluid bg-light vh-100'>
-                <div className="py-5 w-25 mx-auto">
+            <div className='container-fluid bg-light vh-100 vh-sm-100'>
+                <div className="py-5 w-25 mx-auto w-sm-100">
                     <div className='text-center'>
                         <h1>Login</h1>
                         <p className="lead"> Already have account..?</p>

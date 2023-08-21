@@ -30,11 +30,12 @@ import ReportIssueRetailer from './retailer/pages/ReportIssue';
 
 import NavbarAdmin from "./admin/pages/Navbar"
 import DashboardAdmin from "./admin/pages/Dashboard"
-import SolveQuery from './admin/pages/SolveQuery';
 import ViewQueries from './admin/pages/ViewQueries';
 import ViewRetailers from './admin/pages/ViewRetailers';
 import ViewFarmers from './admin/pages/ViewFarmers';
 import ViewAdminOrders from './admin/pages/ViewAdminOrders';
+import ViewAdminProducts from './admin/pages/ViewAdminProducts';
+import AddCategory from './admin/pages/AddCategory';
 
 import Login from './Login';
 
@@ -72,12 +73,12 @@ function App() {
         {userType === 'admin' && (
           <Route path="/admin" element={<NavbarAdmin />}>
             <Route index element={<DashboardAdmin />} />
-            <Route path="solve_query/:id" element={<SolveQuery />} />
-            <Route path="add_category" element={<SolveQuery withoutIssue={true} />} />
+            <Route path="add_category" element={<AddCategory />} />
             <Route path="view_queries" element={<ViewQueries fromNavbar={true} />} />
             <Route path="view_retailers" element={<ViewRetailers />} />
             <Route path="view_farmers" element={<ViewFarmers />} />
             <Route path="view_orders" element={<ViewAdminOrders />} />
+            <Route path="view_products" element={<ViewAdminProducts />} />
           </Route>
         )}
 

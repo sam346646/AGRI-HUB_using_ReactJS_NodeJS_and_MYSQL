@@ -519,11 +519,11 @@ app.put("/query/changestatus/:id", (req, res) => {
     const { id } = req.params
     const { reason } = req.body
     let qry = `UPDATE queries SET Query_reply=?, Query_status='Solved' WHERE Query_id=?`;
-    db.query(qry, [reason,id], (err, result) => {
+    db.query(qry, [reason, id], (err, result) => {
         if (result) {
             res.send(result)
         }
-        else{
+        else {
             console.log(err)
         }
     })
@@ -833,21 +833,98 @@ app.put('/user/changeemail', (req, res) => {
 
 //ADMIN
 app.post('/admin/getorder', (req, res) => {
-    const { user, email, name } = req.body;
-    console.log(user, email, name)
+    const { user, isId, searchData } = req.body;
     let qry;
 
     if (user == 'farmer') {
-        qry = `SELECT o.*,p.* FROM retailerorders AS o,farmers AS f,products AS p WHERE o.Prod_id=p.Prod_id AND p.Prod_name= ? AND p.Farmer_id=f.Farmer_id AND f.Farmer_email=?`
+        if (isId) {
+            qry = `SELECT o.*,p.Prod_name,r.Retailer_name FROM retailerorders AS o,products AS p,retailers AS r WHERE p.Farmer_id=? AND o.Prod_id=p.Prod_id AND o.Retailer_id=r.Retailer_id`
+        }
+        else {
+            qry = `SELECT o.*,p.Prod_name,r.Retailer_name FROM retailerorders AS o,products AS p,farmers AS f,retailers AS r WHERE o.Prod_id=p.Prod_id AND p.Farmer_id=f.Farmer_id AND f.Farmer_email=? AND o.Retailer_id=r.Retailer_id`
+        }
+    }
+    else {
+        if (isId) {
+            qry = `SELECT o.*,p.Prod_name,f.Farmer_name FROM retailerorders AS o,products AS p,farmers AS f WHERE o.Prod_id=p.Prod_id AND o.Retailer_id=? AND p.Farmer_id=f.Farmer_id`
+        }
+        else {
+            qry = `SELECT o.*,p.Prod_name,f.Farmer_name FROM retailerorders AS o,products AS p,retailers AS r,farmers AS f WHERE o.Prod_id=p.Prod_id AND o.Retailer_id=r.Retailer_id AND r.Retailer_email=? AND p.Farmer_id=f.Farmer_id`
+        }
     }
 
-    db.query(qry, [name, email], (err, result) => {
+    db.query(qry, [searchData], (err, result) => {
         if (result) {
             res.send(result);
+        }
+        else {
+            console.log(err)
         }
     });
 })
 
+app.put('/admin/updateorder', (req, res) => {
+    const { id, qty, price, profit, shippingCharge, status } = req.body;
+
+    let qry = `UPDATE retailerorders SET Quantity=?, Price=?, Profit=?, Extra_charge=?, Order_status=? WHERE Order_id=?`
+    db.query(qry, [qty, price, profit, shippingCharge, status, id], (err, result) => {
+        if (result) {
+            res.send(result);
+        }
+        else {
+            console.log(err)
+        }
+    });
+})
+
+app.post('/admin/getproduct', (req, res) => {
+    const { isId, searchData } = req.body;
+    let qry;
+
+    if (isId) {
+        qry = `SELECT * FROM products WHERE Prod_id=?`
+    }
+    else {
+        qry = `SELECT * FROM products WHERE Prod_name=?`
+    }
+
+    db.query(qry, [searchData], (err, result) => {
+        if (result) {
+            res.send(result);
+        }
+        else {
+            console.log(err)
+        }
+    });
+})
+
+app.put('/admin/updateproduct', (req, res) => {
+    const { id, name, qty, price, status } = req.body;
+
+    let qry = `UPDATE products SET Prod_name=?, Prod_qty=?, Prod_price=?, Prod_status=? WHERE Prod_id=?`
+    db.query(qry, [name, qty, price, status, id], (err, result) => {
+        if (result) {
+            res.send(result);
+        }
+        else {
+            console.log(err)
+        }
+    });
+})
+
+app.post('/admin/insertcategory', (req, res) => {
+    const { name, measure, expiry } = req.body;
+
+    let qry = `INSERT INTO categories (Category_name, Measure, Expiry) VALUES(?,?,?)`
+    db.query(qry, [capitalizeFirstWord(name), capitalizeFirstWord(measure), expiry], (err, result) => {
+        if (result) {
+            res.send(result);
+        }
+        else {
+            console.log(err)
+        }
+    });
+})
 
 
 

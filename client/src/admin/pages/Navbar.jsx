@@ -30,12 +30,6 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/admin/add_categor " className="nav-link">
-                                <i className="fa fa-check"></i> &ensp;Approve Product
-                            </NavLink>
-                        </li>
-
-                        <li className="nav-item">
                             <NavLink to="/admin/add_category" className="nav-link">
                                 <i className="fa fa-flask"></i> &ensp;Add Category
                             </NavLink>
@@ -56,7 +50,7 @@ function Navbar() {
                         </li>
 
                         <li className="nav-item">
-                            <NavLink to="/view_retailer_orders/3" className="nav-link">
+                            <NavLink to="/admin/view_products" className="nav-link">
                                 <i className="fa fa-tag"></i> &ensp;Products
                             </NavLink>
                         </li>

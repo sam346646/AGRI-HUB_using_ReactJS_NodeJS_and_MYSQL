@@ -68,7 +68,7 @@ function Register({setIsLogin}) {
 
     return (
         <div className='container-fluid bg-light'>
-            <div className="py-5 w-25 mx-auto">
+            <div className="py-5 w-25 mx-auto w-sm-100">
                 <div className='text-center mb-4'>
                     <h1>Create new account</h1>
                 </div>

@@ -79,3 +79,31 @@ background-color: #eaeef1;
         margin-left: 4px;
     }
 }
+
+@media (max-width:780px){ 
+   
+}
+
+
+@media (max-width: 599px) {
+    .font-sm{
+        font-size: 10px !important;
+    }
+    .w-sm-100 {
+      width:100% !important;
+      padding: 0 20px;
+    }
+    .vh-sm-100{
+        height: auto !important;
+    }
+    .plr-sm{
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+  }
+  
+  @media (max-width: 400px){
+    .btn-xs-mb{
+        margin-bottom: 5px !important;
+    }
+  } 

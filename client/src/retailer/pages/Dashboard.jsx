@@ -58,7 +58,7 @@ function Dashboard() {
 
 
               return (
-                <div className="col-lg-3 col-md-6 mb-5">
+                <div className="col-lg-3 col-sm-6 mb-5">
                   <div className="card mx-2 pt-3">
                     <img className="mx-auto rounded" src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} width="190" height="190" alt="not found" />
                     <div className="card-body text-secondary">
@@ -73,7 +73,7 @@ function Dashboard() {
 
                       <div>(Shipping charge: &#8377;100)</div><br />
 
-                      <NavLink to={`./view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
+                      <NavLink to={`./view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2 btn-xs-mb">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
 
                       <button className="btn btn-success" onClick={() => updateCart(prod.Prod_id, prod.Prod_name, prod.Prod_price)}><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 

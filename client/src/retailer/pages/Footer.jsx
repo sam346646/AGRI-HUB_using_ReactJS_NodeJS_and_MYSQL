@@ -13,9 +13,9 @@ function Footer() {
 
     return (
         <>
-            <div className='container-fluid px-5 pt-4 pb-2 bg-secondary bg-opacity-25'>
+            <div className='container-fluid px-5 pt-4 pb-2 bg-secondary bg-opacity-25 plr-sm font-sm'>
                 <div className='row'>
-                    <div className='col-3'>
+                    <div className='col-sm-3 col-6'>
                         <h4>Pages</h4>
                         <ul className='list-unstyled'>
                             <li><NavLink to={`/retailer/manage_profile/1`} className='nav-link'>My profile</NavLink></li>
@@ -25,7 +25,7 @@ function Footer() {
                         </ul>
                     </div>
 
-                    <div className="col-3">
+                    <div className="col-sm-3 col-6">
                         <h4>User Section</h4>
                         <ul className='list-unstyled'>
                             <li><button onClick={() => logoutHandle()} className='nav-link'>Login</button></li>
@@ -33,7 +33,7 @@ function Footer() {
                         </ul>
                     </div>
 
-                    <div className='col-3'>
+                    <div className='col-sm-3 col-6'>
                         <h4>Keep In Touch</h4>
                         <p>
                             <NavLink to="https://www.facebook.com/" target="_blank" className="fa fa-facebook nav-link me-2"></NavLink>
@@ -44,12 +44,12 @@ function Footer() {
                         <NavLink to={`/retailer/report_issue/1`} className='nav-link text-danger'>Report Issue</NavLink>
                     </div>
 
-                    <div className='col-3'>
+                    <div className='col-sm-3 col-6'>
                         <h4>Find Us</h4>
                         <p>
                             <strong>Agri-hub</strong>
                             <br />+91 7760506993
-                            <br />sammanasseh310@gmail.com
+                            <br />sam310@gmail.com
                         </p>
                     </div>
                 </div>
