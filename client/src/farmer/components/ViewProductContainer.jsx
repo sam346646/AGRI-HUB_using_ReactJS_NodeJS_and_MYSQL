@@ -31,15 +31,15 @@ function ViewProducts() {
         <>
             <Breadcrumbs breadcrumbs_title='My Products' breadcrumbs_icon='first-order' />
             <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>&emsp;*Not added any product</span>
-            <table className="table table-striped table-bordered table-hover" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
+            <table className="table table-striped table-bordered table-hover table-font-sm" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                 <tbody>
                     <tr>
                         <th>Name</th>
-                        <th>Type</th>
+                        <th className='hide-text-lg'>Type</th>
                         <th>Qty Remaining</th>
                         <th>Price</th>
                         <th>Expiry</th>
-                        <th>Image</th>
+                        <th className='hide-text-lg'>Image</th>
                         <th>Edit</th>
                         <th>Delete</th>
                         <th>Manage</th>
@@ -51,11 +51,11 @@ function ViewProducts() {
                             return (
                                 <tr>
                                     <td>{prod.Prod_name}</td>
-                                    <td>{prod.Prod_type}</td>
+                                    <td className='hide-text-lg'>{prod.Prod_type}</td>
                                     <td>{prod.Prod_qty}</td>
                                     <td>{prod.Prod_price}</td>
                                     <td><FormatDate dateString={prod.Prod_expiry} /></td>
-                                    <td><img src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="" width='60' height='60' /></td>
+                                    <td className='hide-text-lg'><img src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="" width='60' height='60'/></td>
                                     <td>
                                         <NavLink className='nav-link text-primary' to={`/farmer/update_product/${prod.Prod_id}`}><i className="fa fa-pencil"></i> Edit</NavLink>
                                     </td>

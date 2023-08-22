@@ -22,11 +22,11 @@ function ViewProducts({ ch }) {
             <>
               <div className='farmer_content_area container-fluid px-4 py-4'>
                 <div className="row">
-                  <div className="col-3">
+                  <div className="col-sm-3">
                     <OptionMenuContainer title='Products' options={options} />
                   </div>
 
-                  <div className="col-9 ps-3">
+                  <div className="col-sm-9 ps-3">
                     <ViewProductContainer />
                   </div>
                 </div>

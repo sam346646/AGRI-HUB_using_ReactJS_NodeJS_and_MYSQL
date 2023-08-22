@@ -63,21 +63,21 @@ function ViewCart() {
 
   return (
     <>
-    <div className="retailer_content_area container-fluid px-5 py-5">
+    <div className="retailer_content_area container-fluid px-5 py-5 plr-sm plr-md">
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-lg-8 btn-sm-mb mb-2">
           <div style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>
             *Sorry, No products availiable in cart.<br /><br />
             <NavLink to="../" className="btn btn-secondary">Shop now</NavLink>
           </div>
-          <div style={(isContentAvailiable === true) ? null : { display: 'none' }} className="card shadow-sm">
+          <div style={(isContentAvailiable === true) ? null : { display: 'none' }} className="card shadow-sm btn-sm-mb">
             {
               cartList.map((cart, i) => {
                 return (
-                  <div className='card-header text-secondary bg-white'>
+                  <div className='card-header text-secondary bg-white text-center'>
                     <div className='row px-2'>
-                      <div className="col-2 text-center">
-                        <button className="nav-link" onClick={() => itemHandle(cart.Prod_id)}>
+                      <div className="col-sm-2">
+                        <button className="nav-link mx-auto" onClick={() => itemHandle(cart.Prod_id)}>
                           <img src={`http://localhost:8000/includes/images/${cart.Prod_image1}`} alt="" width='100' height='100' className='rounded' />
                           <div className='fs-5 fw-bold fst-italic'>{cart.Prod_name}</div>
                         </button>
@@ -90,7 +90,7 @@ function ViewCart() {
             }
           </div>
         </div>
-        <div className="col-md-4 mb-5 shadow-sm bg-white text-secondary h-25 rounded p-5 ">
+        <div className="col-lg-4 mb-5 shadow-sm bg-white text-secondary h-25 rounded p-5">
           <div>Cart Total: {total}</div>
           <div>Shipping Charge: {shippingCharge}</div>
           <div className='mt-2'>Grand Total: <span className='fw-bold fs-4 text-dark'>Rs.{grandTotal}</span></div>

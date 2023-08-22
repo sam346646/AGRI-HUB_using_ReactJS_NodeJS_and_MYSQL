@@ -107,8 +107,8 @@ function ViewRetailers() {
             <Breadcrumbs breadcrumbs_title='Retailers' breadcrumbs_icon='users' />
 
             <div className="row">
-                <div className="col-10">
-                    <div class="input-group mb-3 ms-auto w-50">
+                <div className="col-lg-10">
+                    <div class="input-group mb-3 ms-auto w-50 w-md-100">
                         <input type="text" value={name} onChange={searchName} class="form-control" placeholder={`Search by Retailer ${(isId) ? 'id' : 'email'}`} />
                         <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">Search Options</button>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -119,7 +119,7 @@ function ViewRetailers() {
 
                     <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>&emsp;*No Retailers found</span>
                     {(!isEditEnable) &&
-                        <table className="table table-striped table-bordered table-hover" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
+                        <table className="table table-striped table-bordered table-hover table-font-sm" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                             <tbody>
                                 <tr>
                                     <th>Name</th>
@@ -155,7 +155,7 @@ function ViewRetailers() {
                     }
 
                     {(isEditEnable) &&
-                        <div className='w-50 mx-auto'>
+                        <div className='w-50 mx-auto w-md-100'>
                             <div className="form-group mb-2">
                                 <label className="form-label">Name</label>
                                 <input type="text" value={rname}
@@ -244,7 +244,7 @@ function ViewRetailers() {
                         </div>
                     }
                 </div>
-                <div className="col-2">
+                <div className="col-lg-2">
                     <PinnedQuery />
                 </div>
             </div>

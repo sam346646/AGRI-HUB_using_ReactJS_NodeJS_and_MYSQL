@@ -64,7 +64,7 @@ function UpdateOrder() {
         <>
             <div className='farmer_content_area p-5'>
                 <div className="row">
-                    <div className="col-6 px-5">
+                    <div className="col-lg-6 col-md-12 px-5 plr-sm">
                         <Breadcrumbs breadcrumbs_title='Update Order' breadcrumbs_icon='gear' />
 
                         <div className="form-vertical mb-4">
@@ -141,7 +141,7 @@ function UpdateOrder() {
                     </div>
 
 
-                    <div className="col-6">
+                    <div className="col-lg-6 hide-text-lg">
                         <Breadcrumbs breadcrumbs_title='Product' breadcrumbs_icon='first-order' />
                         <table className="table table-striped table-bordered table-hover">
                             <tbody>

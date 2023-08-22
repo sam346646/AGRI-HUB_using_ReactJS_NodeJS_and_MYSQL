@@ -67,7 +67,7 @@ function Dashboard() {
                       </div>
                       <div>MRP: &#8377;<s>{actualPrice}</s></div>
 
-                      <h6 className="text-dark">Price: &#8377;{prod.Prod_price} <span className="text-secondary">(You Save: &#8377;{updatedSavePrice} / {prod.Measure})</span></h6>
+                      <h6 className="text-dark">Price: &#8377;{prod.Prod_price} <span className="text-secondary font-xs">(You Save: &#8377;{updatedSavePrice} / {prod.Measure})</span></h6>
 
                       <div className="text-success">Offer: <span className="bg-success text-success bg-opacity-25 p-1">{prod.Prod_offer}% OFF</span></div>
 

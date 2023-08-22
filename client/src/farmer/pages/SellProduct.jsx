@@ -95,7 +95,7 @@ function Add_product() {
                 <Breadcrumbs breadcrumbs_title='Add Product' breadcrumbs_icon='tag' />
 
                 <div className="row">
-                    <div className="form-vertical col-6" encType="multipart/form-data">
+                    <div className="form-vertical col-lg-6 col-md-12" encType="multipart/form-data">
                         <div className="form-group mb-3">
                             <label className="form-label">Product Name</label>
                             <input type="text" name="name" value={name}
@@ -251,7 +251,7 @@ function Add_product() {
 
 
 
-                    <div className="col-6 ps-5">
+                    <div className="col-lg-6 ps-5 hide-text-lg">
                         <div className='text-danger text-center my-4 fw-bold'>*This is a demo of how the retailer will view the product.</div>
                         <div className="card col-8 mx-auto pt-3">
                             <img className="mx-auto rounded" src={(file) ? URL.createObjectURL(file) : `http://localhost:8000/includes/images/apple.jpg`} width="190" height="190" alt="not found" />

@@ -48,8 +48,8 @@ function ViewAdminProducts() {
         <div className='content_area pb-5'>
             <Breadcrumbs breadcrumbs_title='Products' breadcrumbs_icon='tag' />
             <div className="row">
-                <div className="col-10">
-                    <div className='mx-auto w-50'>
+                <div className="col-lg-10">
+                    <div className='mx-auto w-50 w-md-100'>
                         <div className="input-group">
                             <input type="text" className="form-control" value={searchData}
                                 onChange={(e) => setSearchData(e.target.value)}
@@ -65,16 +65,23 @@ function ViewAdminProducts() {
                             <button className="form-control btn btn-success" onClick={() => searchHandle()}>Search</button>
                         </div>
 
+
+
                         {
-                            (isManageProdEnabled) &&
-                            <div className='bg-white p-4 rounded shadow-sm text-secondary'>
-                                <div className='text-dark text-center fw-bold fs-4'>Product Details</div>
-                                <div>Product name: {prods[0].Prod_name}</div>
-                                <div>Quantity: {prods[0].Prod_qty}</div>
-                                <div>Price: {prods[0].Prod_price}</div>
-                                <div>Status: {prods[0].Prod_status}</div>
-                                <button onClick={editBtn} className="btn btn-secondary me-3 mt-3">Edit</button>
-                            </div>
+                            (isManageProdEnabled) && prods ? (
+                                prods.length === 0 ? (
+                                    <span className="text-danger">*No products found</span>
+                                ) : (
+                                    <div className='bg-white p-4 rounded shadow-sm text-secondary'>
+                                        <div className='text-dark text-center fw-bold fs-4'>Product Details</div>
+                                        <div>Product name: {prods[0].Prod_name}</div>
+                                        <div>Quantity: {prods[0].Prod_qty}</div>
+                                        <div>Price: {prods[0].Prod_price}</div>
+                                        <div>Status: {prods[0].Prod_status}</div>
+                                        <button onClick={editBtn} className="btn btn-secondary me-3 mt-3">Edit</button>
+                                    </div>
+                                )
+                            ) : null
                         }
 
                         {
@@ -137,7 +144,7 @@ function ViewAdminProducts() {
                     </div>
                 </div>
 
-                <div className="col-2">
+                <div className="col-lg-2">
                     <PinnedQuery />
                 </div>
             </div>

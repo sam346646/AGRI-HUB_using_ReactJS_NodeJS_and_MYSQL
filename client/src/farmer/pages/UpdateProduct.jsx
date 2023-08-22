@@ -87,7 +87,7 @@ function UpdateOrder() {
                 <Breadcrumbs breadcrumbs_title='Update Product' breadcrumbs_icon='gear' />
 
                 <div className="row">
-                    <div className="form-vertical col-6" encType="multipart/form-data">
+                    <div className="form-vertical col-lg-6 col-md-12 plr-sm" encType="multipart/form-data">
                         <div className="form-group mb-3">
                             <label className="form-label">Product Name</label>
                             <input type="text" name="name" value={name}
@@ -215,7 +215,7 @@ function UpdateOrder() {
 
 
 
-                    <div className="col-6 ps-5">
+                    <div className="col-lg-6 ps-5 hide-text-lg">
                         <div className='text-danger text-center my-4 fw-bold'>*This is a demo of how the retailer will view the product.</div>
                         <div className="card col-8 mx-auto pt-3">
                             <img className="mx-auto rounded" src={`http://localhost:8000/includes/images/${image}`} width="190" height="190" alt="not found" />

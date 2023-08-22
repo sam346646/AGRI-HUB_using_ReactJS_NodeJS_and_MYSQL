@@ -14,7 +14,7 @@ function Dashboard() {
 
         <div className="row mb-4">
           <Panels panel_action='admin/view_orders' panel_color='info' panel_title='Orders' panel_icon='truck' />
-          <Panels panel_action='add_product' panel_color='success' panel_title='Products' panel_icon='tag' />
+          <Panels panel_action='admin/view_products' panel_color='success' panel_title='Products' panel_icon='tag' />
           <Panels panel_action='admin/view_retailers' panel_color='warning' panel_title='Retailers' panel_icon='users' />
           <Panels panel_action='admin/view_farmers' panel_color='danger' panel_title='Farmers' panel_icon='user' />
         </div>

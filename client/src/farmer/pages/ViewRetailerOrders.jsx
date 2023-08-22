@@ -48,11 +48,11 @@ function ViewRetailerOrders() {
     <>
     <div className='farmer_content_area container-fluid p-4'>
       <div className="row">
-        <div className="col-3">
+        <div className="col-lg-3">
           <OptionMenuContainer title='My Orders' options={options}/>
         </div>
 
-        <div className="col-9 ps-3">
+        <div className="col-lg-9 ps-3">
           <Breadcrumbs breadcrumbs_title={`${title} Orders`} breadcrumbs_icon={`${icon}`} />
           <ViewOrder choice={ch} />
         </div>

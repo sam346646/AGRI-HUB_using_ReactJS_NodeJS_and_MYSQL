@@ -49,9 +49,9 @@ function ViewOrder({ choice }) {
 
     return (
         <>
-            <div className='retailer_content_area container-fluid pt-5 ps-5'>
+            <div className='retailer_content_area container-fluid pt-5 ps-5 plr-sm plr-md font-sm'>
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-lg-3">
                         <div class="card mb-5">
                             <div class="card-header fw-bold fs-5">
                                 My Orders
@@ -87,7 +87,7 @@ function ViewOrder({ choice }) {
                     </div>
 
 
-                    <div className="col-8 ps-5">
+                    <div className="col-lg-8 ps-5 plr-md plr-sm">
                         <div style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>
                             *Sorry, No orders availiable.<br /><br />
                             <NavLink to="../" className="btn btn-secondary">Shop now</NavLink>
@@ -96,10 +96,10 @@ function ViewOrder({ choice }) {
                             {
                                 orderList.map((order, i) => {
                                     return (
-                                        <div className="col-10 mb-5">
+                                        <div className="col-lg-10 mb-5">
                                             <div className="card shadow-sm">
                                                 <div className='card-header text-secondary bg-white'>
-                                                    <div className='row px-2'>
+                                                    <div className='row px-2 plr-md plr-sm'>
                                                         <div className="col-8">
                                                             <div className='fs-3 fw-bold fst-italic text-success mb-3'>{order.Prod_name}</div>
 
@@ -115,7 +115,7 @@ function ViewOrder({ choice }) {
                                                             <div className='mt-3'>Farmer: {order.Farmer_name}, {order.Farmer_area}, {order.Farmer_village}, {order.Farmer_district}.</div>
                                                         </div>
                                                         <div className="col-4">
-                                                            <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='200' height='200' className='rounded' />
+                                                            <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='200' height='200' className='rounded img-md-sm img-sm-xs' />
                                                         </div>
                                                     </div>
                                                     {

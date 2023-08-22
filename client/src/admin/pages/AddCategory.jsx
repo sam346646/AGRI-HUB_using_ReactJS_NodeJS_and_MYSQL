@@ -38,7 +38,7 @@ function AddCategory({ queryId }) {
     return (
         <div className='content_area'>
             <div className="row">
-                <div className="col-10">
+                <div className="col-lg-10">
                     <div className="form-group mb-3">
                         <label className="form-label">Category Name</label>
                         <input type="text" value={name}
@@ -96,7 +96,7 @@ function AddCategory({ queryId }) {
                         {(isInvalid) ? <span class="text-danger" aria-live="polite">*Please fill mandatory fields to continue.</span> : null}
                     </div>
                 </div>
-                <div className="col-2">
+                <div className="col-lg-2">
                     <PinnedQuery />
                 </div>
             </div>

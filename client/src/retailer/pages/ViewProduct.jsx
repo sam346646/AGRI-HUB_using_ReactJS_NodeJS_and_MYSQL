@@ -106,7 +106,7 @@ function ViewProduct() {
     return (
         <>
             <div className="retailer_content_area">
-                <div className="container row p-5 mx-auto">
+                <div className="container row p-5 mx-auto plr-sm plr-md">
 
                     {
                         prodList.map((prod) => {
@@ -123,10 +123,10 @@ function ViewProduct() {
 
                                             <div className="carousel-inner">
                                                 <div className="carousel-item active">
-                                                    <center><img className="rounded" width='520' height='520' src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="not found" /></center>
+                                                    <center><img className="rounded img-sm img-md" width='520' height='520' src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="not found" /></center>
                                                 </div>
                                                 <div className="carousel-item">
-                                                    <center><img className="rounded" width='520' height='520' src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="not found" /></center>
+                                                    <center><img className="rounded img-sm img-md" width='520' height='520' src={`http://localhost:8000/includes/images/${prod.Prod_image1}`} alt="not found" /></center>
                                                 </div>
                                             </div>
 
@@ -140,7 +140,7 @@ function ViewProduct() {
                                     </div>
 
 
-                                    <div className="col-md-5 ps-5 text-secondary">
+                                    <div className="col-md-5 ps-5 text-secondary plr-sm plr-md">
                                         {message && <div className="position-fixed start-50 translate-middle-x text-success mb-3 fw-bold fs-4" style={{ zIndex: "1000", top: '10%' }}><span className="bg-success bg-opacity-25 p-2 rounded">{message}</span></div>}
                                         <div className="py-2 fs-2 fw-bold text-success">
                                             {prod.Prod_name}{prodType}
@@ -161,8 +161,8 @@ function ViewProduct() {
                                         {(selectedQuantity) ? <span className='text-success ps-2'>{selectedQuantity} Units is selected.</span> : null}
 
 
-                                        <div className='mt-3'>
-                                            <button className="btn btn-success btn-lg mb-1 ms-4" onClick={() => updateCart()}><i class="fa fa-shopping-basket"></i> Add to cart</button>&emsp;
+                                        <div className='mt-3 mx-auto'>
+                                            <button className="btn btn-success btn-lg mb-1" onClick={() => updateCart()}><i class="fa fa-shopping-basket"></i> Add to cart</button>&emsp;
 
                                             <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#orderModal">
                                                 <i class="fa fa-tags"></i> Buy now

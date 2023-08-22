@@ -61,7 +61,7 @@ function ViewCategoryWiseProduct() {
             <div className="retailer_content_area px-5 pt-5">
             {message && <div className="position-fixed start-50 translate-middle-x text-success mb-3 fw-bold fs-4" style={{ zIndex: "1000", top: '10%' }}><span className="bg-success bg-opacity-25 p-2 rounded">{message}</span></div>}
                 <div className='row'>
-                    <div className="col-3">
+                    <div className="col-md-3">
                         <div className="input-group">
                             <input type="text" value={name} onChange={searchName} className="form-control" placeholder="Search by Product name, Eg.Apple, Grapes" />
                             <button className="btn btn-outline-secondary"><i className='fa fa-search'></i></button>
@@ -88,7 +88,7 @@ function ViewCategoryWiseProduct() {
 
                     </div>
 
-                    <div className="col-9">
+                    <div className="col-md-9">
                         <div className="row">
                             {
                                 prodList.map((prod) => {
@@ -114,7 +114,7 @@ function ViewCategoryWiseProduct() {
 
                                                     <div>(Shipping charge: &#8377;100)</div><br/>
 
-                                                    <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
+                                                    <NavLink to={`../view_product/${prod.Prod_id}`} className="btn text-success border border-success-subtle me-2 btn-xs-mb btn-sm-mb btn-md-mb">View details <i className="fa fa-arrow-circle-right"></i></NavLink>
                                                     <button onClick={() => updateCart(prod.Prod_id, prod.Prod_price)} className="btn btn-success"><i className="fa fa-shopping-basket"></i> Add to cart</button><br /><br />
 
                                                     

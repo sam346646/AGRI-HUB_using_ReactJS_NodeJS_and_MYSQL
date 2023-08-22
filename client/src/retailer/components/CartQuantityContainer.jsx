@@ -61,14 +61,14 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
 
     return (
         <>
-            <div className="col-3 my-auto">
+            <div className="col-sm-3 my-auto">
                 <div>Quantity: {qty}</div>
 
                 <div>MRP: <s>Rs.{price}</s> &nbsp;<b className='fs-5'>Rs.{(finalPrice)}</b></div>
 
                 <span className="bg-success text-success bg-opacity-25 p-1">{offer}% OFF</span>
             </div>
-            <div className="col-4 mt-3">
+            <div className="col-sm-4 mt-3">
                 <div class="d-flex w-75 mx-auto">
                     <button class="btn btn-outline-secondary" onClick={() => handleQty(qty - 1)}>-</button>
                     <input type='text' value={qty} onChange={(e) => handleQty(e.target.value)} className='form-control text-center form-control-sm mx-3' />
@@ -79,7 +79,7 @@ function CartQuantityContainer({ prodQty, prodOffer, prodPrice, shippingCharge, 
                     {changeStatus && <button className='btn btn-success btn-sm' onClick={updateCart} disabled={errMessage}>Save Changes</button>}
                 </div>
             </div>
-            <div className="col-3 my-auto">
+            <div className="col-sm-3 my-auto">
                 <div className='mb-3'><b className='fs-5'>
                     Rs.{(finalPrice)}</b> + {shippingCharge}(Shipping)
                     <div className='text-success'><i className='fa fa-gift'></i> You can Save Rs.{Math.round(price - finalPrice)}.</div>

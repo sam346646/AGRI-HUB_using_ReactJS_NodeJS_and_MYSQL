@@ -85,7 +85,7 @@ function ViewProfitReport() {
         <div>
             <Breadcrumbs breadcrumbs_title='Report - Product Wise Profit' breadcrumbs_icon='flask' />
             <div className="row">
-                <div className="col-6">
+                <div className="col-lg-6">
                     <div className='fw-bold fs-3 text-center mb-3'>Customize Report</div>
 
                     <div className="form-group mb-3">
@@ -105,7 +105,7 @@ function ViewProfitReport() {
                             <div className='text-center fw-bold fs-3 mt-5'>{name}</div>
                             {
                                 (isContentAvailiable) ?
-                                    <div className='small-chart-container' style={{ width: '600px', height: '400px' }}>
+                                    <div className='small-chart-container w-sm-report' style={{ width: '600px', height: '400px' }}>
                                         <Pie data={chartDataOne} options={options} className='mx-auto' />
                                     </div>
                                     :
@@ -117,7 +117,7 @@ function ViewProfitReport() {
                         <>
                             <div className='text-center fw-bold fs-3 mb-3'>Demo</div>
                             <div className='text-danger'>*This is just a demo. Please choose a product to get to know the profit vs price report.</div>
-                            <div className='small-chart-container mx-auto' style={{ width: '600px', height: '400px' }}>
+                            <div className='small-chart-container mx-auto w-sm-report m-sm' style={{ width: '600px', height: '400px' }}>
                                 <Pie data={{
                                     labels: ['Price', 'Profit'],
                                     datasets: [
@@ -131,7 +131,7 @@ function ViewProfitReport() {
                         </>
                     }
                 </div>
-                <div className="col-6">
+                <div className="col-lg-6">
                     {
                         (isContentAvailiable) ?
                             <div className='mx-auto'>

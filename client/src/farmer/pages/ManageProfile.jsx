@@ -143,7 +143,7 @@ function ManageProfile() {
     <>
       <div className='retailer_content_area container-fluid py-5 ps-5'>
         <div className="row py-4">
-          <div className="col-3">
+          <div className="col-lg-3">
             <div class="card mb-5">
               <div class="card-header fw-bold fs-5">
                 Profile
@@ -175,8 +175,8 @@ function ManageProfile() {
 
           {
             ch === 1 &&
-            <div className="col-8 ps-5">
-              <div className="card shadow-sm w-75">
+            <div className="col-lg-8 ps-5">
+              <div className="card shadow-sm w-75 w-sm-100">
                 <div className='card-header text-secondary bg-white text-center'>
                   <i className='fa fa-user fa-5x'></i><br />
                   <div className='fs-1 fw-bold'>{retailername}</div>
@@ -196,7 +196,7 @@ function ManageProfile() {
 
           {
             ch === 2 &&
-            <div className='col-9 w-50 px-5'>
+            <div className='col-lg-9 w-50 px-5 w-sm-100'>
               <div className="form-group mb-2">
                 <label className="form-label">{user} Name</label>
                 <input type="text" value={name}
@@ -287,7 +287,7 @@ function ManageProfile() {
 
           {
             ch === 3 &&
-            <div className='col-9 w-50 px-5'>
+            <div className='col-lg-9 w-50 px-5 w-sm-100'>
               <div className="form-group mb-2">
                 <label className="form-label">Password</label>
                 <input type="password" value={pass}
@@ -316,7 +316,7 @@ function ManageProfile() {
 
           {
             ch === 4 &&
-            <div className='col-9 w-50 px-5'>
+            <div className='col-lg-9 w-50 px-5 w-sm-100'>
               <div className="form-group mb-2">
                 <label className="form-label">{user} Email</label>
                 <input type="text" value={email}

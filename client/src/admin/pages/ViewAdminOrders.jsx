@@ -61,8 +61,8 @@ function ViewAdminOrders() {
     <div className='content_area pb-5'>
       <Breadcrumbs breadcrumbs_title='Orders' breadcrumbs_icon='cubes' />
       <div className="row">
-        <div className="col-10">
-          <div className='mx-auto w-50'>
+        <div className="col-lg-10">
+          <div className='mx-auto w-50 w-md-100'>
             <div className="input-group">
               <input type="text" className="form-control" value={searchData}
                 onChange={(e) => setSearchData(e.target.value)}
@@ -81,19 +81,23 @@ function ViewAdminOrders() {
             </div>
 
             {
-              (isOrderEnabled) &&
-              <div className="form-group mb-3">
-                <select value={selectedOption} onChange={getOrder} className="form-select" required>
-                  {
-                    orderList.map((order, index) => (
-                      <option key={index} value={order.Order_id}>
-                        {order.Order_id} -&gt; {order.Prod_name} -&gt; {order.Retailer_name} -&gt; QTY:{order.Quantity}
-                      </option>
-                    ))
-                  }
-                </select>
-              </div>
+              isOrderEnabled && orderList ? (
+                orderList.length === 0 ? (
+                  <span className="text-danger">*No orders found</span>
+                ) : (
+                  <div className="form-group mb-3">
+                    <select value={selectedOption} onChange={getOrder} className="form-select" required>
+                      {orderList.map((order, index) => (
+                        <option key={index} value={order.Order_id}>
+                          {order.Order_id} -&gt; {order.Prod_name} -&gt; {order.Retailer_name} -&gt; QTY:{order.Quantity}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )
+              ) : null
             }
+
 
             {
               (isManageOrderEnabled) &&
@@ -177,7 +181,7 @@ function ViewAdminOrders() {
           </div>
         </div>
 
-        <div className="col-2">
+        <div className="col-lg-2">
           <PinnedQuery />
         </div>
       </div>

@@ -97,12 +97,12 @@ function ViewOrder({ choice }) {
                 {
                     orderList.map((order, i) => {
                         return (
-                            <div className="row">
-                                <div className="col-8 mb-5">
+                            <div className="row font-sm">
+                                <div className="col-lg-8 mb-5 icon-center-sm">
                                     <div className="card shadow-sm">
                                         <div className='card-header text-secondary bg-white'>
                                             <div className='row px-2'>
-                                                <div className="col-8">
+                                                <div className="col-sm-8">
                                                     <div className='fs-3 fw-bold fst-italic text-success mb-3'>{order.Prod_name}</div>
 
                                                     Price: <b className='fs-5'>Rs.{order.Price}</b> + {(order.Order_status === 'Retailer confirmed order.') ? order.Extra_charge : order.Shipping_charge} (Shipping Charge)
@@ -114,7 +114,7 @@ function ViewOrder({ choice }) {
 
                                                     <div className='mt-3'>Retailer: {order.Retailer_name}, {order.Retailer_area}, {order.Retailer_village}, {order.Retailer_district}.</div>
                                                 </div>
-                                                <div className="col-4">
+                                                <div className="col-sm-4">
                                                     <img src={`http://localhost:8000/includes/images/${order.Prod_image1}`} alt="" width='190' height='190' className='rounded' />
                                                 </div>
                                             </div>
@@ -202,7 +202,7 @@ function ViewOrder({ choice }) {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-4 mt-4">
+                                <div className="col-lg-4 mt-4 hide-text-lg">
                                     <OrderStatusContainer status={order.Order_status} />
                                 </div>
                             </div>

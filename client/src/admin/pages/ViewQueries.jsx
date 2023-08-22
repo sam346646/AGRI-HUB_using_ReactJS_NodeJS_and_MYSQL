@@ -34,7 +34,7 @@ function ViewQueries({fromNavbar}) {
         <div className={(fromNavbar) ? 'content_area' : null}>
             <Breadcrumbs breadcrumbs_title='Issues' breadcrumbs_icon='bell' />
             <span style={(isContentAvailiable === true) ? { display: 'none' } : null} className='text-danger fw-bold fs-5'>&emsp;*No Queries availiable.</span>
-            <table className="table table-striped table-bordered table-hover" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
+            <table className="table table-striped table-bordered table-hover table-font-sm" style={(isContentAvailiable === true) ? null : { display: 'none' }}>
                 <tbody>
                     <tr>
                         <th>Query By</th>
@@ -56,7 +56,7 @@ function ViewQueries({fromNavbar}) {
                                     <td>{query.Query_description}</td>
                                     <td className='text-danger'><i className='fa fa-spinner'></i> {query.Query_status}</td>
                                     <td>
-                                        <button className='btn btn-success btn-sm me-3' data-bs-toggle="modal" data-bs-target={`#${query.Query_id}`}>Solved</button>
+                                        <button className='btn btn-success btn-sm me-3 btn-md-mb' data-bs-toggle="modal" data-bs-target={`#${query.Query_id}`}>Solved</button>
                                         <CustomModalRejectQuery message={`Query is solved`} action={solvedQuery} modId={`${query.Query_id}`} />
                                         <button onClick={()=>localStorage.setItem('pinnedQuery',JSON.stringify(query))} className='btn btn-secondary btn-sm'><i className='fa fa-thumb-tack'></i> Pin</button>
                                     </td>

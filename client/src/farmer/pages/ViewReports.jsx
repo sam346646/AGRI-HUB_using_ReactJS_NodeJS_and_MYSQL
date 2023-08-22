@@ -153,25 +153,25 @@ function ViewReports() {
     <>
       <div className='farmer_content_area container-fluid p-4'>
         <div className="row">
-          <div className="col-3">
+          <div className="col-lg-3">
             <OptionMenuContainer title='Reports' options={menuoptions} />
           </div>
 
-          <div className="col-9 ps-3">
+          <div className="col-lg-9 ps-3">
             {(menuCh == 1) ?
               <>
                 <Breadcrumbs breadcrumbs_title='Report - Product Sales' breadcrumbs_icon='flask' />
                 <div className="row">
                   <div className="col-6">
                     {(isContentAvailiable) ?
-                      <div className='small-chart-container' style={{ width: '600px', height: '400px' }}>
+                      <div className='small-chart-container w-sm-report' style={{ width: '600px', height: '400px' }}>
                         <Pie data={chartData} options={options} />
                       </div>
                       :
                       <div className='text-danger'>* No orders availiable in between selected dates.</div>
                     }
                   </div>
-                  <div className="col-6">
+                  <div className="col-lg-6">
                     <div className='fw-bold fs-3 text-center mb-3'>Customize Report</div>
 
                     <div className="form-group mb-3">
