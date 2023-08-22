@@ -4,6 +4,7 @@ import Axios from 'axios'
 
 import PinnedQuery from '../components/PinnedQuery'
 import CustomModal from '../components/CustomModal'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 function AddCategory({ queryId }) {
 
@@ -37,6 +38,7 @@ function AddCategory({ queryId }) {
 
     return (
         <div className='content_area'>
+            <Breadcrumbs breadcrumbs_title='Add Category' breadcrumbs_icon='flask' />
             <div className="row">
                 <div className="col-lg-10">
                     <div className="form-group mb-3">

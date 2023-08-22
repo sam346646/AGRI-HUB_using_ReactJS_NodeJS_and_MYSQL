@@ -27,6 +27,7 @@ function ViewQueries({fromNavbar}) {
     const solvedQuery=(modId,reason)=>{
         Axios.put(`http://localhost:8000/query/changestatus/${modId}`,{reason: reason})
         navigate('/admin')
+        localStorage.setItem('pinnedQuery', JSON.stringify({ Query_id: '', Query_user_id: '', Query_user: '', Issue_on: '', Issue_id: '', Query_name: '', Query_description: '', Query_status: '' }))
         setReload(!reload)
     }
 

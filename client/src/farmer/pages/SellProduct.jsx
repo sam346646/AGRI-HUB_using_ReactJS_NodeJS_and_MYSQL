@@ -74,6 +74,7 @@ function Add_product() {
         Axios.post('http://localhost:8000/product/insert', formdata).then((response) => {
         });
         navigate("/farmer");
+        window.location.reload();
     }
 
 

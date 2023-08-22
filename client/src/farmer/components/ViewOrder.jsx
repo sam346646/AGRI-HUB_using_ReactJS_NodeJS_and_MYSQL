@@ -58,6 +58,7 @@ function ViewOrder({ choice }) {
             formdata.append('charge', charge)
             Axios.put(`http://localhost:8000/order/changestatus/${id}`, formdata).then(() => {
                 navigate("/farmer");
+                window.location.reload();
                 setReload(true);
             })
         }
@@ -79,6 +80,7 @@ function ViewOrder({ choice }) {
             navigate("/farmer");
             mainAcceptHandle()
             setReload(true);
+            window.location.reload();
         })
     }
 
