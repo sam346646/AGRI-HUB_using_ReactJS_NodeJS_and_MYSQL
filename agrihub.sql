@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2023 at 08:05 AM
+-- Generation Time: Aug 22, 2023 at 04:06 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -59,11 +59,12 @@ CREATE TABLE `carts` (
 --
 
 INSERT INTO `carts` (`Cart_id`, `Cart_retailer_id`, `Prod_id`, `Cart_quantity`, `Cart_price`) VALUES
-(23, 1, 38, 50, 1500),
-(24, 1, 23, 50, 5000),
-(25, 1, 24, 200, 35640),
-(26, 1, 27, 70, 4200),
-(27, 1, 30, 50, 5000);
+(33, 1, 47, 50, 5000),
+(34, 1, 43, 100, 9900),
+(38, 4, 43, 100, 10000),
+(40, 1, 59, 100, 14000),
+(43, 1, 57, 50, 5000),
+(54, 1, 64, 50, 5000);
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,8 @@ INSERT INTO `categories` (`Category_id`, `Category_name`, `Measure`, `Expiry`) V
 (5, 'Rice item', 'Kg', 365),
 (6, 'Wheat item', 'Kg', 30),
 (7, 'Flour', 'Kg', 40),
-(8, 'Other', 'Qty', 30);
+(8, 'Other', 'Qty', 30),
+(9, 'Coffee item', 'Kg', 100);
 
 -- --------------------------------------------------------
 
@@ -114,8 +116,8 @@ CREATE TABLE `farmers` (
 --
 
 INSERT INTO `farmers` (`Farmer_id`, `Farmer_name`, `Farmer_area`, `Farmer_village`, `Farmer_district`, `Farmer_contact`, `Farmer_email`, `Farmer_pass`) VALUES
-(1, 'Rakesh', '', '', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
-(2, 'Joyal', '', '', 'Dakshina Kannada', 9896587756, 'joyal@gmail.com', 'temp1234*');
+(1, 'Rakesh', 'SDM', 'Belthangady', 'Udupi', 7760506993, 'sam@gmail.com', 'Sam@1234'),
+(2, 'Joyal', 'Belma', 'Konaje', 'Dakshina Kannada', 9896587756, 'joyal@gmail.com', 'Joyal@1234');
 
 -- --------------------------------------------------------
 
@@ -144,27 +146,31 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Prod_id`, `Prod_name`, `Prod_type`, `Prod_qty`, `Prod_price`, `Prod_image1`, `Prod_offer`, `Prod_cat_id`, `Prod_status`, `Prod_order_date`, `Prod_expiry`, `Shipping_charge`, `Farmer_id`) VALUES
-(19, 'Apple', 'Ambri', 200, 100, 'image_1688061998667.jpg', 13, 1, 0, '2023-06-29', '2023-06-29', 100, 1),
-(21, 'Apple', 'Golden Delisious', 390, 250, 'image_1688062382208.jpg', 22, 1, 0, '2023-06-29', '2023-06-30', 200, 1),
-(22, 'Banana', 'Cavendish', 0, 35, 'image_1689059120191.webp', 19, 1, 0, '2023-07-11', '2023-07-31', 190, 1),
-(23, 'Apple', 'Ambri', 200, 100, 'image_1689062532264.jpg', 21, 1, 1, '2023-07-11', '2023-07-31', 130, 1),
-(24, 'Butter Fruit', '', 200, 180, 'image_1689068400694.jpg', 24, 1, 1, '2023-07-11', '2023-07-31', 200, 1),
-(25, 'Pineapple', '', 300, 50, 'image_1689068435352.jpg', 23, 1, 1, '2023-07-11', '2023-07-31', 170, 1),
-(26, 'Egg', '', 80, 6, 'image_1689076648518.jpg', 22, 4, 1, '2023-07-11', '2023-07-21', 180, 1),
-(27, 'Carrot', '', 70, 60, 'image_1689076783047.jpg', 13, 2, 1, '2023-07-11', '2023-07-31', 150, 2),
-(28, 'Onion', '', 270, 60, 'image_1689076878914.jpg', 18, 2, 1, '2023-07-11', '2023-07-31', 120, 2),
-(29, 'Cauliflower', '', 0, 30, 'image_1689076909876.png', 18, 2, 0, '2023-07-11', '2023-08-10', 190, 2),
-(30, 'Coconut oil', 'Natural', 200, 100, 'image_1689076980582.jpg', 12, 3, 1, '2023-07-11', '2023-10-19', 100, 2),
-(31, 'Banana', 'Cavendish', 0, 40, 'image_1691936110472.webp', 14, 1, 0, '2023-08-13', '2023-09-02', 200, 2),
-(32, 'Wheat Flour', '', 200, 40, 'image_1692377227915.jpg', 18, 7, 1, '2023-08-18', '2023-09-27', 100, 1),
-(33, 'Wheat', '', 300, 30, 'image_1692377292063.jpg', 16, 6, 1, '2023-08-18', '2023-09-17', 100, 1),
-(34, 'Brown rice', '', 450, 50, 'image_1692377357296.jpg', 22, 5, 1, '2023-08-18', '2024-08-17', 200, 1),
-(35, 'White rice', '', 350, 40, 'image_1692377395481.jpg', 24, 5, 1, '2023-08-18', '2024-08-17', 190, 1),
-(36, 'Bitter gourd', '', 100, 40, 'image_1692377450550.jpg', 20, 2, 1, '2023-08-18', '2023-09-07', 180, 1),
-(37, 'Lady finger', '', 200, 30, 'image_1692377488667.jpg', 23, 2, 1, '2023-08-18', '2023-09-07', 100, 1),
-(38, 'Banana', 'Cavendish', 100, 30, 'image_1692377542131.webp', 21, 1, 1, '2023-08-18', '2023-09-07', 100, 1),
-(39, 'Grapes', '', 300, 70, 'image_1692377581212.jpg', 14, 1, 1, '2023-08-18', '2023-09-07', 300, 1),
-(40, 'Tomato', '', 200, 150, 'image_1692377617695.jpg', 18, 2, 1, '2023-08-18', '2023-09-07', 250, 1);
+(41, 'White rice', '', 1000, 40, 'image_1692698086456.jpg', 19, 5, 1, '2023-08-22', '2024-08-21', 200, 1),
+(42, 'Wheat flour', '', 500, 100, 'image_1692698174601.jpg', 21, 7, 1, '2023-08-22', '2023-10-21', 400, 1),
+(43, 'Tomato', '', 200, 100, 'image_1692698402646.jpg', 11, 2, 1, '2023-08-22', '2023-09-11', 200, 1),
+(44, 'Pineapple', '', 100, 55, 'image_1692698454887.jpg', 21, 1, 1, '2023-08-22', '2023-09-11', 100, 1),
+(45, 'Ladyfinger', 'Organic', 50, 60, 'image_1692698534292.jpg', 25, 2, 1, '2023-08-22', '2023-09-11', 100, 1),
+(46, 'Egg', '', 100, 5, 'image_1692698581419.jpg', 16, 4, 1, '2023-08-22', '2023-09-01', 100, 1),
+(47, 'Coconut oil', '', 200, 100, 'image_1692698610494.jpg', 21, 3, 1, '2023-08-22', '2023-11-30', 100, 1),
+(48, 'Carrot', '', 50, 58, 'image_1692698645034.jpg', 15, 2, 1, '2023-08-22', '2023-09-11', 250, 1),
+(49, 'Brown rice', '', 500, 50, 'image_1692698681094.jpg', 22, 5, 1, '2023-08-22', '2024-08-21', 500, 1),
+(50, 'Banana', 'Cavendish', 100, 35, 'image_1692698730955.webp', 10, 1, 1, '2023-08-22', '2023-09-11', 200, 1),
+(51, 'Wheat', '', 350, 60, 'image_1692699841486.jpg', 12, 6, 1, '2023-08-22', '2023-09-21', 250, 2),
+(52, 'Toor dal', '', 150, 43, 'image_1692699898447.jpg', 23, 8, 1, '2023-08-22', '2023-09-21', 100, 2),
+(53, 'Sunflower oil', '', 50, 100, 'image_1692699958273.png', 21, 3, 1, '2023-08-22', '2023-11-30', 50, 2),
+(54, 'Onion', '', 550, 38, 'image_1692699999431.jpg', 13, 2, 1, '2023-08-22', '2023-09-11', 500, 2),
+(55, 'Bitter gourd', '', 50, 100, 'image_1692700051428.jpg', 25, 2, 1, '2023-08-22', '2023-09-11', 50, 2),
+(56, 'Cauliflower', '', 100, 30, 'image_1692700102844.png', 19, 2, 1, '2023-08-22', '2023-09-11', 50, 2),
+(57, 'Grapes', 'Kashmiri', 100, 100, 'image_1692700147897.jpg', 10, 1, 1, '2023-08-22', '2023-09-11', 290, 2),
+(58, 'Coffee', '', 100, 100, 'image_1692700229163.jpg', 25, 8, 1, '2023-08-22', '2023-09-21', 300, 2),
+(59, 'Butter fruit', '', 0, 140, 'image_1692700257959.jpg', 12, 1, 0, '2023-08-22', '2023-09-11', 100, 2),
+(60, 'Apple', '', 0, 100, 'image_1692700297685.jpg', 17, 1, 0, '2023-08-22', '2023-09-11', 100, 2),
+(61, 'Butter fruit', '', 150, 120, 'image_1692700868361.jpg', 17, 1, 1, '2023-08-22', '2023-09-11', 100, 1),
+(62, 'Onion', '', 150, 34, 'image_1692700926859.jpg', 15, 2, 1, '2023-08-22', '2023-09-11', 342, 1),
+(63, 'Apple', 'Kashmiri', 150, 80, 'image_1692700958737.jpg', 13, 1, 1, '2023-08-22', '2023-09-11', 300, 1),
+(64, 'Apple', '', 0, 100, 'image_1692707858508.jpg', 22, 1, 0, '2023-08-22', '2023-09-11', 100, 1),
+(66, 'Mango', '', 100, 200, 'image_1692709442386.jpg', 20, 1, 1, '2023-08-22', '2023-09-11', 100, 1);
 
 -- --------------------------------------------------------
 
@@ -179,9 +185,24 @@ CREATE TABLE `queries` (
   `Issue_on` varchar(30) NOT NULL,
   `Issue_id` int(11) NOT NULL,
   `Query_name` varchar(30) NOT NULL,
-  `Query_description` varchar(30) NOT NULL,
+  `Query_description` varchar(100) NOT NULL,
+  `Query_reply` varchar(100) NOT NULL,
   `Query_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `queries`
+--
+
+INSERT INTO `queries` (`Query_id`, `Query_user`, `Query_user_id`, `Issue_on`, `Issue_id`, `Query_name`, `Query_description`, `Query_reply`, `Query_status`) VALUES
+(7, 'farmer', 2, 'category', 0, 'Add Category', 'Add coffee item', 'Successfully added.', 'Solved'),
+(8, 'farmer', 1, 'farmer', 1, 'Issue on Profile', 'Change email.', 'Redirect to Profile -> My profile -> Change email -> Enter the new email, Follow this procedure.', 'Solved'),
+(9, 'farmer', 1, 'order', 1, 'Issue on Order', 'Not confirmed after waiting for 2 days.', 'Query solved', 'Solved'),
+(10, 'farmer', 1, 'product', 43, 'Issue on Product', 'Want to change the price to 50.', '', 'In process'),
+(11, 'farmer', 1, 'category', 0, 'Add Category', 'Add coffee item as category.', '', 'In process'),
+(12, 'farmer', 1, 'other', 0, 'Other', 'Please help me with the retailer information', '', 'In process'),
+(13, 'retailer', 1, 'retailer', 1, 'Issue on Profile', 'I Want to change the address.', '', 'In process'),
+(14, 'retailer', 1, 'order', 137, 'Issue on Order', 'I want to change the quantity.', '', 'In process');
 
 -- --------------------------------------------------------
 
@@ -206,13 +227,35 @@ CREATE TABLE `retailerorders` (
 --
 
 INSERT INTO `retailerorders` (`Order_id`, `Retailer_id`, `Prod_id`, `Order_date`, `Quantity`, `Price`, `Order_status`, `Profit`, `Extra_charge`) VALUES
-(113, 1, 39, '2023-08-18', 50, 3500, 'Farmer cancelled the order.', 0, 0),
-(114, 1, 40, '2023-08-18', 50, 7500, 'Farmer confirmed order.', 0, 250),
-(115, 1, 38, '2023-08-18', 50, 1500, 'Retailer placed order.', 0, 0),
-(116, 1, 33, '2023-08-18', 50, 1500, 'Waiting for retailer\'s confirmation.', 0, 200),
-(117, 1, 34, '2023-08-18', 50, 2500, 'Order delivered successfully.', 1000, 200),
-(118, 1, 37, '2023-08-18', 50, 1500, 'Retailer confirmed order.', 0, 300),
-(119, 1, 35, '2023-08-18', 50, 2000, 'Retailer cancelled the order.', 0, 0);
+(120, 1, 45, '2023-08-22', 50, 3000, 'Waiting for retailer\'s confirmation.', 0, 250),
+(121, 1, 46, '2023-08-22', 50, 250, 'Farmer confirmed order.', 0, 100),
+(122, 1, 50, '2023-08-22', 50, 1750, 'Retailer cancelled the order.', 0, 200),
+(123, 1, 49, '2023-08-22', 150, 7500, 'Retailer cancelled the order.', 0, 0),
+(124, 4, 50, '2023-08-22', 100, 3500, 'Farmer confirmed order.', 0, 200),
+(125, 4, 41, '2023-08-22', 100, 4000, 'Farmer cancelled the order.', 0, 0),
+(126, 4, 44, '2023-08-22', 100, 5445, 'Farmer confirmed order.', 0, 100),
+(127, 1, 54, '2023-08-22', 150, 5643, 'Farmer confirmed order.', 0, 500),
+(128, 1, 53, '2023-08-22', 50, 5000, 'Order delivered successfully.', 2000, 50),
+(129, 1, 55, '2023-08-22', 50, 5000, 'Retailer placed order.', 0, 0),
+(130, 1, 52, '2023-08-22', 50, 2150, 'Waiting for retailer\'s confirmation.', 0, 200),
+(131, 1, 60, '2023-08-22', 70, 7000, 'Farmer cancelled the order.', 0, 0),
+(132, 2147483646, 62, '2023-08-22', 100, 3000, 'Sold to your customer.', 1500, 0),
+(133, 1, 63, '2023-08-22', 50, 4000, 'Order delivered successfully.', 1265, 300),
+(134, 1, 62, '2023-08-22', 50, 1700, 'Order delivered successfully.', 1500, 342),
+(135, 1, 61, '2023-08-22', 50, 6000, 'Order delivered successfully.', 1000, 100),
+(136, 1, 60, '2023-08-22', 70, 7000, 'Order delivered successfully.', 20000, 100),
+(137, 1, 59, '2023-08-22', 200, 27720, 'Order delivered successfully.', 10000, 100),
+(138, 1, 53, '2021-08-04', 100, 9900, 'Order delivered successfully.', 6000, 50),
+(139, 1, 52, '2023-02-08', 50, 2150, 'Order delivered successfully.', 500, 100),
+(140, 1, 51, '2023-08-22', 50, 3000, 'Order delivered successfully.', 1300, 250),
+(141, 1, 54, '2023-06-30', 50, 1900, 'Order delivered successfully.', 800, 500),
+(142, 4, 46, '2023-08-22', 100, 495, 'Order delivered successfully.', 200, 100),
+(143, 4, 48, '2023-08-22', 50, 2900, 'Order delivered successfully.', 2000, 250),
+(144, 4, 45, '2023-08-22', 50, 3000, 'Order delivered successfully.', 1000, 100),
+(145, 1, 45, '2023-08-22', 50, 3000, 'Order delivered successfully.', 500, 100),
+(146, 1, 64, '2023-08-22', 100, 9900, 'Order delivered successfully.', 1000, 100),
+(147, 1, 66, '2023-08-22', 50, 10000, 'Farmer confirmed order.', 0, 100),
+(148, 1, 53, '2023-08-22', 50, 5000, 'Retailer placed order.', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -237,10 +280,10 @@ CREATE TABLE `retailers` (
 
 INSERT INTO `retailers` (`Retailer_id`, `Retailer_name`, `Retailer_area`, `Retailer_village`, `Retailer_district`, `Retailer_contact`, `Retailer_email`, `Retailer_pass`) VALUES
 (1, 'Kiran', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 7760506993, 'sam@gmail.com', 'Sam@1234'),
-(2, 'Glen', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 8987767676, 'glen@gmail.com', 'Glen@1234'),
+(2, 'Glen', 'SDM', 'Puttur', 'Dakshina Kannada', 8987767676, 'glen@gmail.com', 'Glen@1234'),
 (3, 'John', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 9847374763, 'john@gmail.com', 'temp1234*'),
-(4, 'Lavan', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 9837626323, 'lavan@gmail.com', 'Lavan@1234'),
-(5, 'Shilton', 'Near City Center, Aloysius', 'Mangalore', 'Dakshina Kannada', 8781676767, 'shilton@gmail.com', 'Shilton@1234');
+(4, 'Lavan', 'Adyar', 'Mangalore', 'Dakshina Kannada', 9837626323, 'lavan@gmail.com', 'Lavan@1234'),
+(5, 'Shilton', 'Kumta', 'Honnavar', 'Dakshina Kannada', 8781676767, 'shilton@gmail.com', 'Shilton@1234');
 
 --
 -- Indexes for dumped tables
@@ -309,13 +352,13 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `Cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `Cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `Category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `farmers`
@@ -327,19 +370,19 @@ ALTER TABLE `farmers`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `Prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Prod_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `queries`
 --
 ALTER TABLE `queries`
-  MODIFY `Query_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Query_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `retailerorders`
 --
 ALTER TABLE `retailerorders`
-  MODIFY `Order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `Order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT for table `retailers`
